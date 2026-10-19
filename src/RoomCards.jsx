@@ -30,8 +30,8 @@ function RoomCard({ room }) {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip() }
   }
   return (
-    <div className={`flip-card reveal${flipped ? ' flipped' : ''}`}>
-      <div className="flip-inner">
+    <div className="flip-card reveal">
+      <div className={`flip-inner${flipped ? ' flipped' : ''}`}>
         <div className="flip-face flip-front" role="button" tabIndex={flipped ? -1 : 0} aria-label={`${room.name}, show details`} onClick={flip} onKeyDown={onKey} aria-hidden={flipped}>
           {room.image
             ? <img src={room.image} alt={room.name} loading="lazy" />
