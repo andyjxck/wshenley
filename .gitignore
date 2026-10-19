@@ -1,0 +1,5 @@
+node_modules/
+dist/
+dist-single/
+src/assets/frith-*
+src/assets/sketch-*
