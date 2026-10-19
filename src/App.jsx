@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { contact, hero, rooms, food, whatsOn, privateHire, nearby, eras, credits } from './content.js'
-import BookingWidget, { LiveRooms } from './BookingWidget.jsx'
+import BookingWidget from './BookingWidget.jsx'
+import RoomCards from './RoomCards.jsx'
 import { useTimeTravel, useReveal } from './useTimeTravel.js'
 
 const NAV = [
@@ -77,10 +78,21 @@ function Hero() {
       <img className="hero-img" src={hero.image} alt="The White Swan, Henley-in-Arden" fetchpriority="high" />
       <div className="hero-shade" />
       <div className="hero-copy wrap">
-        <h1>{hero.title}<em>{hero.titleSince}</em></h1>
+        <p className="hero-place"><i className="hrule" />{hero.place}<i className="hrule" /></p>
+        <h1 className="hero-title" aria-label={`${hero.title.join(' ')} since ${hero.since}`}>
+          {hero.title.map((t, i) => (
+            <span className={`ht ht-${i + 1}`} key={t} aria-hidden="true"><span style={{ '--d': `${0.15 + i * 0.14}s` }}>{t}</span></span>
+          ))}
+        </h1>
+        <div className="hero-since" aria-hidden="true">
+          <i className="hrule long" />
+          <span className="since-word">Since</span>
+          <b>{hero.since}</b>
+          <i className="hrule long" />
+        </div>
         <p className="hero-intro">{hero.intro}</p>
         <div className="hero-cta">
-          <a className="pill light" href="#book">Check availability</a>
+          <a className="pill light" href="#book">Book a room</a>
           <a className="pill ghost" href="#eat">Eat & drink</a>
         </div>
       </div>
@@ -111,26 +123,8 @@ function Stay() {
         <h2 className="reveal">Rooms above the inn</h2>
         <p className="lead reveal">{rooms.intro}</p>
       </div>
-      <div className="gallery reveal">
-        {rooms.images.map((im, i) => <img key={i} src={im.src} alt={im.alt} loading="lazy" />)}
-      </div>
       <div className="wrap">
-        <div className="rooms">
-          {rooms.types.map((r) => (
-            <article className="room reveal" key={r.name}>
-              <div className="room-top">
-                <h3>{r.name}</h3>
-                {r.price && <p className="price"><b>{r.price}</b> <span>{r.per}</span></p>}
-              </div>
-              <p>{r.text}</p>
-              <a className="text-link" href="#book">Check availability</a>
-            </article>
-          ))}
-        </div>
-        <div className="live-wrap">
-          <h3 className="h-label reveal">Each room, with live prices</h3>
-          <LiveRooms />
-        </div>
+        <RoomCards />
         <div className="two-col reveal">
           <div>
             <h3 className="h-label">In every room</h3>

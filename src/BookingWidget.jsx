@@ -26,7 +26,6 @@ export default function BookingWidget() {
     }
     w.__KBE.settings({ id: seekda.widgetId, propertyCode: seekda.propertyCode })
     w.__KBE.searchbar({ id: seekda.widgetId })
-    w.__KBE.rates({ id: seekda.widgetId })
 
     const node = bar.current
     const check = () => node && (node.childElementCount > 0 || node.shadowRoot)
@@ -49,20 +48,6 @@ export default function BookingWidget() {
           </div>
         </div>
       )}
-    </div>
-  )
-}
-
-// Seekda's room-by-room list with live rates. It is long, so it starts folded.
-export function LiveRooms() {
-  const [open, setOpen] = useState(false)
-  return (
-    <div className={`live-rooms${open ? ' open' : ''}`}>
-      <div className="kbe-rates" data-kbe-rates={seekda.widgetId} />
-      {!open && <div className="live-fade" />}
-      <button className="pill ghost-dark live-toggle" onClick={() => setOpen(!open)}>
-        {open ? 'Show fewer rooms' : 'Show every room'}
-      </button>
     </div>
   )
 }

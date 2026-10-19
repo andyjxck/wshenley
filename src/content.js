@@ -9,8 +9,6 @@
 
 import heroToday from './assets/hero-today.jpg'
 import interiorToday from './assets/interior-today.jpg'
-import roomLive from './assets/room-live.jpg'
-import roomLive2 from './assets/room-live-2.jpg'
 import whatsonLive from './assets/whatson-live.jpg'
 import garden from './assets/garden.jpg'
 import cygnets from './assets/cygnets.jpg'
@@ -39,29 +37,34 @@ export const seekda = { propertyCode: 'S006498', widgetId: 'BOOKINGWIDGET' }
 
 export const hero = {
   image: heroToday,
-  title: 'The warmest welcome at an inn',
-  titleSince: 'since 1352',
+  place: 'Henley-in-Arden · Warwickshire',
+  title: ['The warmest', 'welcome', 'at an inn'],
+  since: '1352',
   intro: 'Rooms upstairs, good food downstairs, and a timber-framed bar that’s been pulling pints on the High Street for centuries.',
 }
 
 export const rooms = {
   intro: 'Seven bedrooms, including two suites, above the bar on the High Street. Free parking at the rear for guests.',
-  images: [
-    { src: roomLive, alt: 'A bedroom at the White Swan' },
-    { src: roomLive2, alt: 'A bedroom at the White Swan' },
-  ],
-  types: [
-    { name: 'The Johnson Suite', price: '£135', per: 'per night', text: 'Steeped in history and perfect for a special occasion. A large room with a king size bed, where a copy of Samuel Johnson’s Dictionary is kept.' },
-    { name: 'Double', price: '£125', per: 'per room, per night', text: 'Three rooms with king size beds.' },
-    { name: 'Twin', price: '£125', per: 'per room, per night', text: 'Two large twin rooms. Each can be made into a double with a super king size bed.' },
-    { name: 'Single', price: '', per: '', text: 'En-suite shower, flat screen TV, free wifi, and complimentary tea and coffee. Non-smoking.' },
+  // Each card flips to show the description, amenity icons and a Book Room button.
+  //   code   the room's code in Seekda (the Book Room button opens that room's booking page)
+  //   image  leave '' to show a "photo coming soon" card
+  //   icons  any of: double, king, single, shower, bath, tv, kettle, heating, hairdryer, towels, bedding, historic
+  list: [
+    { name: 'Diamond Suite', code: 'DIAMOND_', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6602.jpg', text: 'Our suite with a king size bed and a bathroom with both a bath and a shower.', icons: ['king', 'bath', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Johnson Suite', code: 'JOHNSON_', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6597.jpg', text: 'Steeped in history and perfect for a special occasion. A large room with a king size bed, where a copy of Samuel Johnson’s Dictionary is kept.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'bedding'] },
+    { name: 'Room 11', code: 'DBL', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6598.jpg', text: 'A double room with an en-suite shower, full of old-building character.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 12', code: 'SUPERKIN', sleeps: 2, image: '', text: 'A king size bed, an en-suite shower and plenty of old-inn character.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 14', code: 'SUPERKI1', sleeps: 2, image: '', text: 'A king size bed and an en-suite shower, with plenty of old-inn character.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 15', code: 'DOUBLE_R', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6600.jpg', text: 'A comfortable double with an en-suite shower.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 16', code: 'SINGLE_R', sleeps: 1, image: '', text: 'A single room with an en-suite shower, ideal if you’re travelling on your own.', icons: ['single', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 17', code: 'PERIOD_D', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6601.jpg', text: 'A period double room with an en-suite shower.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
   ],
   amenities: ['En-suite bathrooms with large drench showers', 'LCD TVs with Freeview', 'Free wifi', 'Drinks and biscuits', 'Shower gel, shampoo and conditioner', 'Hair dryer, iron and ironing board'],
   terms: [
-    'Please check in by 9.30pm. Check out by 11am.',
-    '48 hours’ notice is needed to cancel. Without it, the full rate is payable.',
-    'Dogs are not allowed in the hotel rooms.',
-    'No food is served on Sunday evenings, but the High Street has plenty of restaurants a short walk away.',
+    'Check in any time until 9.30pm, and check out by 11am.',
+    'Plans changed? Let us know at least 48 hours before you arrive and there’s nothing to pay. Later cancellations are charged in full.',
+    'Sorry, we can’t take dogs in the bedrooms.',
+    'Our kitchen takes Sunday evenings off, but there are plenty of places to eat a short walk along the High Street.',
   ],
 }
 
@@ -76,7 +79,6 @@ export const food = {
   drinks: [
     { name: 'Wine', text: 'Personally chosen from the best small vineyards around the world, at value-for-money prices.' },
     { name: 'Gins and vodkas', text: 'Always a great selection of favourites behind the bar.' },
-    { name: 'Henley Mile Brewery', text: 'Local, authentic ales and beers, brewed in Henley since 2020.', href: 'https://www.thehenleymile.co.uk/' },
   ],
 }
 
