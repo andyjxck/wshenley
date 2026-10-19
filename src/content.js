@@ -41,7 +41,7 @@ export const hero = {
   image: heroToday,
   title: 'The warmest welcome at an inn',
   titleSince: 'since 1352',
-  intro: 'A 16th-century coaching inn in the heart of Shakespeare’s county, giving travellers a bed for the night for over 600 years.',
+  intro: 'Rooms upstairs, good food downstairs, and a timber-framed bar that’s been pulling pints on the High Street for centuries.',
 }
 
 export const rooms = {
