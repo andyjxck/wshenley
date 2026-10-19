@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { contact, hero, rooms, food, whatsOn, privateHire, nearby, eras, credits } from './content.js'
 import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
+import { useLiveAvailability, shortDate } from './liveAvailability.js'
 import WeekCalendar from './WeekCalendar.jsx'
 import { useTimeTravel, useReveal } from './useTimeTravel.js'
 
@@ -114,18 +115,37 @@ function ThisWeek() {
 }
 
 // The booking bar now opens the rooms section, right above the flip cards.
-function Book() {
+function Book({ avail }) {
   return (
     <div className="book reveal" id="book">
       <div className="book-head">
         <h3 className="h-sm">Book direct</h3>
       </div>
       <BookingWidget />
+      <LiveStatus avail={avail} />
     </div>
   )
 }
 
+// One line under the booking bar saying what the room cards below now show.
+function LiveStatus({ avail }) {
+  const { status, stay, byCode } = avail
+  if (status === 'idle' || !stay) return <p className="live-status" role="status" aria-live="polite" />
+  const when = `${shortDate(stay.checkIn)} to ${shortDate(stay.checkOut)}`
+  const nights = `${stay.nights} night${stay.nights === 1 ? '' : 's'}`
+  let msg
+  if (status === 'loading') msg = <>Checking rooms for {when}…</>
+  else if (status === 'error') msg = <>We couldn’t check rooms for {when} just now. Press Search to see what’s free, or call us on <a href={contact.phoneHref}>{contact.phone}</a>.</>
+  else {
+    const free = rooms.list.filter((r) => byCode[r.code] && byCode[r.code].state === 'free')
+    if (!free.length) msg = <>Sorry, no rooms are free for {when}. Try other dates, or call us on <a href={contact.phoneHref}>{contact.phone}</a>.</>
+    else msg = <><strong>{when}, {nights}:</strong> {free.length === 1 ? '1 room is' : `${free.length} rooms are`} free ({free.map((r) => r.name).join(', ')}).{stay.withChildren ? '' : ' Prices are for the whole stay.'}</>
+  }
+  return <p className={`live-status ${status}`} role="status" aria-live="polite">{msg}</p>
+}
+
 function Stay() {
+  const avail = useLiveAvailability()
   return (
     <section className="section" id="stay">
       <div className="wrap">
@@ -134,8 +154,8 @@ function Stay() {
         <p className="lead reveal">{rooms.intro}</p>
       </div>
       <div className="wrap">
-        <Book />
-        <RoomCards />
+        <Book avail={avail} />
+        <RoomCards avail={avail} />
         <div className="two-col reveal">
           <div>
             <h3 className="h-label">In every room</h3>

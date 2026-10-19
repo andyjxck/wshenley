@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { rooms, seekda } from './content.js'
+import { money } from './liveAvailability.js'
 
 // Simple line icons. Each has a label for screen readers and a tooltip on hover.
 const I = (d) => (
@@ -20,22 +21,37 @@ const ICONS = {
   historic: ['Historic room', I(<><path d="M3 20h18" /><path d="M4 10l8-6 8 6" /><path d="M6 10v10M10 10v10M14 10v10M18 10v10" /></>)],
 }
 
-const bookUrl = (code, sleeps) =>
-  `https://${seekda.propertyCode.toLowerCase()}.officialbookings.com/room/${code}?adult_room1=${sleeps}&skd-currency-code=GBP&skd-language-code=en`
+// Opens the room on the hotel's own Seekda booking page. When the guest has picked
+// dates above, those dates and the number of guests go along too.
+const bookUrl = (code, sleeps, stay) => {
+  const base = `https://${seekda.propertyCode.toLowerCase()}.officialbookings.com/room/${code}?skd-currency-code=GBP&skd-language-code=en`
+  if (!stay) return `${base}&adult_room1=${sleeps}`
+  return `${base}&adult_room1=${Math.min(stay.guests, sleeps)}&skd-checkin=${stay.checkIn}&skd-checkout=${stay.checkOut}`
+}
 
-function RoomCard({ room }) {
+const nightsLabel = (n) => `${n} night${n === 1 ? '' : 's'}`
+
+function RoomCard({ room, live, stay }) {
   const [flipped, setFlipped] = useState(false)
+  const off = live && live.state === 'off'
+  const free = live && live.state === 'free'
+  const offText = off && live.reason === 'size'
+    ? `Sleeps ${room.sleeps}, too small for ${stay.guests} guests`
+    : 'Not available for these dates'
+  const priceText = free && live.total ? `${money(live.total)} for ${nightsLabel(stay.nights)}` : null
   const flip = () => setFlipped((f) => !f)
   const onKey = (e) => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip() }
   }
   return (
-    <div className="flip-card reveal">
+    <div className={`flip-card reveal${off ? ' is-off' : ''}${free ? ' is-free' : ''}`}>
       <div className={`flip-inner${flipped ? ' flipped' : ''}`}>
-        <div className="flip-face flip-front" role="button" tabIndex={flipped ? -1 : 0} aria-label={`${room.name}, show details`} onClick={flip} onKeyDown={onKey} aria-hidden={flipped}>
+        <div className="flip-face flip-front" role="button" tabIndex={flipped ? -1 : 0} aria-label={`${room.name}${off ? `, ${offText}` : priceText ? `, ${priceText}` : ''}, show details`} onClick={flip} onKeyDown={onKey} aria-hidden={flipped}>
           {room.image
             ? <img src={room.image} alt={room.name} loading="lazy" />
             : <div className="flip-noimg"><span>Photo coming soon</span></div>}
+          {off && <span className="flip-badge off">{offText}</span>}
+          {free && <span className="flip-badge free">{priceText || 'Available'}</span>}
           <div className="flip-name">
             <h3>{room.name}</h3>
             <span className="flip-hint">Tap for details</span>
@@ -55,8 +71,12 @@ function RoomCard({ room }) {
               <li key={k} title={ICONS[k][0]} aria-label={ICONS[k][0]}>{ICONS[k][1]}</li>
             ))}
           </ul>
+          {off && <p className="flip-status off">{offText}</p>}
+          {free && <p className="flip-status free">{priceText ? <>Available: <strong>{priceText}</strong></> : `Available for ${nightsLabel(stay.nights)}`}</p>}
           <div className="flip-actions">
-            <a className="pill dark" href={bookUrl(room.code, room.sleeps)} target="_blank" rel="noreferrer" tabIndex={flipped ? 0 : -1} onClick={(e) => e.stopPropagation()}>Book Room</a>
+            {off
+              ? <a className="pill ghost-dark" href="#book" tabIndex={flipped ? 0 : -1} onClick={(e) => e.stopPropagation()}>Change dates</a>
+              : <a className="pill dark" href={bookUrl(room.code, room.sleeps, free ? stay : null)} target="_blank" rel="noreferrer" tabIndex={flipped ? 0 : -1} onClick={(e) => e.stopPropagation()}>Book Room</a>}
             <button className="flip-back-btn" tabIndex={flipped ? 0 : -1} onClick={(e) => { e.stopPropagation(); flip() }}>Back</button>
           </div>
         </div>
@@ -65,10 +85,11 @@ function RoomCard({ room }) {
   )
 }
 
-export default function RoomCards() {
+export default function RoomCards({ avail }) {
+  const ok = avail && avail.status === 'ok'
   return (
     <div className="flip-grid">
-      {rooms.list.map((r) => <RoomCard key={r.code} room={r} />)}
+      {rooms.list.map((r) => <RoomCard key={r.code} room={r} live={ok ? avail.byCode[r.code] : null} stay={ok ? avail.stay : null} />)}
     </div>
   )
 }

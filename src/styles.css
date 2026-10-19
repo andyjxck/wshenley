@@ -157,6 +157,25 @@ p { margin: 0 0 1em; }
 .flip-icons svg { width: 62%; height: 62%; }
 .flip-actions { display: flex; align-items: center; gap: 10px; }
 .flip-actions .pill { flex: 1; min-height: 44px; }
+/* live availability: cards update as soon as dates are picked in the booking bar */
+.live-status { margin: 14px 0 0; font-size: .9rem; line-height: 1.45; color: var(--muted); }
+.live-status:empty { display: none; }
+.live-status strong { color: var(--ink); font-weight: 600; }
+.live-status a { color: var(--accent); font-weight: 600; }
+.live-status.loading { opacity: .8; }
+.flip-front img, .flip-noimg { transition: transform 1.2s var(--ease), filter .5s, opacity .5s; }
+.flip-card.is-off .flip-front img, .flip-card.is-off .flip-noimg { filter: grayscale(1) brightness(.85); opacity: .55; }
+.flip-card.is-off .flip-front { background: #4a4743; }
+.flip-card.is-off .flip-name h3 { opacity: .75; }
+.flip-card.is-off .flip-back { background: color-mix(in srgb, var(--paper) 88%, #9a968f); }
+.flip-card.is-off .flip-icons li { filter: grayscale(1); opacity: .6; }
+.flip-badge { position: absolute; top: 14px; left: 14px; right: 14px; width: fit-content; max-width: calc(100% - 28px); padding: 7px 12px; border-radius: 999px; font: 600 .7rem/1.25 var(--sans); letter-spacing: .04em; }
+.flip-badge.off { background: rgba(30,28,26,.82); color: #fff; }
+.flip-badge.free { background: #fffdf9; color: #1a1612; box-shadow: 0 6px 18px -8px rgba(0,0,0,.5); }
+.flip-status { margin: 0 0 10px; font-size: .84rem; line-height: 1.35; }
+.flip-status.off { color: var(--muted); font-weight: 600; }
+.flip-status.free { color: var(--ink); }
+.flip-status.free strong { color: var(--accent); }
 .flip-back-btn { background: none; border: 0; padding: 10px 6px; font: 600 .85rem/1 var(--sans); color: var(--muted); cursor: pointer; }
 .rooms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 60px; }
 .room { background: var(--paper); border-radius: 14px; padding: 24px; box-shadow: 0 0 0 1px var(--line); display: flex; flex-direction: column; }
