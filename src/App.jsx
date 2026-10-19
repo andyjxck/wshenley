@@ -4,6 +4,7 @@ import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
 import { useLiveAvailability, shortDate } from './liveAvailability.js'
 import WeekCalendar from './WeekCalendar.jsx'
+import weekBg from './assets/week-bg.jpg'
 import { useTimeTravel, useReveal } from './useTimeTravel.js'
 
 const NAV = [
@@ -106,7 +107,7 @@ function Hero() {
 // "This week" sits where the booking bar used to: overlapping the bottom of the hero.
 function ThisWeek() {
   return (
-    <section className="this-week" id="this-week">
+    <section className="this-week" id="this-week" style={{ '--week-bg': `url(${weekBg})` }}>
       <div className="wrap">
         <WeekCalendar />
       </div>
