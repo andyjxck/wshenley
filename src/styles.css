@@ -140,10 +140,13 @@ p { margin: 0 0 1em; }
 .flip-back-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 12px; }
 .flip-back h3 { font-size: 1.55rem; }
 .flip-sleeps { margin: 0; font: 600 .66rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
-.flip-text { margin: 0; font-size: .93rem; line-height: 1.5; color: var(--muted); flex: 1; overflow: auto; }
-.flip-icons { list-style: none; padding: 0; margin: 12px 0 14px; display: flex; flex-wrap: wrap; gap: 6px; }
-.flip-icons li { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); }
-.flip-icons svg { width: 19px; height: 19px; }
+.flip-body { flex: 1; min-height: 0; overflow: auto; scrollbar-width: thin; }
+.flip-text { margin: 0; font-size: .9rem; line-height: 1.45; color: var(--muted); }
+.flip-history { margin: 10px 0 0; padding-left: 10px; border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); font: italic .86rem/1.42 var(--serif); color: var(--ink, #2a241e); }
+.flip-history span { display: block; font: 600 .58rem/1 var(--sans); font-style: normal; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+.flip-icons { list-style: none; padding: 0; margin: 12px 0 14px; display: flex; flex-wrap: nowrap; gap: 4px; }
+.flip-icons li { flex: 1 1 0; min-width: 0; max-width: 32px; aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); }
+.flip-icons svg { width: 62%; height: 62%; }
 .flip-actions { display: flex; align-items: center; gap: 10px; }
 .flip-actions .pill { flex: 1; min-height: 44px; }
 .flip-back-btn { background: none; border: 0; padding: 10px 6px; font: 600 .85rem/1 var(--sans); color: var(--muted); cursor: pointer; }
@@ -179,8 +182,23 @@ p { margin: 0 0 1em; }
 .whats-on .eyebrow { color: #f1d9b5; }
 .whats-on h2 { max-width: 16ch; }
 .whats-on .lead { color: rgba(255,255,255,.85); }
+.week { margin: 34px 0 30px; max-width: 980px; border-radius: 18px; background: rgba(20,16,12,.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 0 0 1px rgba(241,217,181,.18); overflow: hidden; }
+.week-head { display: flex; justify-content: space-between; gap: 12px; padding: 14px 20px; border-bottom: 1px solid rgba(241,217,181,.16); font: 600 .66rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: #f1d9b5; }
+.week-days { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); }
+.week-day { padding: 16px 14px 20px; min-height: 130px; border-right: 1px solid rgba(241,217,181,.1); display: flex; flex-direction: column; gap: 12px; }
+.week-day:last-child { border-right: 0; }
+.week-day.is-today { background: rgba(241,217,181,.1); box-shadow: inset 0 3px 0 #f1d9b5; }
+.week-date { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.week-date b { font: 600 .7rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+.week-date span { font: 500 1.5rem/1 var(--serif); }
+.week-date em { flex-basis: 100%; font: 600 .58rem/1 var(--sans); font-style: normal; letter-spacing: .16em; text-transform: uppercase; color: #f1d9b5; }
+.week-events { display: flex; flex-direction: column; gap: 8px; }
+.week-event { padding: 8px 10px; border-radius: 10px; background: #f1d9b5; color: #241c14; }
+.week-event strong { display: block; font: 600 .92rem/1.2 var(--sans); }
+.week-event small { display: block; margin-top: 2px; font-size: .78rem; opacity: .75; }
+.week-none { font-size: .78rem; color: rgba(255,255,255,.35); }
 
-.spaces { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 40px 0; }
+.spaces { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 640px; gap: 16px; margin: 40px 0; }
 .space { padding: 28px; border-radius: 14px; background: var(--paper); box-shadow: 0 0 0 1px var(--line); }
 .space h3 { margin-bottom: 10px; }
 .space p { color: var(--muted); margin: 0; }
@@ -270,16 +288,30 @@ p { margin: 0 0 1em; }
 .mobile-bar { display: none; }
 
 /* tablet */
+@media (max-width: 1240px) and (min-width: 1081px) {
+  .flip-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
 @media (max-width: 1080px) {
   .desk-nav { display: none; }
   .burger { display: block; }
   .rooms { grid-template-columns: 1fr 1fr; }
-  .flip-grid { grid-template-columns: repeat(3, 1fr); }
+  .flip-grid { grid-template-columns: repeat(2, 1fr); max-width: 720px; margin-left: auto; margin-right: auto; }
   .dial, .rail { display: none; }
 }
 
 /* phone */
 @media (max-width: 720px) {
+  .week { margin: 26px 0 24px; }
+  .week-head { padding: 12px 16px; }
+  .week-days { grid-template-columns: 1fr; }
+  .week-day { min-height: 0; flex-direction: row; align-items: center; padding: 10px 16px; border-right: 0; border-bottom: 1px solid rgba(241,217,181,.1); gap: 14px; }
+  .week-day:last-child { border-bottom: 0; }
+  .week-day.is-today { box-shadow: inset 3px 0 0 #f1d9b5; }
+  .week-date { width: 64px; flex: none; }
+  .week-date em { flex-basis: auto; }
+  .week-events { flex: 1; flex-direction: row; flex-wrap: wrap; }
+  .week-event { padding: 6px 10px; }
   body { font-size: 16px; }
   :root { --header: 58px; }
   .wrap { width: calc(100% - 36px); }
@@ -302,9 +334,8 @@ p { margin: 0 0 1em; }
   .flip-name h3 { font-size: 1.5rem; }
   .flip-back { padding: 18px 16px 14px; }
   .flip-back h3 { font-size: 1.4rem; }
-  .flip-text { font-size: .88rem; }
-  .flip-icons li { width: 30px; height: 30px; }
-  .flip-icons svg { width: 17px; height: 17px; }
+  .flip-text { font-size: .86rem; }
+  .flip-history { font-size: .82rem; }
   .rooms, .two-col, .split, .drinks, .spaces, .visit-grid, .nearby { grid-template-columns: 1fr; }
   .two-col, .drinks, .visit-grid { gap: 34px; }
   .drinks { margin-top: 60px; }

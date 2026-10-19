@@ -46,7 +46,10 @@ function RoomCard({ room }) {
             <h3>{room.name}</h3>
             <p className="flip-sleeps">Sleeps {room.sleeps}</p>
           </div>
-          <p className="flip-text">{room.text}</p>
+          <div className="flip-body">
+            <p className="flip-text">{room.text}</p>
+            {room.history && <p className="flip-history"><span>A bit of history</span>{room.history}</p>}
+          </div>
           <ul className="flip-icons">
             {room.icons.filter((k) => ICONS[k]).map((k) => (
               <li key={k} title={ICONS[k][0]} aria-label={ICONS[k][0]}>{ICONS[k][1]}</li>

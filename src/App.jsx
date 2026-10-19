@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { contact, hero, rooms, food, whatsOn, privateHire, nearby, eras, credits } from './content.js'
 import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
+import WeekCalendar from './WeekCalendar.jsx'
 import { useTimeTravel, useReveal } from './useTimeTravel.js'
 
 const NAV = [
@@ -181,6 +182,7 @@ function WhatsOn() {
         <p className="eyebrow reveal">What’s on</p>
         <h2 className="reveal">{whatsOn.headline}</h2>
         <p className="lead reveal">{whatsOn.text}</p>
+        <WeekCalendar />
         <div className="reveal">
           <a className="pill light" href={contact.instagram} target="_blank" rel="noreferrer">See this week on Instagram</a>
         </div>

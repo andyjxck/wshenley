@@ -50,21 +50,20 @@ export const rooms = {
   //   image  leave '' to show a "photo coming soon" card
   //   icons  any of: double, king, single, shower, bath, tv, kettle, heating, hairdryer, towels, bedding, historic
   list: [
-    { name: 'Diamond Suite', code: 'DIAMOND_', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6602.jpg', text: 'Our suite with a king size bed and a bathroom with both a bath and a shower.', icons: ['king', 'bath', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
-    { name: 'Johnson Suite', code: 'JOHNSON_', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6597.jpg', text: 'Steeped in history and perfect for a special occasion. A large room with a king size bed, where a copy of Samuel Johnson’s Dictionary is kept.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'bedding'] },
-    { name: 'Room 11', code: 'DBL', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6598.jpg', text: 'A double room with an en-suite shower, full of old-building character.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
-    { name: 'Room 12', code: 'SUPERKIN', sleeps: 2, image: '', text: 'A king size bed, an en-suite shower and plenty of old-inn character.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
-    { name: 'Room 14', code: 'SUPERKI1', sleeps: 2, image: '', text: 'A king size bed and an en-suite shower, with plenty of old-inn character.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
-    { name: 'Room 15', code: 'DOUBLE_R', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6600.jpg', text: 'A comfortable double with an en-suite shower.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
-    { name: 'Room 16', code: 'SINGLE_R', sleeps: 1, image: '', text: 'A single room with an en-suite shower, ideal if you’re travelling on your own.', icons: ['single', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
-    { name: 'Room 17', code: 'PERIOD_D', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6601.jpg', text: 'A period double room with an en-suite shower.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Diamond Suite', code: 'DIAMOND_', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6602.jpg', text: 'Our suite with a king size bed and a bathroom with both a bath and a shower.', history: 'There has been an inn on this spot since 1352, and the name “White Swan” was first written down in 1358.', icons: ['king', 'bath', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Johnson Suite', code: 'JOHNSON_', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6597.jpg', text: 'A large king size room, perfect for a special occasion, with a copy of Johnson’s Dictionary to browse.', history: 'Named after Samuel Johnson, a regular at the Swan, who is said to have worked on his famous English Dictionary here.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'bedding'] },
+    { name: 'Room 11', code: 'DBL', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6598.jpg', text: 'A double room with an en-suite shower, full of old-building character.', history: 'The building around you went up in the mid-1500s, and its original oak beams were uncovered again in 1935.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 12', code: 'SUPERKIN', sleeps: 2, image: '', text: 'A king size bed, an en-suite shower and plenty of old-inn character.', history: 'After the Battle of Worcester in 1651, King Charles II most probably stayed at the Swan disguised as a groom while he fled the Roundheads.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 14', code: 'SUPERKI1', sleeps: 2, image: '', text: 'A king size bed and an en-suite shower, with plenty of old-inn character.', history: 'The poet William Shenstone was inspired by the Swan to write about finding “the warmest welcome at an inn”.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 15', code: 'DOUBLE_R', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6600.jpg', text: 'A comfortable double with an en-suite shower.', history: 'In the stagecoach days, the Swan was a well-known stop on the road between Lichfield and London.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 16', code: 'SINGLE_R', sleeps: 1, image: '', text: 'A single room with an en-suite shower, ideal if you’re travelling on your own.', history: 'In 1792 the travel diarist John Byng stayed at the Swan and paid 2s 2d for his food and drink.', icons: ['single', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 17', code: 'PERIOD_D', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6601.jpg', text: 'A period double room with an en-suite shower.', history: 'In 1663 the Swan had six hearths, more than any other building in Henley.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
   ],
   amenities: ['En-suite bathrooms with large drench showers', 'LCD TVs with Freeview', 'Free wifi', 'Drinks and biscuits', 'Shower gel, shampoo and conditioner', 'Hair dryer, iron and ironing board'],
   terms: [
-    'Check in any time until 9.30pm, and check out by 11am.',
+    'Check in from 2pm until 9.30pm, and check out by 11am.',
     'Plans changed? Let us know at least 48 hours before you arrive and there’s nothing to pay. Later cancellations are charged in full.',
     'Sorry, we can’t take dogs in the bedrooms.',
-    'Our kitchen takes Sunday evenings off, but there are plenty of places to eat a short walk along the High Street.',
   ],
 }
 
@@ -74,7 +73,7 @@ export const food = {
   menus: [
     { name: 'Lunchtime menu', when: 'Monday to Saturday, 12pm to 6pm', href: 'https://www.whiteswanhenley.co.uk/_webedit/uploaded-files/All%20Files/Lunch%20Menu%20Front%20Page.png' },
     { name: 'Evening menu', when: 'Monday to Saturday, 6pm to 9pm', href: 'https://www.whiteswanhenley.co.uk/_webedit/uploaded-files/All%20Files/Evening%20Menu.PNG' },
-    { name: 'Sunday lunch', when: 'Changes every week. Call for today’s menu.', href: 'tel:+441564660303' },
+    { name: 'Sunday lunch', when: 'Sunday, 12pm to 5pm', href: 'tel:+441564660303' },
   ],
   drinks: [
     { name: 'Wine', text: 'Personally chosen from the best small vineyards around the world, at value-for-money prices.' },
@@ -84,15 +83,28 @@ export const food = {
 
 export const whatsOn = {
   image: whatsonLive,
-  headline: 'Every Friday: live bands, DJs and karaoke',
-  text: 'Free-entry live music in the bar, plus special nights with tribute acts and comedy in Jesters & Jazz, our vintage jazz club room.',
+  headline: 'Karaoke on Fridays, DJ Jacko on Saturdays',
+  text: 'Every weekend in the bar.',
+}
+
+// WHAT'S ON CALENDAR: the page always shows the current week, Monday to Sunday.
+//   weekly   repeats every week. day: 'mon' 'tue' 'wed' 'thu' 'fri' 'sat' 'sun'
+//   oneOff   a single date, written as 'YYYY-MM-DD'
+//   time and note are optional. Leave them out and nothing shows.
+export const events = {
+  weekly: [
+    { day: 'fri', title: 'Karaoke' },
+    { day: 'sat', title: 'DJ', note: 'Jacko' },
+  ],
+  oneOff: [
+    // { date: '2026-10-31', title: 'Halloween party', time: '8pm', note: 'Fancy dress' },
+  ],
 }
 
 export const privateHire = {
   intro: 'Rooms for any occasion: a wedding breakfast, Christmas party, business meeting, networking event, wake, baby shower or any other gathering. Catering is bespoke, from a buffet to a sit-down meal, and we can help with a DJ or band.',
   spaces: [
-    { name: 'Jesters & Jazz', text: 'A vintage jazz club room with its own bar and stage. Great for parties and wedding celebrations, and perfect for a band or DJ.' },
-    { name: 'Sleepover', text: 'Seven bedrooms, including two suites, with a group rate. End the night upstairs and wake up to breakfast.' },
+    { name: 'Sleepover', text: 'Our bedrooms, including two suites, with a group rate. End the night upstairs and wake up to breakfast.' },
   ],
 }
 
