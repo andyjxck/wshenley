@@ -119,7 +119,6 @@ function Book() {
     <div className="book reveal" id="book">
       <div className="book-head">
         <h3 className="h-sm">Book direct</h3>
-        <p className="muted">Pick your dates and book with us. No third-party site.</p>
       </div>
       <BookingWidget />
     </div>
