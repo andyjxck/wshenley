@@ -111,7 +111,7 @@ p { margin: 0 0 1em; }
 
 /* "This week" card, overlapping the bottom of the hero where the booking bar used to be */
 .this-week { position: relative; z-index: 2; margin-top: -48px; }
-.this-week .week { margin: 0; max-width: none; background: linear-gradient(180deg, rgba(36,30,24,.78), rgba(26,21,17,.88)), var(--week-bg) center 40% / cover no-repeat, #1a1511; box-shadow: 0 30px 60px -28px rgba(20,12,6,.55), 0 0 0 1px rgba(241,217,181,.2); }
+.this-week .week { margin: 0; max-width: none; background: linear-gradient(180deg, #241e18, #1a1511); box-shadow: 0 30px 60px -28px rgba(20,12,6,.55), 0 0 0 1px rgba(241,217,181,.2); }
 .whats-cta { margin-top: 30px; }
 .book-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
 .book-head p { margin: 0; }

@@ -9,7 +9,7 @@
 
 import heroToday from './assets/hero-today.jpg'
 import interiorToday from './assets/interior-today.jpg'
-import whatsonLive from './assets/whatson-live.jpg'
+import whatsonLive from './assets/week-bg.jpg' // Flickr 2012 "The Henley White Swan 2" (hotel's own photo)
 import garden from './assets/garden.jpg'
 import cygnets from './assets/cygnets.jpg'
 import exterior2012 from './assets/exterior-2012.jpg'
