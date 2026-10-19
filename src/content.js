@@ -50,14 +50,14 @@ export const rooms = {
   //   image  leave '' to show a "photo coming soon" card
   //   icons  any of: double, king, single, shower, bath, tv, kettle, heating, hairdryer, towels, bedding, historic
   list: [
-    { name: 'Diamond Suite', code: 'DIAMOND_', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6602.jpg', text: 'Our suite with a king size bed and a bathroom with both a bath and a shower.', icons: ['king', 'bath', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
-    { name: 'Johnson Suite', code: 'JOHNSON_', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6597.jpg', text: 'A large king size room, perfect for a special occasion.', history: 'Named after Dr Samuel Johnson, who is said to have been a regular at the Swan. A copy of his famous Dictionary is kept in the room.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'bedding'] },
+    { name: 'Diamond Suite', code: 'DIAMOND_', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6602.jpg', text: 'Our suite with a king size bed and a bathroom with both a bath and a shower.', history: 'Rumour has it King Charles II stopped at the Swan in 1651, on the run and disguised as a servant. It’s our best room, so this is where we put him.', icons: ['king', 'bath', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Johnson Suite', code: 'JOHNSON_', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6597.jpg', text: 'A large king size room, perfect for a special occasion.', history: 'Named after Dr Samuel Johnson, who spent the night of 21 March 1776 in Henley, rumour has it at the Swan. A copy of his famous Dictionary is kept in the room.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'bedding'] },
     { name: 'Room 11', code: 'DBL', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6598.jpg', text: 'A double room with an en-suite shower, full of old-building character.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
     { name: 'Room 12', code: 'SUPERKIN', sleeps: 2, image: '', text: 'A king size bed, an en-suite shower and plenty of old-inn character.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
     { name: 'Room 14', code: 'SUPERKI1', sleeps: 2, image: '', text: 'A king size bed and an en-suite shower, with plenty of old-inn character.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
     { name: 'Room 15', code: 'DOUBLE_R', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6600.jpg', text: 'A comfortable double with an en-suite shower.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
     { name: 'Room 16', code: 'SINGLE_R', sleeps: 1, image: '', text: 'A single room with an en-suite shower, ideal if you’re travelling on your own.', icons: ['single', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
-    { name: 'Room 17', code: 'PERIOD_D', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6601.jpg', text: 'A period double room with an en-suite shower.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 17', code: 'PERIOD_D', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6601.jpg', text: 'A period double room with an en-suite shower.', history: 'Legend says Virginia Black, who died after a fall on the stairs in 1845, haunts this room and the corridor outside. She hasn’t been seen for years, and she was never any trouble.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
   ],
   amenities: ['En-suite bathrooms with large drench showers', 'LCD TVs with Freeview', 'Free wifi', 'Drinks and biscuits', 'Shower gel, shampoo and conditioner', 'Hair dryer, iron and ironing board'],
   terms: [
@@ -168,15 +168,44 @@ export const eras = [
     id: 'coaching-days',
     name: 'Coaching days',
     range: '1855 to 1735',
-    intro: 'Bowls on the lawn, a dictionary in the making, and dinner for two shillings.',
+    intro: 'Bowls on the lawn, a ghost on the landing, Dr Johnson in town and dinner for two shillings.',
     entries: [
       { year: '1855', title: 'A bowling green out the back', text: 'The lawn behind the hotel was a bowling green.', body: '' },
+      // LEGEND. Source: the hotel's own earlier website history page, quoted on
+      // Mysterious Britain (mysteriousbritain.co.uk/england/warwickshire/hauntings/
+      // the-white-swan-hotel-henley-in-arden/): "an 18 year old lady of the night named
+      // Virginia Black ... said to have died after falling down the stairs during a
+      // quarrel with a gentleman in 1845. Virginia used to haunt the corridor outside
+      // bedroom 17 ... she has not been seen in recent years." Andy: Room 17 and the
+      // corridor outside are the same story. No independent record of her has been found.
+      // The same old page also claims public hangings in the courtyard; left out, as
+      // executions were never carried out at a local court or inn.
+      { year: '1845', title: 'The girl outside Room 17', text: 'Legend says the Swan has a ghost: Virginia Black, eighteen years old, who died here in 1845.', body: 'The story goes like this. Virginia was a young woman of the night, just eighteen, and one evening in 1845 she fell into a furious quarrel with a gentleman at the top of the stairs. Whether she slipped or was pushed, nobody can say. She fell, and she never got up.\n\nRumour has it she never left, either. For years, guests and staff told of her in Room 17 and the corridor just outside it, the stretch of landing where it all happened. The old tales say she hasn’t been seen for a while now, and she was never known to do anyone harm. But if you’re staying in Room 17 and you hear footsteps on the landing after the bar has closed, you’ll know whose they might be.', look: 'Room 17, and the corridor outside it' },
       { year: '1792', title: 'Dinner for 2s 2d', text: 'In Jonathan Dovey’s History of Henley-in-Arden, the travel diarist John Byng “stayed at the (White) Swan and had food and drink for 2s 2d”. That is about £8.32 in 2017 money: not far off a main on our lunch menu.', body: '' },
       { year: '1781', title: 'A diarist arrives', text: 'John Byng, whose diaries ran from 1781 to 1794, is thought to have first visited Henley on 5 July 1781.', body: '' },
-      { year: '1776', title: 'Dr Johnson takes a seat', text: 'Samuel Johnson, born in Lichfield in 1709, was a regular. He is said to have spent time here working on one of the most influential versions of his English Dictionary.', look: 'A copy of the Dictionary in the Johnson Suite', body: '' },
+      // FACT: Boswell, Life of Johnson (1791), entries for Thursday 21 and Friday
+      // 22 March 1776: they left Oxford by post-chaise, dined at Chapel House inn where
+      // Johnson praised inns and "repeated, with great emotion, Shenstone's lines", then
+      // "set out early from Henley, where we had lain the preceding night" and reached
+      // Birmingham about nine. (Project Gutenberg #1564.) Boswell does not name the inn.
+      // RUMOUR: that he stayed at the Swan and was working on something while here. The
+      // hotel's old site said the Dictionary; Andy says the rumour is only that he was
+      // working on SOMETHING, so the Dictionary is not claimed. VCH Warwick vol. 3 (1945)
+      // calls the Johnson tradition at the Swan "groundless". Johnson's Lives of the
+      // Poets (1779 to 1781) does include a life of Shenstone (Project Gutenberg #4678).
+      { year: '1776', title: 'Dr Johnson takes a seat', text: 'On 21 March 1776, Dr Samuel Johnson and James Boswell spent the night in Henley. Rumour has it they spent it at the Swan, and that Johnson was hard at work on something.', look: 'A copy of the Dictionary in the Johnson Suite', body: 'This part is true, because Boswell wrote it down. On Thursday 21 March 1776 the two friends left Oxford in a post-chaise, heading north for Birmingham and Johnson’s home town of Lichfield. They stopped for dinner at an inn on the way, where Johnson declared that “there is nothing which has yet been contrived by man, by which so much happiness is produced as by a good tavern or inn”, and then recited, with great emotion, Shenstone’s lines about the warmest welcome at an inn. That night they lay at Henley, and they set off early next morning.\n\nBoswell doesn’t say which inn. Rumour has it that it was this one, and that the great man spent his time here bent over his papers, working on something. What exactly, the stories never agree. Whatever it was, a few years later he was writing his Lives of the Poets, and one of those lives belonged to William Shenstone. We’d like to think the Swan had something to do with it.' },
       { year: 'Coaching era', title: 'A 30-mile staging post', text: 'In the days of stagecoaches, the White Swan was a well-known stop on the road from Lichfield to London.', body: '' },
       { year: '1735', title: 'The fireplace', text: 'Some time after Shenstone wrote his famous lines, the current fireplace was put in.', look: 'The year 1735, still inscribed on the fireplace', body: '' },
-      { year: '1714–1763', title: 'The warmest welcome', quote: '“Whoever has travelled life’s dull round, wherever his stages may have been, may sigh to think he still has found, the warmest welcome at an inn.”', text: 'The poet William Shenstone was inspired by the White Swan to write his famous lines.', body: '' },
+      // HOTEL CLAIM. Poem: William Shenstone (1714 to 1763), "Written at an Inn at
+      // Henley"; final stanza as quoted in Boswell's Life of Johnson (21 March 1776).
+      // The poem names only "Henley": the Red Lion at Henley-on-Thames claims it too,
+      // and VCH Warwick vol. 3 (1945) calls the Henley-in-Arden tradition "groundless".
+      // The Guardian's Poem of the Week on it (Carol Rumens, 2010) names the White Swan
+      // as the inn. Boswell shows Henley-in-Arden was on the Oxford to Birmingham road,
+      // and Shenstone, from Halesowen near Birmingham, studied at Pembroke College,
+      // Oxford. Andy: "Shenstone apparently did stay at the White Swan. We claim it
+      // either way." Written as the hotel's claim, not as proven fact.
+      { year: '1714–1763', title: 'The warmest welcome', quote: '“Whoe’er has travell’d life’s dull round, / Where’er his stages may have been, / May sigh to think he still has found / The warmest welcome at an inn.”', text: 'The poet William Shenstone stayed at the White Swan, and it’s here, we say, that he wrote “Written at an Inn at Henley”.', body: 'Shenstone grew up at the Leasowes in Halesowen, just outside Birmingham, and went up to Oxford as a young man. The road from Oxford up to Birmingham ran through Henley-in-Arden, right past our front door. We say he stopped here, stayed the night, and was so taken with the place that he wrote a poem about it.\n\nThe poem is called “Written at an Inn at Henley”, and it’s a love letter to the freedom of a good inn, where nobody fusses over you and you can come and go as you please. Its last verse became one of the most quoted in the language. Dr Johnson knew it by heart.\n\nA certain inn on the Thames likes to say the poem is about them. They’re welcome to their opinion. We know where the warmest welcome is.' },
     ],
   },
   {
@@ -186,7 +215,18 @@ export const eras = [
     intro: 'Hearths, a king in disguise, barns and stables.',
     entries: [
       { year: '1663', title: 'Six hearths, the most in town', text: 'The Hearth Tax returns record six hearths at the White Swan, more than any other building in Henley at the time.', body: '' },
-      { year: '1651', title: 'A king disguised as a groom', text: 'After the Battle of Worcester, King Charles II most probably stayed here disguised as a groom, fleeing the Roundheads on his way to Bristol. So says the Heritage Centre.', body: '' },
+      // FACT: Escape of Charles II (Wikipedia, citing Matthews 1966 and others); Jane
+      // Lane entry (Wikipedia, citing DNB). Defeat at Worcester 3 Sept 1651; Moseley Old
+      // Hall priest hole; at Bentley Hall early on 10 Sept he took the alias "William
+      // Jackson" and rode as Jane Lane's servant, on the same horse in front of her, with
+      // Henry Lascelles and the Petres. Route that day: Bromsgrove (he took the horse to
+      // the blacksmith), Wootton Wawen (rode through Parliamentary cavalry gathered
+      // outside the inn), Stratford, Long Marston (house of John Tomes, where the cook
+      // set him to wind the roasting jack). Wootton Wawen is about 2 miles south of
+      // Henley on the same road (Wikipedia, Wootton Wawen). No record names Henley or the
+      // Swan; the Henley Heritage Centre says he "most probably" stayed here disguised as
+      // a groom. Tied to the Diamond Suite at Andy's request, as the hotel's best room.
+      { year: '1651', title: 'A king disguised as a groom', text: 'Rumour has it that King Charles II, on the run after the Battle of Worcester and dressed as a servant, stopped at the White Swan. We’ve given him the Diamond Suite.', look: 'The Diamond Suite, our best room, fit for a king', body: 'In September 1651 the young King Charles II lost the Battle of Worcester and became the most wanted man in England. For a week he hid wherever he could: up an oak tree, and squeezed into a priest hole at Moseley Old Hall while Parliament’s soldiers searched the house.\n\nOn the morning of 10 September he set out from Bentley Hall in Staffordshire in disguise. He called himself William Jackson, and he rode as the servant of a young woman named Jane Lane, sitting in front of her on the same horse and seeing to it like any groom. At Bromsgrove the horse threw a shoe, and the King of England had to take it to the blacksmith himself. A little further on, at Wootton Wawen, just two miles down the road from our door, the party rode straight through a troop of Parliamentary cavalry gathered outside the inn, and nobody looked twice. That night, at Long Marston, the cook told him off for not knowing how to turn the roasting spit.\n\nThe history books don’t mention Henley. But Henley sits just up the road from Wootton Wawen, and the Heritage Centre reckons the King most probably stopped here. Rumour has it he did, at the Swan. And if a king stays at the Swan, he gets the best room in the house. That’s why we call it the Diamond Suite.' },
       { year: '1608', title: '“An Inn called the Swan”', text: 'The tenant, Mr Tomas Kirby, ran “an Inn called the Swan with barns and stables, orchards and courtyards”.', body: '' },
       { year: '16th century', title: 'The building you stand in', text: 'The timber frame of today’s coaching inn goes up. Its mid-16th-century beams are still overhead.', body: '' },
       { year: '1358', title: '“The White Swan” is written down', text: 'The first time the name appears in the records.', body: '' },
