@@ -103,8 +103,16 @@ p { margin: 0 0 1em; }
 @keyframes rise { from { opacity: 0; transform: translateY(30px); } }
 
 /* booking */
-.book { position: relative; z-index: 2; margin-top: -48px; }
-.book .wrap { background: var(--paper); border-radius: 18px; padding: 26px; box-shadow: 0 30px 60px -30px rgba(30,20,10,.35), 0 0 0 1px var(--line); }
+/* booking bar, now at the top of the rooms section above the flip cards */
+.book { margin: 38px 0 0; background: var(--paper); border-radius: 18px; padding: 26px; box-shadow: 0 24px 50px -32px rgba(30,20,10,.35), 0 0 0 1px var(--line); }
+.book + .flip-grid { margin-top: 26px; }
+.booking { min-width: 0; }
+.kbe-bar { max-width: 100%; }
+
+/* "This week" card, overlapping the bottom of the hero where the booking bar used to be */
+.this-week { position: relative; z-index: 2; margin-top: -48px; }
+.this-week .week { margin: 0; max-width: none; background: linear-gradient(180deg, #241e18, #1a1511); box-shadow: 0 30px 60px -28px rgba(20,12,6,.55), 0 0 0 1px rgba(241,217,181,.2); }
+.whats-cta { margin-top: 30px; }
 .book-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
 .book-head p { margin: 0; }
 .booking-wait { margin: 0; }
@@ -322,8 +330,11 @@ p { margin: 0 0 1em; }
   .hero-cta { width: 100%; max-width: 360px; }
   .hero-cta .pill { flex: 1; }
   .hero-hint { bottom: 64px; }
-  .book { margin-top: -36px; }
-  .book .wrap { width: calc(100% - 20px); padding: 20px 18px; border-radius: 16px; }
+  .this-week { margin-top: -40px; }
+  .this-week .wrap { width: calc(100% - 20px); }
+  .this-week .week { margin: 0; border-radius: 16px; }
+  .book { margin-top: 28px; padding: 20px 18px; border-radius: 16px; }
+  .book + .flip-grid { margin-top: 14px; }
   .gallery { grid-template-columns: 1fr; width: calc(100% - 20px); }
   .gallery img { height: 64vw; }
   .gallery img:nth-child(2) { display: none; }

@@ -97,22 +97,32 @@ function Hero() {
           <a className="pill ghost" href="#eat">Eat & drink</a>
         </div>
       </div>
-      <a className="hero-hint" href="#book" aria-label="Scroll down"><span>Open daily, 12pm to 11pm</span></a>
+      <a className="hero-hint" href="#this-week" aria-label="Scroll down"><span>Open daily, 12pm to 11pm</span></a>
     </section>
   )
 }
 
-function Book() {
+// "This week" sits where the booking bar used to: overlapping the bottom of the hero.
+function ThisWeek() {
   return (
-    <section className="book reveal" id="book">
+    <section className="this-week" id="this-week">
       <div className="wrap">
-        <div className="book-head">
-          <h2 className="h-sm">Book direct</h2>
-          <p className="muted">Pick your dates and book with us. No third-party site.</p>
-        </div>
-        <BookingWidget />
+        <WeekCalendar />
       </div>
     </section>
+  )
+}
+
+// The booking bar now opens the rooms section, right above the flip cards.
+function Book() {
+  return (
+    <div className="book reveal" id="book">
+      <div className="book-head">
+        <h3 className="h-sm">Book direct</h3>
+        <p className="muted">Pick your dates and book with us. No third-party site.</p>
+      </div>
+      <BookingWidget />
+    </div>
   )
 }
 
@@ -125,6 +135,7 @@ function Stay() {
         <p className="lead reveal">{rooms.intro}</p>
       </div>
       <div className="wrap">
+        <Book />
         <RoomCards />
         <div className="two-col reveal">
           <div>
@@ -182,8 +193,7 @@ function WhatsOn() {
         <p className="eyebrow reveal">What’s on</p>
         <h2 className="reveal">{whatsOn.headline}</h2>
         <p className="lead reveal">{whatsOn.text}</p>
-        <WeekCalendar />
-        <div className="reveal">
+        <div className="reveal whats-cta">
           <a className="pill light" href={contact.instagram} target="_blank" rel="noreferrer">See this week on Instagram</a>
         </div>
       </div>
@@ -346,7 +356,7 @@ export default function App() {
       <Header open={open} setOpen={setOpen} />
       <main>
         <Hero />
-        <Book />
+        <ThisWeek />
         <Stay />
         <Eat />
         <WhatsOn />
