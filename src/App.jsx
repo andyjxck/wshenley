@@ -77,7 +77,6 @@ function Hero() {
       <img className="hero-img" src={hero.image} alt="The White Swan, Henley-in-Arden" fetchpriority="high" />
       <div className="hero-shade" />
       <div className="hero-copy wrap">
-        <p className="eyebrow">{hero.eyebrow}</p>
         <h1>{hero.title}<em>{hero.titleSince}</em></h1>
         <p className="hero-intro">{hero.intro}</p>
         <div className="hero-cta">

@@ -39,7 +39,6 @@ export const seekda = { propertyCode: 'S006498', widgetId: 'BOOKINGWIDGET' }
 
 export const hero = {
   image: heroToday,
-  eyebrow: 'Hotel, bar and restaurant',
   title: 'The warmest welcome at an inn',
   titleSince: 'since 1352',
   intro: 'A 16th-century coaching inn in the heart of Shakespeare’s county, giving travellers a bed for the night for over 600 years.',
