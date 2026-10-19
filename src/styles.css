@@ -74,8 +74,8 @@ p { margin: 0 0 1em; }
 @keyframes menuIn { from { opacity: 0; transform: translateY(14px); } }
 
 /* hero */
-.hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; color: #fff; overflow: hidden; background: #2a241e; }
-.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: heroZoom 14s var(--ease) both; }
+.hero { position: relative; clip-path: inset(0); min-height: 100svh; display: flex; align-items: flex-end; color: #fff; overflow: hidden; background: #2a241e; }
+.hero-img { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100lvh; object-fit: cover; animation: heroZoom 14s var(--ease) both; }
 @keyframes heroZoom { from { transform: scale(1.08); } to { transform: scale(1); } }
 .hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,8,6,.5) 0%, rgba(10,8,6,.1) 30%, rgba(10,8,6,.25) 55%, rgba(10,8,6,.78) 100%); }
 .hero-copy { position: relative; padding: 0 0 clamp(90px, 14vh, 140px); }
