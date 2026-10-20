@@ -5,6 +5,7 @@ import RoomCards from './RoomCards.jsx'
 import { useLiveAvailability, shortDate } from './liveAvailability.js'
 import WeekCalendar from './WeekCalendar.jsx'
 import { useTimeTravel, useReveal } from './useTimeTravel.js'
+import { agesFor, gradeFor } from './ageing.js'
 import EnquiryForm from './EnquiryForm.jsx'
 
 // Two real pages: the homepage (index.html) and Our story (history/index.html).
@@ -30,21 +31,12 @@ const NAV = [
 ]
 
 const ALL = eras.flatMap((e) => e.entries.map((x) => ({ ...x, era: e.id })))
-const TOTAL = ALL.length
 const OLDEST = 1352
 const YEARS_BACK = new Date().getFullYear() - OLDEST
 
-// How old an entry looks: 0 = today, 1 = oldest
-function gradeFor(index) {
-  const t = index / Math.max(1, TOTAL - 1)
-  const ease = (a, b, x) => Math.min(1, Math.max(0, (x - a) / (b - a)))
-  // Photos warm into sepia and keep ageing: never grey or black and white.
-  const sepia = 0.95 * ease(0.02, 0.55, t)
-  const contrast = 1 - 0.08 * ease(0.4, 1, t)
-  const bright = 1 - 0.05 * t
-  const sat = 1 - 0.15 * ease(0.5, 1, t)
-  return `sepia(${sepia.toFixed(3)}) saturate(${sat.toFixed(3)}) contrast(${contrast.toFixed(3)}) brightness(${bright.toFixed(3)})`
-}
+// How old each entry looks (0 = today, 1 = oldest), from its year: see ageing.js
+const AGES = agesFor(ALL.map((x) => x.year)).map((x) => x.age)
+const ageStyle = (a) => ({ '--age': a.toFixed(4) })
 
 function Header({ open, setOpen }) {
   const [solid, setSolid] = useState(ON_HISTORY)
@@ -307,9 +299,10 @@ function TimeGate() {
 const kindSlug = (k) => k.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '')
 
 function Entry({ e, index }) {
+  const age = AGES[index]
   const paras = e.body ? e.body.split(/\n\s*\n/) : []
   return (
-    <article className={`entry reveal${e.image || e.images ? ' has-img' : ''}${e.quote ? ' has-quote' : ''}`} data-year={e.year} data-era={e.era} id={`y-${index}`}>
+    <article className={`entry reveal${e.image || e.images ? ' has-img' : ''}${e.quote ? ' has-quote' : ''}`} data-year={e.year} data-era={e.era} data-age={age.toFixed(4)} style={ageStyle(age)} id={`y-${index}`}>
       <div className="entry-year"><span>{e.year}</span></div>
       <div className="entry-main">
         {e.kind && <p className={`kind kind-${kindSlug(e.kind)}`}>{e.kind}</p>}
@@ -332,7 +325,7 @@ function Entry({ e, index }) {
         )}
         {e.image && (
           <figure className="entry-fig">
-            <div className="frame"><img src={e.image} alt={e.title} loading="lazy" style={{ filter: gradeFor(index) }} /></div>
+            <div className="frame"><img src={e.image} alt={e.title} loading="lazy" style={{ filter: gradeFor(age) }} /></div>
             <figcaption>
               {e.creditHref ? <a href={e.creditHref} target="_blank" rel="noreferrer">{e.credit}</a> : e.credit}
               {e.licence && <a className="licence" href={e.licence.href} target="_blank" rel="license noreferrer">{e.licence.label}</a>}
@@ -345,7 +338,7 @@ function Entry({ e, index }) {
           <figure className="entry-fig entry-photos">
             <div className="photo-set">
               {e.images.map((p) => (
-                <div className={`frame shape-${p.shape || 'wide'}`} key={p.alt}><img src={p.image} alt={p.alt} loading="lazy" style={{ filter: gradeFor(index) }} /></div>
+                <div className={`frame shape-${p.shape || 'wide'}`} key={p.alt}><img src={p.image} alt={p.alt} loading="lazy" style={{ filter: gradeFor(age) }} /></div>
               ))}
             </div>
             {e.credit && <figcaption>{e.credit}</figcaption>}
@@ -369,17 +362,17 @@ function Entry({ e, index }) {
 
 function Timeline() {
   const ref = useRef(null)
-  const { active, inView } = useTimeTravel(ref)
+  const { active, inView, past } = useTimeTravel(ref)
   let i = -1
   return (
-    <div className={`timeline${inView ? ' live' : ''}`} ref={ref}>
+    <div className={`timeline${inView ? ' live' : ''}${past ? ' past' : ''}`} ref={ref}>
       <div className="dial" aria-hidden="true">
         <span className="dial-era">{active.eraName}</span>
         <span className="dial-year" key={active.year}>{active.year}</span>
       </div>
       <div className="rail" aria-hidden="true"><i /></div>
       {eras.map((era) => (
-        <section className={`era era-${era.id}`} id={era.id} key={era.id} data-era-name={era.name}>
+        <section className={`era era-${era.id}`} id={era.id} key={era.id} data-era-name={era.name} style={ageStyle(AGES[i + 1])}>
           <header className="era-head wrap reveal">
             <p className="eyebrow">{era.range}</p>
             <h2>{era.name}</h2>

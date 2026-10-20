@@ -257,7 +257,7 @@ p { margin: 0 0 1em; }
   content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 40; opacity: 0; transition: opacity .6s;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.9'/></svg>");
 }
-.timeline.live::after { opacity: var(--grain); }
+.timeline.live::after, .timeline.past::after { opacity: var(--grain); }
 
 .dial { position: fixed; z-index: 45; left: max(20px, calc(50% - 680px)); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 6px; opacity: 0; transition: opacity .5s; pointer-events: none; max-width: 150px; }
 .timeline.live .dial { opacity: 1; }
@@ -347,24 +347,25 @@ p { margin: 0 0 1em; }
 .era-the-old-inn .entry h3::first-letter { font-size: 1.3em; }
 
 /* ---------- Ageing: the whole page gets older as you scroll back in time ----------
-   useTimeTravel.js sets the page colour (--bg, --ink: white, then sepia, then older
-   paper; never black, never back to white), --paper for cards and buttons, and
-   --wear (0 for today, 1 for the oldest era). The page itself ages:
-   1. paper fibre, foxing and faint tide marks printed on the page, scrolling with it,
-      building from nothing at today to heavy at the oldest entries;
+   Everything follows the YEAR, not the scroll distance (ageing.js gives each entry an age
+   from its year, 0 = today, 1 = before 1066). useTimeTravel.js sets, from the entry at the
+   middle of the screen (blended smoothly between entries): the page colour (--bg, --ink:
+   white, then sepia, then darker old paper; never black, never back to white), --paper for
+   cards and buttons, --wear and --grain. The page itself ages:
+   1. paper fibre, foxing and faint tide marks printed on the page, scrolling with it; their
+      strength at each entry follows that entry's age (--stain-mask, built from the entries);
    2. a burnt, mottled edge all round the screen that darkens with --wear;
-   3. type, rules and photos following the era.
-   --age: 0 (none) to 1 (oldest), per era. */
+   3. each entry's own type, rules, photo mount and photo toning follow its own --age
+      (set inline on every entry; each era section carries its first entry's age).
+   Typefaces and frame shapes still change by era. */
 .timeline { --muted: color-mix(in srgb, var(--ink) 76%, transparent); }
-.era-postcards { --age: .35; }
-.era-coaching-days { --age: .6; }
-.era-the-old-inn { --age: .8; }
-.era-before-the-inn { --age: 1; margin-top: 40px; }
+.era-before-the-inn { margin-top: 40px; }
 .era-coaching-days, .era-the-old-inn, .era-before-the-inn { --muted: color-mix(in srgb, var(--ink) 84%, transparent); }
 .era-postcards, .era-coaching-days, .era-the-old-inn, .era-before-the-inn { --accent: #7a4a1c; }
 
-/* Paper, drawn once as SVG: mottled foxing, fibre, and a few soft water rings. Brown, mostly transparent. */
-.history-page {
+/* Paper, drawn once as SVG: mottled foxing, fibre, and a few soft water rings. Brown, mostly transparent.
+   Set on the whole Our story page so the footer can use the same paper. */
+html[data-page="history"] {
   --foxing: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.035 .05' numOctaves='4' seed='7'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .30  0 0 0 0 .13  0 0 0 .9 -.32'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");
   --fibre: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9 .25' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .24  0 0 0 0 .1  0 0 0 .5 -.12'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
   --stains: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1100' height='1500'><filter id='s' x='-30%' y='-30%' width='160%' height='160%'><feTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='3' seed='11'/><feDisplacementMap in='SourceGraphic' scale='55'/><feGaussianBlur stdDeviation='1.6'/></filter><g filter='url(%23s)' stroke='rgb(122,80,30)'><circle cx='940' cy='290' r='118' stroke-width='5' stroke-opacity='.13' fill='rgb(150,100,40)' fill-opacity='.03'/><circle cx='170' cy='1080' r='165' stroke-width='6' stroke-opacity='.09' fill='rgb(150,100,40)' fill-opacity='.028'/><circle cx='610' cy='720' r='54' stroke-width='3' stroke-opacity='.07' fill='none'/></g></svg>");
@@ -377,9 +378,10 @@ p { margin: 0 0 1em; }
   content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background-image: var(--stains), var(--blotch), var(--foxing), var(--fibre);
   background-size: 1100px 1500px, 600px 600px, 260px 260px, 180px 180px;
-  opacity: .72;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 6%, rgba(0,0,0,.2) 16%, rgba(0,0,0,.5) 36%, rgba(0,0,0,.8) 60%, #000 82%);
-  mask-image: linear-gradient(to bottom, transparent 0%, transparent 6%, rgba(0,0,0,.2) 16%, rgba(0,0,0,.5) 36%, rgba(0,0,0,.8) 60%, #000 82%);
+  opacity: .78;
+  /* Fallback until the script has measured the entries */
+  -webkit-mask-image: var(--stain-mask, linear-gradient(to bottom, transparent 0%, transparent 6%, rgba(0,0,0,.2) 16%, rgba(0,0,0,.5) 36%, rgba(0,0,0,.8) 60%, #000 100%));
+  mask-image: var(--stain-mask, linear-gradient(to bottom, transparent 0%, transparent 6%, rgba(0,0,0,.2) 16%, rgba(0,0,0,.5) 36%, rgba(0,0,0,.8) 60%, #000 100%));
 }
 
 /* 2. The edges of the whole screen: browned and mottled like an old page, stronger the older it gets */
@@ -399,30 +401,54 @@ p { margin: 0 0 1em; }
     linear-gradient(90deg, rgba(110, 70, 25, .14), transparent 6%, transparent 94%, rgba(110, 70, 25, .14));
 }
 
-/* 3. Type, rules and photos follow the era: ink bleeds a little into older paper */
-.timeline .era-head, .timeline .entry-main { text-shadow: 0 0 .6px rgba(70, 42, 14, calc(var(--age, 0) * .5)); }
-.timeline .entry { border-top-color: rgba(110, 72, 30, calc(.12 + var(--age, 0) * .16)); }
+/* 3. Type, rules and photos follow each entry's own age: ink bleeds a little more into older paper */
+.timeline .era-head, .timeline .entry-main { text-shadow: 0 0 calc(.3px + var(--age, 0) * .5px) rgba(70, 42, 14, calc(var(--age, 0) * .55)); }
+.timeline .entry { border-top-color: rgba(110, 72, 30, calc(.1 + var(--age, 0) * .22)); }
 .era-coaching-days .entry, .era-before-the-inn .entry { border-top-style: dashed; }
 
 /* Photos in older eras: mounted on the same aged paper, with worn print edges and a light brown burn */
-.era-postcards .frame { background: color-mix(in srgb, var(--paper) 80%, #e6d3ae); }
+.era-postcards .frame { background: color-mix(in srgb, var(--paper) calc(100% - var(--age, .3) * 50%), #e6d3ae); }
 .era-postcards .frame, .era-coaching-days .frame, .era-the-old-inn .frame, .era-before-the-inn .frame { position: relative; }
 .era-coaching-days .frame, .era-the-old-inn .frame, .era-before-the-inn .frame {
-  border-radius: 2px 5px 3px 6px / 5px 2px 6px 3px; padding: 8px; background: color-mix(in srgb, var(--paper) 70%, #d8be8e);
-  box-shadow: 0 18px 36px -24px rgba(70, 45, 15, .6);
+  border-radius: 2px 5px 3px 6px / 5px 2px 6px 3px; padding: 8px; background: color-mix(in srgb, var(--paper) calc(100% - var(--age, .6) * 45%), #d8be8e);
+  box-shadow: 0 18px 36px -24px rgba(70, 45, 15, calc(.35 + var(--age, .6) * .4));
 }
 .era-postcards .frame::before, .era-coaching-days .frame::before, .era-the-old-inn .frame::before, .era-before-the-inn .frame::before {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
   background-image: var(--fibre);
-  box-shadow: inset 0 0 0 1px rgba(110, 72, 30, .18), inset 0 0 calc(14px + var(--age) * 22px) rgba(110, 70, 25, calc(.18 + var(--age) * .2));
+  box-shadow: inset 0 0 0 1px rgba(110, 72, 30, calc(.1 + var(--age, 0) * .16)), inset 0 0 calc(10px + var(--age, 0) * 30px) rgba(110, 70, 25, calc(.1 + var(--age, 0) * .32));
   mix-blend-mode: multiply;
 }
 
 /* The oldest era: the darkest, most worn parchment, still readable */
 .era-before-the-inn .era-head h2 { letter-spacing: .01em; }
 
-/* The footer at the end of the story stays in the old paper's browns, not black */
-html[data-page="history"] .site-footer { background: #2c1e11; color: #efe3cb; }
+/* The footer at the end of the story is the same old paper as the oldest entry above it (the page
+   colour, browned screen edges and grain stay at the oldest age down here), with the full paper
+   texture and a burnt top edge. Our story only: the homepage footer stays black. */
+html[data-page="history"] .site-footer {
+  position: relative; isolation: isolate; background: transparent; color: var(--ink);
+  padding-top: 150px; border-top: 0;
+}
+html[data-page="history"] .site-footer::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: var(--stains), var(--blotch), var(--foxing), var(--fibre);
+  background-size: 1100px 1500px, 600px 600px, 260px 260px, 180px 180px;
+  opacity: .78;
+}
+html[data-page="history"] .site-footer::after { /* scorched, uneven top edge */
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 90px; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(78, 44, 14, .55), rgba(110, 66, 24, .22) 38%, transparent),
+    var(--blotch);
+  background-size: auto, 600px 600px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+  mask-image: linear-gradient(to bottom, #000 30%, transparent);
+}
+html[data-page="history"] .site-footer .pill.light { background: var(--ink); color: var(--bg); }
+html[data-page="history"] .site-footer .foot-grid { opacity: 1; }
+html[data-page="history"] .site-footer .credits { opacity: .92; }
+html[data-page="history"] .site-footer a { color: inherit; }
 
 /* footer */
 .site-footer { background: #0b0b0a; color: #e9e6df; text-align: center; padding: 120px 0 calc(120px + env(safe-area-inset-bottom)); }
