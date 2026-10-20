@@ -297,6 +297,14 @@ p { margin: 0 0 1em; }
 .entry.in .frame img { transform: scale(1); }
 .entry-fig figcaption { font-size: .8rem; color: var(--muted); margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .entry-fig figcaption a { color: inherit; }
+/* Several photos in one entry (the three early photographs): shown whole, never cropped,
+   and never stretched past their small originals (marketway is 374px, the portrait 225px). */
+.photo-set { display: grid; grid-template-columns: minmax(0, .62fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.photo-set .frame { width: fit-content; max-width: 100%; justify-self: center; }
+.photo-set .shape-wide { grid-column: 1 / -1; width: 100%; }
+.photo-set .frame img { display: block; width: auto; max-width: 100%; height: auto; max-height: none; object-fit: contain; }
+.photo-set .shape-wide img { width: 100%; }
+@media (max-width: 560px) { .photo-set { grid-template-columns: minmax(0, 1fr); } }
 /* Link out to a photo we can't reproduce (no image shown).
    A small outlined pill, no fill of its own: the ageing page shows through it, and its
    text and border take the page's current ink (--ink, set on scroll by useTimeTravel.js),
@@ -536,18 +544,13 @@ html[data-page="history"] .site-footer { background: #2c1e11; color: #efe3cb; }
 /* ---------- Find us photo and story link ---------- */
 .findus-fig { margin: 50px 0 0; }
 .findus-fig img { display: block; width: 100%; max-height: 520px; object-fit: cover; border-radius: 16px; }
-.findus-fig figcaption, .then-photos figcaption { color: var(--muted); font-size: .85rem; margin-top: 10px; }
+.findus-fig figcaption { color: var(--muted); font-size: .85rem; margin-top: 10px; }
 .story-link { margin: 26px 0 0; }
 
 /* ---------- Our story page ---------- */
 .history-page .gate { padding-top: calc(var(--header) + clamp(60px, 10vw, 120px)); }
-.then-photos { display: grid; grid-template-columns: 1.6fr .7fr 1fr; gap: 16px; max-width: 980px; margin: 44px auto 0; align-items: start; text-align: left; }
-.then-photos figure { margin: 0; }
-.then-photos img { display: block; width: 100%; height: auto; border-radius: 12px; filter: sepia(.25); }
 .site-header a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
 
 @media (max-width: 720px) {
   .enq-grid { grid-template-columns: 1fr; }
-  .then-photos { grid-template-columns: 1fr 1fr; }
-  .then-photos figure:first-child { grid-column: 1 / -1; }
 }

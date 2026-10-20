@@ -119,13 +119,6 @@ export const privateHire = {
   intro: 'Our function room is free to hire, and catering is available. Use the form below or give us a call to talk it through.',
 }
 
-// Andy's old photographs, shown at the top of the Our story page.
-export const historyPhotos = [
-  { image: oldSepia, alt: 'Early photograph from Henley-in-Arden', caption: 'Before 1920. Public domain.' },
-  { image: oldPortrait, alt: 'Early photograph from Henley-in-Arden', caption: 'Before 1920. Public domain.' },
-  { image: oldMarketway, alt: 'Early photograph from Henley-in-Arden', caption: 'Before 1920. Public domain.' },
-]
-
 // Distances: road distance from the White Swan (100 High Street, B95 5BY) to each
 // place, from OpenStreetMap routing (OSRM, fastest car route), checked 20 Oct 2026,
 // rounded to the nearest mile. The Heritage Centre is the walking distance.
@@ -218,6 +211,16 @@ export const eras = [
     intro: 'Beams uncovered, the magistrates move out, a path to the railway, and bowls on the lawn.',
     entries: [
       { year: '1935', kind: 'Hotel history', title: 'The beams come back', text: 'In Georgian times it was the fashion to hide timber framing under plaster. When the Swan was renovated in 1935 the plaster came off, and the 16th-century beams were on show again.', look: 'The beams through the bar and restaurant', body: '' },
+      // Andy's three early photographs (uploaded 20 Oct 2026 as IMG_4057-2.jpg, IMG_4090 2.jpg
+      // and a numbered file; no date or caption in their metadata). The only dating we have
+      // is Andy's: "before 1920, public domain", supplied by the White Swan. No exact year
+      // is known, so they sit where 1920 would fall, the same way the pre-1914 postcard
+      // sits by its latest possible date. Formerly a gallery at the top of the page.
+      { year: 'Before 1920', kind: 'Hotel history', title: 'Three early photographs', text: 'Three early photographs from Henley-in-Arden, supplied by the White Swan. All we know of their date is that they are from before 1920; the exact years aren’t known.', body: '', images: [
+        { image: oldSepia, alt: 'Early photograph from Henley-in-Arden, before 1920 (1 of 3)', shape: 'wide' },
+        { image: oldPortrait, alt: 'Early photograph from Henley-in-Arden, before 1920 (2 of 3)', shape: 'tall' },
+        { image: oldMarketway, alt: 'Early photograph from Henley-in-Arden, before 1920 (3 of 3)', shape: 'small' },
+      ], credit: 'Before 1920. Public domain, supplied by the White Swan.' },
       { year: 'Undated', kind: 'Documented', title: 'A real photo postcard', text: 'The White Swan Hotel on an early photographic postcard.', body: '', image: postcardUndated, credit: 'Real photo postcard' },
       { year: 'Pre-1914', kind: 'Documented', title: 'Wish you were here', text: 'The Swan on a postcard from before the First World War.', body: '', image: postcard1914, credit: 'Real photo postcard, before 1914' },
       // Station: Henley-in-Arden station opened with the North Warwickshire Line,

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { contact, hero, rooms, food, whatsOn, privateHire, nearby, nearbyNote, eras, credits, historyPhotos, findUsFlickr } from './content.js'
+import { contact, hero, rooms, food, whatsOn, privateHire, nearby, nearbyNote, eras, credits, findUsFlickr } from './content.js'
 import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
 import { useLiveAvailability, shortDate } from './liveAvailability.js'
@@ -324,14 +324,6 @@ function TimeGate() {
         <p className="eyebrow reveal">Our story</p>
         <h2 className="gate-title reveal">Keep scrolling.<br /><em>Go back {YEARS_BACK} years.</em></h2>
         <p className="lead reveal">Every step down this page is a step back in time, from the Swan you know to the castle across the road.</p>
-        <div className="then-photos reveal">
-          {historyPhotos.map((p) => (
-            <figure key={p.caption + p.alt}>
-              <img src={p.image} alt={p.alt} loading="lazy" />
-              <figcaption>{p.caption}</figcaption>
-            </figure>
-          ))}
-        </div>
         <nav className="era-jump reveal" aria-label="Jump to an era">
           {eras.map((e) => <a key={e.id} href={`#${e.id}`}><b>{e.name}</b><span>{e.range}</span></a>)}
         </nav>
@@ -346,7 +338,7 @@ const kindSlug = (k) => k.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/
 function Entry({ e, index }) {
   const paras = e.body ? e.body.split(/\n\s*\n/) : []
   return (
-    <article className={`entry reveal${e.image ? ' has-img' : ''}${e.quote ? ' has-quote' : ''}`} data-year={e.year} data-era={e.era} id={`y-${index}`}>
+    <article className={`entry reveal${e.image || e.images ? ' has-img' : ''}${e.quote ? ' has-quote' : ''}`} data-year={e.year} data-era={e.era} id={`y-${index}`}>
       <div className="entry-year"><span>{e.year}</span></div>
       <div className="entry-main">
         {e.kind && <p className={`kind kind-${kindSlug(e.kind)}`}>{e.kind}</p>}
@@ -376,6 +368,16 @@ function Entry({ e, index }) {
               {e.changes && <span className="changes">{e.changes}</span>}
               {e.rights && <span className="rights">{e.rights}</span>}
             </figcaption>
+          </figure>
+        )}
+        {e.images && (
+          <figure className="entry-fig entry-photos">
+            <div className="photo-set">
+              {e.images.map((p) => (
+                <div className={`frame shape-${p.shape || 'wide'}`} key={p.alt}><img src={p.image} alt={p.alt} loading="lazy" style={{ filter: gradeFor(index) }} /></div>
+              ))}
+            </div>
+            {e.credit && <figcaption>{e.credit}</figcaption>}
           </figure>
         )}
         {e.flickr && (
