@@ -337,60 +337,70 @@ p { margin: 0 0 1em; }
 .era-the-old-inn .entry { border-top-style: dashed; }
 .era-the-old-inn .entry h3::first-letter { font-size: 1.3em; }
 
-/* ---------- Ageing: white, then sepia, then older and older paper ----------
-   The page colour itself comes from useTimeTravel.js. Here the older eras get
-   paper texture, worn edges and a small curled corner, stronger the older the era.
-   --age: 0 (none) to 1 (oldest). */
+/* ---------- Ageing: the whole page gets older as you scroll back in time ----------
+   useTimeTravel.js sets the page colour (--bg, --ink: white, then sepia, then older
+   paper; never black, never back to white), --paper for cards and buttons, and
+   --wear (0 for today, 1 for the oldest era). The page itself ages:
+   1. paper fibre, foxing and faint tide marks printed on the page, scrolling with it,
+      building from nothing at today to heavy at the oldest entries;
+   2. a burnt, mottled edge all round the screen that darkens with --wear;
+   3. type, rules and photos following the era.
+   --age: 0 (none) to 1 (oldest), per era. */
 .timeline { --muted: color-mix(in srgb, var(--ink) 76%, transparent); }
 .era-postcards { --age: .35; }
-.era-coaching-days { --age: .6; --sheet: rgba(255, 248, 230, .34); }
-.era-the-old-inn { --age: .8; --sheet: rgba(255, 246, 224, .3); }
-.era-before-the-inn { --age: 1; --sheet: rgba(252, 240, 212, .26); margin-top: 40px; }
+.era-coaching-days { --age: .6; }
+.era-the-old-inn { --age: .8; }
+.era-before-the-inn { --age: 1; margin-top: 40px; }
+.era-coaching-days, .era-the-old-inn, .era-before-the-inn { --muted: color-mix(in srgb, var(--ink) 84%, transparent); }
 .era-postcards, .era-coaching-days, .era-the-old-inn, .era-before-the-inn { --accent: #7a4a1c; }
 
-/* Mottled foxing and fibre, drawn once as SVG; tinted brown, mostly transparent */
-.timeline {
+/* Paper, drawn once as SVG: mottled foxing, fibre, and a few soft water rings. Brown, mostly transparent. */
+.history-page {
   --foxing: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.035 .05' numOctaves='4' seed='7'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .30  0 0 0 0 .13  0 0 0 .9 -.32'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");
   --fibre: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9 .25' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .24  0 0 0 0 .1  0 0 0 .5 -.12'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+  --stains: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1100' height='1500'><filter id='s' x='-30%' y='-30%' width='160%' height='160%'><feTurbulence type='fractalNoise' baseFrequency='.013' numOctaves='3' seed='11'/><feDisplacementMap in='SourceGraphic' scale='55'/><feGaussianBlur stdDeviation='1.6'/></filter><g filter='url(%23s)' stroke='rgb(122,80,30)'><circle cx='940' cy='290' r='118' stroke-width='5' stroke-opacity='.13' fill='rgb(150,100,40)' fill-opacity='.03'/><circle cx='170' cy='1080' r='165' stroke-width='6' stroke-opacity='.09' fill='rgb(150,100,40)' fill-opacity='.028'/><circle cx='610' cy='720' r='54' stroke-width='3' stroke-opacity='.07' fill='none'/></g></svg>");
+  --blotch: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='b'><feTurbulence type='fractalNoise' baseFrequency='.012 .018' numOctaves='4' seed='19'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .26  0 0 0 0 .09  0 0 0 1.2 -.52'/></filter><rect width='100%' height='100%' filter='url(%23b)'/></svg>");
 }
 
-/* Older eras: each entry's text sits on a sheet of aged paper */
-.era-coaching-days .entry-main,
-.era-the-old-inn .entry-main,
-.era-before-the-inn .entry-main {
-  position: relative; padding: clamp(20px, 3vw, 30px) clamp(20px, 3vw, 32px) 46px;
-  background-color: var(--sheet);
-  background-image: var(--foxing), var(--fibre);
-  background-size: 260px 260px, 180px 180px;
-  border-radius: 3px 7px 4px 9px / 8px 3px 9px 4px;
-  box-shadow:
-    inset 0 0 0 1px rgba(110, 72, 30, calc(.10 + var(--age) * .10)),
-    inset 0 0 calc(18px + var(--age) * 26px) rgba(120, 76, 28, calc(.10 + var(--age) * .16)),
-    0 14px 28px -22px rgba(70, 45, 15, .55);
-}
-.era-coaching-days .entry-main > *,
-.era-the-old-inn .entry-main > *,
-.era-before-the-inn .entry-main > * { position: relative; z-index: 1; }
-
-/* Curled bottom corner: a fold of the page colour lifting off the sheet */
-.era-coaching-days .entry-main::after,
-.era-the-old-inn .entry-main::after,
-.era-before-the-inn .entry-main::after,
-.era-postcards .frame::after,
-.era-coaching-days .frame::after,
-.era-the-old-inn .frame::after,
-.era-before-the-inn .frame::after {
-  content: ''; position: absolute; right: 0; bottom: 0; z-index: 2; pointer-events: none;
-  width: calc(16px + var(--age) * 20px); height: calc(16px + var(--age) * 20px);
-  background: linear-gradient(315deg, var(--bg) 0 46%, rgba(60, 38, 12, .22) 50%, #efe2c4 54%, #dcc69c 100%);
-  border-top-left-radius: 6px;
-  box-shadow: -2px -2px 5px rgba(60, 38, 12, .16);
+/* 1. The paper of the page itself. It scrolls with the story and fades in down it:
+   clean at today, faint by the postcards, heavy by the oldest entries. */
+.timeline::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: var(--stains), var(--blotch), var(--foxing), var(--fibre);
+  background-size: 1100px 1500px, 600px 600px, 260px 260px, 180px 180px;
+  opacity: .72;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 6%, rgba(0,0,0,.2) 16%, rgba(0,0,0,.5) 36%, rgba(0,0,0,.8) 60%, #000 82%);
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 6%, rgba(0,0,0,.2) 16%, rgba(0,0,0,.5) 36%, rgba(0,0,0,.8) 60%, #000 82%);
 }
 
-/* Photos in older eras: worn print edges and a light brown burn */
+/* 2. The edges of the whole screen: browned and mottled like an old page, stronger the older it gets */
+.history-page::before,
+.history-page::after {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: var(--wear, 0);
+}
+.history-page::before {
+  background-image: var(--blotch), var(--foxing);
+  background-size: 900px 900px, 360px 360px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 50%, transparent 52%, rgba(0,0,0,.65) 80%, #000 100%);
+  mask-image: radial-gradient(120% 90% at 50% 50%, transparent 52%, rgba(0,0,0,.65) 80%, #000 100%);
+}
+.history-page::after {
+  background:
+    radial-gradient(125% 95% at 50% 46%, transparent 56%, rgba(124, 80, 30, .14) 80%, rgba(96, 58, 20, .32) 100%),
+    linear-gradient(90deg, rgba(110, 70, 25, .14), transparent 6%, transparent 94%, rgba(110, 70, 25, .14));
+}
+
+/* 3. Type, rules and photos follow the era: ink bleeds a little into older paper */
+.timeline .era-head, .timeline .entry-main { text-shadow: 0 0 .6px rgba(70, 42, 14, calc(var(--age, 0) * .5)); }
+.timeline .entry { border-top-color: rgba(110, 72, 30, calc(.12 + var(--age, 0) * .16)); }
+.era-coaching-days .entry, .era-before-the-inn .entry { border-top-style: dashed; }
+
+/* Photos in older eras: mounted on the same aged paper, with worn print edges and a light brown burn */
+.era-postcards .frame { background: color-mix(in srgb, var(--paper) 80%, #e6d3ae); }
 .era-postcards .frame, .era-coaching-days .frame, .era-the-old-inn .frame, .era-before-the-inn .frame { position: relative; }
 .era-coaching-days .frame, .era-the-old-inn .frame, .era-before-the-inn .frame {
-  border-radius: 2px 5px 3px 6px / 5px 2px 6px 3px; padding: 8px; background: #efe3c6;
+  border-radius: 2px 5px 3px 6px / 5px 2px 6px 3px; padding: 8px; background: color-mix(in srgb, var(--paper) 70%, #d8be8e);
+  box-shadow: 0 18px 36px -24px rgba(70, 45, 15, .6);
 }
 .era-postcards .frame::before, .era-coaching-days .frame::before, .era-the-old-inn .frame::before, .era-before-the-inn .frame::before {
   content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
@@ -401,7 +411,9 @@ p { margin: 0 0 1em; }
 
 /* The oldest era: the darkest, most worn parchment, still readable */
 .era-before-the-inn .era-head h2 { letter-spacing: .01em; }
-.era-before-the-inn .entry { border-top-color: rgba(110, 72, 30, .28); border-top-style: dashed; }
+
+/* The footer at the end of the story stays in the old paper's browns, not black */
+html[data-page="history"] .site-footer { background: #2c1e11; color: #efe3cb; }
 
 /* footer */
 .site-footer { background: #0b0b0a; color: #e9e6df; text-align: center; padding: 120px 0 calc(120px + env(safe-area-inset-bottom)); }
@@ -476,7 +488,6 @@ p { margin: 0 0 1em; }
   .era-head { padding: 40px 0 20px; }
   .era-postcards .frame { padding: 6px; }
   .era-coaching-days .frame, .era-the-old-inn .frame, .era-before-the-inn .frame { padding: 6px; }
-  .era-coaching-days .entry-main, .era-the-old-inn .entry-main, .era-before-the-inn .entry-main { margin-inline: -6px; }
   .mobile-bar { display: flex; position: fixed; z-index: 48; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); gap: 8px; padding: 6px; border-radius: 999px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 10px 30px -10px rgba(0,0,0,.35), 0 0 0 1px var(--line); }
   .mobile-bar a { flex: 1; text-align: center; padding: 13px 0; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .95rem; }
   .mobile-bar a.main { flex: 2; background: var(--ink); color: var(--bg); }

@@ -13,9 +13,13 @@ const BG = [
 const INK = [
   [0.0, [22, 20, 18]],
   [0.45, [52, 36, 22]],
-  [0.7, [50, 33, 18]],
-  [1.0, [44, 28, 14]],
+  [0.7, [44, 28, 14]],
+  [1.0, [36, 22, 10]],
 ]
+
+// Cards, buttons and photo mounts: a little lighter than the page, ageing with it,
+// so nothing stays bright modern white on old paper.
+const LIGHT = [255, 251, 242]
 
 function mix(stops, p) {
   for (let i = 1; i < stops.length; i++) {
@@ -55,6 +59,12 @@ export function useTimeTravel(ref) {
       root.style.setProperty('--ink', `rgb(${ink.join(',')})`)
       root.style.setProperty('--progress', p.toFixed(4))
       root.style.setProperty('--grain', (0.02 + p * 0.06).toFixed(3))
+      const k = 0.55 - 0.3 * p
+      const paper = bg.map((v, j) => Math.round(v + (LIGHT[j] - v) * k))
+      root.style.setProperty('--paper', `rgb(${paper.join(',')})`)
+      // Whole-page wear (edge burn, foxing): none for today, building through the eras
+      const wear = Math.min(1, Math.max(0, (p - 0.12) / 0.8))
+      root.style.setProperty('--wear', (wear * wear * (3 - 2 * wear)).toFixed(4))
       const meta = document.querySelector('meta[name=theme-color]')
       if (meta) meta.setAttribute('content', `rgb(${bg.join(',')})`)
     }
