@@ -60,7 +60,7 @@ export const rooms = {
     { name: 'Room 14', code: 'SUPERKI1', sleeps: 2, image: '', text: 'A king size bed and an en-suite shower, with plenty of old-inn character.', icons: ['king', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
     { name: 'Room 15', code: 'DOUBLE_R', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6600.jpg', text: 'A comfortable double with an en-suite shower.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
     { name: 'Room 16', code: 'SINGLE_R', sleeps: 1, image: '', text: 'A single room with an en-suite shower, ideal if you’re travelling on your own.', icons: ['single', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
-    { name: 'Room 17', code: 'PERIOD_D', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6601.jpg', text: 'A period double room with an en-suite shower.', history: 'Legend says Virginia Black, who died after a fall on the stairs in 1845, haunts the corridor outside this room.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
+    { name: 'Room 17', code: 'PERIOD_D', sleeps: 2, image: 'https://res.cloudinary.com/seekda/image/upload/w_768,h_576,c_fill,f_auto,fl_lossy,q_auto/production/S006498/IMG_6601.jpg', text: 'A period double room with an en-suite shower.', history: 'Legend says Virginia Black, said to have died after a fall on the stairs in 1845, once haunted the corridor outside this room.', icons: ['double', 'shower', 'tv', 'kettle', 'heating', 'hairdryer', 'towels', 'historic'] },
   ],
   amenities: ['En-suite bathrooms with large drench showers', 'LCD TVs with Freeview', 'Free wifi', 'Drinks and biscuits', 'Shower gel, shampoo and conditioner', 'Hair dryer, iron and ironing board'],
   terms: [
@@ -158,7 +158,7 @@ export const eras = [
     id: 'living-memory',
     name: 'Living memory',
     range: '2020 to the 1950s',
-    intro: 'A pandemic, a TV star behind the bar, a cult film and a hidden loft.',
+    intro: 'A pandemic, a hidden loft rediscovered, a cult film, a TV star behind the bar, and a bar just for children.',
     entries: [
       { year: '2020', kind: 'Documented', title: 'The doors close', text: 'Like every pub and hotel in the country, the White Swan had to close its doors during the Covid-19 pandemic. It reopened afterwards and carried on as before.', body: '' },
       // Garden photo: Elliott Brown on Flickr, 4 June 2016, CC BY-SA 2.0 (see import).
@@ -166,7 +166,7 @@ export const eras = [
       // Bowling green: Hotel (1855) and HHC (1891 photograph). Andy: the Secret Garden
       // is condemned; public wording agreed with him is "currently closed" (no
       // legal/building status stated).
-      { year: '2016', kind: 'Documented', title: 'The Secret Garden', text: 'The Secret Garden sign, photographed in June 2016. The garden behind the hotel is the same lawn that was the Swan’s bowling green in Victorian times (see 1891 and 1855). The Secret Garden is currently closed.', body: '', image: garden, credit: 'Photo: Elliott Brown, “The White Swan Secret Garden - Henley-in-Arden - sign”, on Flickr', creditHref: 'https://www.flickr.com/photos/ell-r-brown/27425128576/', licence: { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, changes: 'Resized. On this page it may be trimmed at the edges to fit and lightly toned by the page’s ageing effect; this adapted version is shared under CC BY-SA 2.0 too.' },
+      { year: '2016', kind: 'Documented', title: 'The Secret Garden', text: 'The Secret Garden sign, photographed in June 2016. The garden behind the hotel is the same lawn that was the Swan’s bowling green in Victorian times (see 1855). The Secret Garden is currently closed.', body: '', image: garden, credit: 'Photo: Elliott Brown, “The White Swan Secret Garden - Henley-in-Arden - sign”, on Flickr', creditHref: 'https://www.flickr.com/photos/ell-r-brown/27425128576/', licence: { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, changes: 'Resized. On this page it may be trimmed at the edges to fit and lightly toned by the page’s ageing effect; this adapted version is shared under CC BY-SA 2.0 too.' },
       // REPORT. Only source: IMDb trivia for Michael Elphick (imdb.com/name/nm0255573/trivia/),
       // re-read 20 Oct 2026: "In September 2013, the new owners of the pub found a secret loft
       // space (an old priest hole) where Michael used to go to write letters to his
@@ -174,9 +174,11 @@ export const eras = [
       // report found. Andy (20 Oct 2026): say rediscovered (it was Elphick's known hideaway),
       // keep IMDb out of the public copy, no dismissive conclusion; his use of the loft sits
       // in the 1980s entry. Public source line kept neutral, no other provenance implied.
-      // Snow photo: the hotel's own Flickr (henleywhiteswan/8404955955, taken 22 Jan 2013), All Rights
-      // Reserved, so it is linked from this 2013 entry, not reproduced.
-      { year: '2013', kind: 'Report', title: 'The hidden loft, rediscovered', text: 'In September 2013 the Swan’s new owners rediscovered a secret loft space, an old priest hole by repute, and the same hideaway Michael Elphick had slipped away to in his years behind the bar (see 1980s).', body: 'Who first built it, and whether a priest ever hid there, is a question the building has yet to answer.', source: 'An online profile of Michael Elphick', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/8404955955/', label: 'View on Flickr', note: 'The White Swan in the snow, January 2013, on the White Swan’s Flickr' } },
+      { year: '2013', kind: 'Report', title: 'The hidden loft, rediscovered', text: 'In September 2013 the Swan’s new owners rediscovered a secret loft space, an old priest hole by repute, and said to be the hideaway Michael Elphick slipped away to in his years behind the bar (see 1980s).', body: 'Who first built it, and whether a priest ever hid there, is a question the building has yet to answer.', source: 'An online profile of Michael Elphick' },
+      // Snow photo: the hotel's own Flickr (henleywhiteswan/8404955955, "White Swan Hotel in
+      // Henley-in-Arden in the snow 1", taken 22 Jan 2013), All Rights Reserved, so linked, not
+      // reproduced. Its own entry: January 2013 is not the September 2013 loft rediscovery.
+      { year: '2013', kind: 'Documented', title: 'The Swan in the snow', text: 'The White Swan under snow on 22 January 2013, in one of the hotel’s own photographs.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/8404955955/', label: 'View on Flickr', note: 'The White Swan in the snow, January 2013, on the White Swan’s Flickr' } },
       // Film facts: Wikipedia (released 6 July 1990, filmed in Birmingham, Neil
       // Morrissey, Michael Elphick as Inspector Cleaver). Swan's catering and rooms:
       // Hotel only. Trailer: 'I Bought A Vampire Motorcycle - Cinema Trailer' on the
@@ -187,7 +189,7 @@ export const eras = [
       // secret loft to write letters to his daughter and learn Boon scripts (see 2013 comment); Hotel
       // says he became landlord in the 1980s. Boon (1986), died 7 Sept 2002 aged 55
       // (Wikipedia).
-      { year: '1980s', kind: 'Documented', title: 'A TV star behind the bar', text: 'The actor Michael Elphick ran the White Swan through the 1980s and into the early 1990s. He is best remembered as Ken Boon in the TV series Boon, which began in 1986. He died in 2002, aged 55.', body: 'He is said to have kept a hideaway in a secret loft space at the Swan, where he would go to write letters to his daughter and learn his scripts for Boon (see 2013).' },
+      { year: '1980s', kind: 'Documented in part', title: 'A TV star behind the bar', text: 'The actor Michael Elphick ran the White Swan through the 1980s and into the early 1990s. He is best remembered as Ken Boon in the TV series Boon, which began in 1986. He died in 2002, aged 55.', body: 'He is said to have kept a hideaway in a secret loft space at the Swan, where he would go to write letters to his daughter and learn his scripts for Boon (see 2013).', source: 'Landlord: the Swan’s own history. The hideaway: an online profile of Michael Elphick' },
       // 1963 photo: the hotel's Flickr, "White-Swan-1963" (photo 7752523264), licence
       // All Rights Reserved. Not reproduced here; linked instead (Andy, 20 Oct 2026).
       { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', label: 'View on Flickr', note: 'The 1963 photograph, on the White Swan’s Flickr' } },
@@ -201,7 +203,7 @@ export const eras = [
     id: 'postcards',
     name: 'Picture postcards',
     range: '1935 to the 1890s',
-    intro: 'Beams uncovered, the magistrates move out, a path to the railway, and bowls on the lawn.',
+    intro: 'Beams uncovered, early photographs and postcards, a path to the railway, and the magistrates move out.',
     entries: [
       { year: '1935', kind: 'Hotel history', title: 'The beams come back', text: 'In Georgian times it was the fashion to hide timber framing under plaster. When the Swan was renovated in 1935 the plaster came off, and the 16th-century beams were on show again.', look: 'The beams through the bar and restaurant', body: '' },
       // Andy's three early photographs (uploaded 20 Oct 2026 as IMG_4057-2.jpg, IMG_4090 2.jpg
@@ -222,20 +224,20 @@ export const eras = [
       // HHC, week 35: "Prior to 1903 the magistrates of the Henley Petty Sessional
       // Division sat at the White Swan." Courthouse opened 26 Aug 1903.
       { year: '1903', kind: 'Documented', title: 'The court moves out', text: 'Until 1903, the local magistrates held their petty sessions at the White Swan, trying the lesser cases for the Henley district. On 26 August 1903 Henley’s new Courthouse opened, and the court moved there.', body: '', source: 'Henley-in-Arden Heritage Centre' },
-      // HHC, week 51: photo captioned "Harry Hawkes (far right), The original White Swan
-      // Bowling Green in 1891" (heritagehenley.org.uk/images/weeks/week_image_51.jpg).
-      // Rights not cleared, so the photo is not reproduced here.
-      { year: '1891', kind: 'Documented', title: 'Bowls on the lawn', text: 'The Heritage Centre has a photograph of the original White Swan bowling green in 1891, with the local butcher Harry Hawkes in the picture. That lawn is today’s Secret Garden.', body: '', source: 'Henley-in-Arden Heritage Centre' },
       { year: 'c.1890–1910', kind: 'Documented', title: 'Projected on glass', text: 'The White Swan on a magic lantern slide, made to be shown on a screen by lamplight.', body: '', image: lantern, credit: 'Magic lantern slide, c.1890 to 1910' },
     ],
   },
   {
     id: 'coaching-days',
     name: 'Coaching days',
-    range: '1855 to the 1720s',
-    intro: 'Coaches at the gate, a diarist’s bill, Dr Johnson in town, and the poem we claim.',
+    range: '1855 to the early 1700s',
+    intro: 'Bowls on the lawn, a ghost story, a diarist’s bill, Dr Johnson in town, coaches at the gate, and the poem we claim.',
     entries: [
-      { year: '1855', kind: 'Hotel history', title: 'A bowling green out the back', text: 'By 1855 the lawn behind the hotel was a bowling green.', body: '' },
+      // Bowling green, one entry (was split across 1855, 1891 and 2016). 1855: Hotel.
+      // 1891: HHC, week 51, photo captioned "Harry Hawkes (far right), The original White
+      // Swan Bowling Green in 1891" (heritagehenley.org.uk/images/weeks/week_image_51.jpg).
+      // Rights not cleared, so the photo is not reproduced here.
+      { year: '1855', kind: 'Documented in part', title: 'Bowls on the lawn', text: 'By 1855, the Swan’s history says, the lawn behind the hotel was a bowling green. The Heritage Centre has a photograph of the original White Swan bowling green in 1891, with the local butcher Harry Hawkes in the picture.', body: 'That same lawn is today’s Secret Garden (see 2016).', source: 'The Swan’s own history; Henley-in-Arden Heritage Centre' },
       // FOLKLORE. Hotel's earlier website history, quoted on Mysterious Britain: Virginia
       // Black, 18, "said to have died after falling down the stairs during a quarrel
       // with a gentleman in 1845 ... used to haunt the corridor outside bedroom 17 ... she
@@ -253,17 +255,17 @@ export const eras = [
       // VCH: the tradition of the Johnson and Boswell visit at the Swan is "groundless".
       // Andy: the rumour is only that Johnson was working on something here, so the
       // Dictionary (published 1755) is not claimed as the work.
-      { year: '1776', kind: 'Documented in part', title: 'Dr Johnson comes to Henley', text: 'On 21 March 1776, Dr Samuel Johnson and his biographer James Boswell spent the night in Henley. Boswell wrote that down. He didn’t write down which inn.', look: 'A copy of Johnson’s Dictionary in the Johnson Suite', body: 'They had left Oxford that morning by post-chaise, heading for Birmingham and Johnson’s home town of Lichfield. Over dinner at an inn called Chapel House, Johnson said that “there is nothing which has yet been contrived by man, by which so much happiness is produced as by a good tavern or inn”, and then recited Shenstone’s lines on the warmest welcome at an inn. That night they lay at Henley, and the next morning they set out early and reached Birmingham at about nine.\n\nThe Swan’s tradition is that they stayed here, and that Johnson sat up working on something while he was here. No record names the inn, and the Victoria County History calls the tradition groundless.', source: 'James Boswell, Life of Johnson (1791); Victoria County History of Warwickshire, vol. 3 (1945)' },
+      { year: '1776', kind: 'Documented in part', title: 'Dr Johnson comes to Henley', text: 'On 21 March 1776, Dr Samuel Johnson and his biographer James Boswell spent the night in Henley. Boswell wrote that down. He didn’t write down which inn.', look: 'A copy of Johnson’s Dictionary in the Johnson Suite', body: 'They had left Oxford that morning by post-chaise, heading for Birmingham and Johnson’s home town of Lichfield. Over dinner at an inn called Chapel House, Johnson said that “there is nothing which has yet been contrived by man, by which so much happiness is produced as by a good tavern or inn”, and then recited Shenstone’s lines on the warmest welcome at an inn (see 1714–1763). That night they lay at Henley, and the next morning they set out early and reached Birmingham at about nine.\n\nThe Swan’s tradition is that they stayed here, and that Johnson sat up working on something while he was here. No record names the inn, and the Victoria County History calls the tradition groundless.', source: 'James Boswell, Life of Johnson (1791); Victoria County History of Warwickshire, vol. 3 (1945)' },
       { year: '1735', kind: 'Hotel history', title: 'The fireplace', text: 'The fireplace in the Swan carries the year 1735, according to the hotel’s history the year it was put in.', look: 'The date 1735 inscribed on the fireplace', body: '' },
       // HHC, week 25: Birmingham to Stratford turnpike trust first met 20 June 1726; at
       // the peak of the coaching age seven coaches a day passed through Henley; the trust
       // folded in 1872. Staging post: Hotel. Photo: Elliott Brown, CC BY 2.0.
-      { year: 'Coaching era', kind: 'Documented', title: 'Coaches at the gate', text: 'In 1726 a turnpike trust was set up to look after the road from Birmingham to Stratford, which runs through Henley and had been described as “ruinous and bad”. At the height of the coaching age, seven coaches a day passed through the town.', body: 'The Swan’s history says it was a well-known 30-mile staging post on the route between Lichfield and London, where coaches stopped to change horses. The wide gateway on the High Street, known as the coach entrance, is still there today.', look: 'The old coach entrance on the High Street', image: coach2010, credit: 'The coach entrance in 2010. Elliott Brown, CC BY 2.0', creditHref: 'https://commons.wikimedia.org/wiki/File:The_White_Swan_Henley-in-Arden_(4435855095).jpg', source: 'Henley-in-Arden Heritage Centre; the Swan’s own history' },
+      { year: '1726', kind: 'Documented', title: 'Coaches at the gate', text: 'In 1726 a turnpike trust was set up to look after the road from Birmingham to Stratford, which runs through Henley and had been described as “ruinous and bad”. At the height of the coaching age, seven coaches a day passed through the town.', body: 'The Swan’s history says it was a well-known 30-mile staging post on the route between Lichfield and London, where coaches stopped to change horses. The wide gateway on the High Street, known as the coach entrance, is still there today.', look: 'The old coach entrance on the High Street', image: coach2010, credit: 'The coach entrance in 2010. Elliott Brown, CC BY 2.0', creditHref: 'https://commons.wikimedia.org/wiki/File:The_White_Swan_Henley-in-Arden_(4435855095).jpg', source: 'Henley-in-Arden Heritage Centre; the Swan’s own history' },
       // TRADITION. Poem: William Shenstone (1714 to 1763), "Written at an Inn at
       // Henley"; last stanza as quoted by Boswell. The poem names only "Henley"; the Red
       // Lion at Henley-on-Thames claims it too, and VCH calls the Henley-in-Arden
       // tradition "groundless". Andy: "We claim it either way"; written as our claim.
-      { year: '1714–1763', kind: 'Reported', title: 'The warmest welcome', quote: '“Whoe’er has travell’d life’s dull round, / Where’er his stages may have been, / May sigh to think he still has found / The warmest welcome at an inn.”', text: 'The Swan has long claimed that the poet William Shenstone stayed here, and that this is the inn behind his poem “Written at an Inn at Henley”.', body: 'Shenstone grew up at the Leasowes in Halesowen, near Birmingham, and studied at Oxford, and the road between the two ran through Henley-in-Arden. His poem praises the freedom of a good inn, and its last verse became one of the most quoted in the language. Dr Johnson knew it by heart.\n\nThe poem only says “Henley”, and an inn at Henley-on-Thames claims it too. No record settles it either way, and the Victoria County History calls our claim groundless. We still think the warmest welcome is here.' },
+      { year: '1714–1763', kind: 'Reported', title: 'The warmest welcome', quote: '“Whoe’er has travell’d life’s dull round, / Where’er his stages may have been, / May sigh to think he still has found / The warmest welcome at an inn.”', text: 'The Swan has long claimed that the poet William Shenstone stayed here, and that this is the inn behind his poem “Written at an Inn at Henley”.', body: 'Shenstone grew up at the Leasowes in Halesowen, near Birmingham, and studied at Oxford, and the road between the two ran through Henley-in-Arden. His poem praises the freedom of a good inn, and its last verse became one of the most quoted in the language. Dr Johnson knew it by heart (see 1776).\n\nThe poem only says “Henley”, and an inn at Henley-on-Thames claims it too. No record settles it either way, and the Victoria County History calls our claim groundless. We still think the warmest welcome is here.' },
     ],
   },
   {
@@ -292,7 +294,7 @@ export const eras = [
       // HOTEL: "The exposed bit of wall you can see by table 9 in the bar area ... is said
       // to be wall stone taken from the castle." Not confirmed elsewhere. Moved here from
       // the castle entry: if true, the stone was reused when the inn was built.
-      { year: '16th century', kind: 'Reported', title: 'Stone from the castle?', text: 'An exposed stretch of wall in the bar, by table 9, is said to be stone taken from the ruins of Beaudesert Castle across the road and reused when the inn was built.', look: 'The bare stone wall by table 9 in the bar', body: 'Reusing stone from a ruined castle was common, but no record confirms where this stone came from. It is a story the Swan tells.' },
+      { year: '16th century', kind: 'Reported', title: 'Stone from the castle?', text: 'An exposed stretch of wall in the bar, by table 9, is said to be stone taken from the ruins of Beaudesert Castle across the road and reused when the present building went up.', look: 'The bare stone wall by table 9 in the bar', body: 'Reusing stone from a ruined castle was common, but no record confirms where this stone came from. It is a story the Swan tells.' },
       { year: '1358', kind: 'Hotel history', title: '“The White Swan” is written down', text: 'According to the Swan’s history, the name first appears in the records in 1358.', body: '' },
       { year: '1352', kind: 'Hotel history', title: 'An inn on this spot', text: 'The Swan’s history dates the first inn on this site to 1352. The building that stands here today came later.', body: '' },
     ],
