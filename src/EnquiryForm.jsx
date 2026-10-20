@@ -27,7 +27,8 @@ export default function EnquiryForm() {
     } catch (e2) {
       console.error(e2)
       setState('error')
-      setErr(`Sorry, that didn’t send. Please try again or call us on ${contact.phone}.`)
+      if (e2 && (e2.code === 'invalid-argument' || e2.code === 'resource-exhausted') && e2.message) setErr(e2.message)
+      else setErr(`Sorry, that didn’t send. Please try again or call us on ${contact.phone}.`)
     }
   }
 
