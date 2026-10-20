@@ -166,7 +166,6 @@ function Stay() {
       <div className="wrap">
         <p className="eyebrow reveal">Stay</p>
         <h2 className="reveal">Rooms above the inn</h2>
-        <p className="lead reveal">{rooms.intro}</p>
       </div>
       <div className="wrap">
         <Book avail={avail} />
