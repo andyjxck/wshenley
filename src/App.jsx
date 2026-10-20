@@ -263,11 +263,6 @@ function Hire() {
         <p className="eyebrow reveal">Private hire</p>
         <h2 className="reveal">{privateHire.headline}</h2>
         <p className="lead reveal">{privateHire.intro}</p>
-        <div className="spaces">
-          {privateHire.spaces.map((s) => (
-            <article className="space reveal" key={s.name}><h3>{s.name}</h3><p>{s.text}</p></article>
-          ))}
-        </div>
         <EnquiryForm />
       </div>
     </section>

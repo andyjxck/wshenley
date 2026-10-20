@@ -225,10 +225,7 @@ p { margin: 0 0 1em; }
 .week-event small { display: block; margin-top: 2px; font-size: .78rem; opacity: .75; }
 .week-none { font-size: .78rem; color: rgba(255,255,255,.35); }
 
-.spaces { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 640px; gap: 16px; margin: 40px 0; }
-.space { padding: 28px; border-radius: 14px; background: var(--paper); box-shadow: 0 0 0 1px var(--line); }
-.space h3 { margin-bottom: 10px; }
-.space p { color: var(--muted); margin: 0; }
+#hire .lead { margin-bottom: 32px; }
 
 .visit { padding-bottom: 60px; }
 .visit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin: 30px 0 70px; }
@@ -470,7 +467,7 @@ p { margin: 0 0 1em; }
   .flip-back h3 { font-size: 1.4rem; }
   .flip-text { font-size: .86rem; }
   .flip-history { font-size: .82rem; }
-  .rooms, .two-col, .split, .drinks, .spaces, .visit-grid, .nearby { grid-template-columns: 1fr; }
+  .rooms, .two-col, .split, .drinks, .visit-grid, .nearby { grid-template-columns: 1fr; }
   .two-col, .drinks, .visit-grid { gap: 34px; }
   .drinks { margin-top: 60px; }
   .split-img img { aspect-ratio: 4 / 3; }

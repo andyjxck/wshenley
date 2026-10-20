@@ -106,10 +106,6 @@ export const events = {
 export const privateHire = {
   headline: 'Hire our function room',
   intro: 'Our function room is free to hire, and catering is available. Use the form below or give us a call to talk it through.',
-  spaces: [
-    { name: 'Function room', text: 'Free to hire.' },
-    { name: 'Catering', text: 'Available for your event. Tell us what you have in mind when you enquire.' },
-  ],
 }
 
 // Photo at the end of Find us on the homepage.
