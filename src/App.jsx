@@ -21,7 +21,7 @@ if (!ON_HISTORY && typeof location !== 'undefined') {
   if (h && (h === 'story' || eras.some((e) => e.id === h))) location.replace(`history/${h === 'story' ? '' : `#${h}`}`)
 }
 
-// The header has one button: 'Our story' on the homepage, 'Home' on Our story.
+// The header has one page link ('Our story' on the homepage, 'Home' on Our story) beside the 'Book a room' button.
 const SWITCH = ON_HISTORY ? ['Home', HOME] : ['Our story', STORY]
 
 const ALL = eras.flatMap((e) => e.entries.map((x) => ({ ...x, era: e.id })))
@@ -47,7 +47,10 @@ function Header() {
           <b>The White Swan</b>
           <span>Henley-in-Arden · 1352</span>
         </a>
-        <a className="pill dark page-switch" href={SWITCH[1]}>{SWITCH[0]}</a>
+        <div className="bar-r">
+          <a className="page-switch" href={SWITCH[1]}>{SWITCH[0]}</a>
+          <a className="pill dark" href={home('#book')}>Book a room</a>
+        </div>
       </div>
     </header>
   )

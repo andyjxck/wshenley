@@ -56,6 +56,9 @@ p { margin: 0 0 1em; }
 .brand b { font: 600 1.45rem/1 var(--serif); }
 .brand span { font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; opacity: .75; margin-top: 4px; }
 .site-header:not(.solid) .pill.dark { background: #fffdf9; color: #1a1612; }
+.bar-r { display: flex; align-items: center; gap: 22px; }
+.page-switch { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-size: 0.9rem; font-weight: 500; opacity: .88; white-space: nowrap; }
+.page-switch:hover { opacity: 1; }
 
 /* hero */
 .hero { position: relative; clip-path: inset(0); min-height: 100svh; display: flex; align-items: flex-end; color: #fff; overflow: hidden; background: #2a241e; }
@@ -469,7 +472,9 @@ html[data-page="history"] .site-footer a { color: inherit; }
   .week-event { padding: 6px 10px; }
   body { font-size: 16px; }
   :root { --header: 58px; }
-  .page-switch { min-height: 40px; padding: 0 18px; }
+  .bar-r .pill { display: none; }
+  .page-switch { min-height: 40px; padding: 0 18px; border-radius: 999px; font: 600 0.92rem/1 var(--sans); opacity: 1; background: var(--ink); color: var(--bg); }
+  .site-header:not(.solid) .page-switch { background: #fffdf9; color: #1a1612; }
   .wrap { width: calc(100% - 36px); }
   .hero-copy { padding: calc(var(--header) + 24px) 0 120px; }
   .hero-place { font-size: .64rem; letter-spacing: .2em; gap: 10px; }
