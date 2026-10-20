@@ -183,22 +183,25 @@ export const eras = [
       // is condemned; public wording agreed with him is "currently closed" (no
       // legal/building status stated).
       { year: '2016', kind: 'Documented', title: 'The Secret Garden', text: 'The Secret Garden sign, photographed in June 2016. The garden behind the hotel is the same lawn that was the Swan’s bowling green in Victorian times (see 1891 and 1855). The Secret Garden is currently closed.', body: '', image: garden, credit: 'Photo: Elliott Brown, “The White Swan Secret Garden - Henley-in-Arden - sign”, on Flickr', creditHref: 'https://www.flickr.com/photos/ell-r-brown/27425128576/', licence: { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, changes: 'Resized. On this page it may be trimmed at the edges to fit and lightly toned by the page’s ageing effect; this adapted version is shared under CC BY-SA 2.0 too.' },
-      // REPORT. IMDb trivia for Michael Elphick (imdb.com/name/nm0255573/trivia/),
-      // read Oct 2026: "In September 2013, the new owners of the pub found a secret loft
+      // REPORT. Only source: IMDb trivia for Michael Elphick (imdb.com/name/nm0255573/trivia/),
+      // re-read 20 Oct 2026: "In September 2013, the new owners of the pub found a secret loft
       // space (an old priest hole) where Michael used to go to write letters to his
-      // daughter and to learn scripts of programmes such as Boon." IMDb trivia is
-      // user-submitted; no news report of the find was found.
-      { year: '2013', kind: 'Report', title: 'A hidden loft, or a priest hole?', text: 'In September 2013, the story goes, the Swan’s new owners came across a secret loft space, described as an old priest hole.', body: 'The account comes from a trivia entry on Michael Elphick’s IMDb page, which says this was the hideaway where he used to go to write letters to his daughter and learn his scripts for Boon. IMDb trivia is written by its users, and we haven’t found a newspaper report of the find.\n\nSo treat it as a good story rather than proof. Nobody has shown that the space was ever a priest hole, or that a priest hid in it.', source: 'Trivia entry for Michael Elphick on IMDb (user-submitted)' },
+      // daughter and to learn scripts of programmes such as Boon." User-submitted; no news
+      // report found. Andy (20 Oct 2026): say rediscovered (it was Elphick's known hideaway),
+      // keep IMDb out of the public copy, no dismissive conclusion; his use of the loft sits
+      // in the 1980s entry. Public source line kept neutral, no other provenance implied.
+      { year: '2013', kind: 'Report', title: 'The hidden loft, rediscovered', text: 'In September 2013 the Swan’s new owners rediscovered a secret loft space, an old priest hole by repute, and the same hideaway Michael Elphick had slipped away to in his years behind the bar (see 1980s).', body: 'Who first built it, and whether a priest ever hid there, is a question the building has yet to answer.', source: 'An online profile of Michael Elphick' },
       // Film facts: Wikipedia (released 6 July 1990, filmed in Birmingham, Neil
       // Morrissey, Michael Elphick as Inspector Cleaver). Swan's catering and rooms:
       // Hotel only. Trailer: 'I Bought A Vampire Motorcycle - Cinema Trailer' on the
       // VampireMotorcycle YouTube channel, which is dedicated to the film and also posts
       // its teaser, premiere footage and audio-described version; embedding allowed.
       { year: '1990', kind: 'Hotel history', title: 'I Bought a Vampire Motorcycle', text: 'The cult British comedy-horror was filmed in Birmingham and reached cinemas in July 1990. Neil Morrissey starred as the bike’s owner, and the Swan’s own landlord, Michael Elphick, played the police inspector.', body: 'The Swan’s history says that while the film was being made, the hotel did the catering and put up members of the cast.', video: 'fbvqz-nv7Zw', videoTitle: 'I Bought a Vampire Motorcycle: cinema trailer', source: 'Film details: published cast and release records. Catering and rooms: the Swan’s own history.' },
-      // Elphick: IMDb trivia says he owned the pub in the 1980s and early 1990s; Hotel
+      // Elphick: IMDb trivia says he owned the pub in the 1980s and early 1990s, and that he used the
+      // secret loft to write letters to his daughter and learn Boon scripts (see 2013 comment); Hotel
       // says he became landlord in the 1980s. Boon (1986), died 7 Sept 2002 aged 55
       // (Wikipedia).
-      { year: '1980s', kind: 'Documented', title: 'A TV star behind the bar', text: 'The actor Michael Elphick ran the White Swan through the 1980s and into the early 1990s. He is best remembered as Ken Boon in the TV series Boon, which began in 1986. He died in 2002, aged 55.', body: '' },
+      { year: '1980s', kind: 'Documented', title: 'A TV star behind the bar', text: 'The actor Michael Elphick ran the White Swan through the 1980s and into the early 1990s. He is best remembered as Ken Boon in the TV series Boon, which began in 1986. He died in 2002, aged 55.', body: 'He is said to have kept a hideaway in a secret loft space at the Swan, where he would go to write letters to his daughter and learn his scripts for Boon (see 2013).' },
       // 1963 photo: the hotel's Flickr, "White-Swan-1963" (photo 7752523264), licence
       // All Rights Reserved. Not reproduced here; linked instead (Andy, 20 Oct 2026).
       { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', label: 'View on Flickr', note: 'The 1963 photograph, on the White Swan’s Flickr' } },
