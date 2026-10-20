@@ -189,7 +189,7 @@ function Eat() {
   return (
     <section className="section eat" id="eat">
       <div className="wrap split">
-        <div className="split-img reveal"><img src={food.image} alt="Inside the White Swan" loading="lazy" /></div>
+        <div className="split-img reveal"><img src={food.image} alt={food.alt} loading="lazy" /></div>
         <div>
           <p className="eyebrow reveal">Eat & drink</p>
           <h2 className="reveal">Homemade pub classics</h2>

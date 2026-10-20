@@ -11,7 +11,9 @@
 // flickr.com/photos/ell-r-brown/4435838679, CC BY 2.0 (licence checked on the Flickr page, 20 Oct 2026).
 // Uploaded to the repo as 4435838679_56b8a794c8_o.jpg (Flickr original); resized to 2400 x 1800 for the web.
 import heroToday from './assets/hero-white-swan-elliott-brown-2010.jpg'
-import interiorToday from './assets/interior-today.jpg'
+// Eat & drink photo: burger, uploaded to the repo by the site owner as 7E8A9056-4066-4CDC-93B6-B1C989B87BB4.jpg
+// (551 x 737, dated 16 July 2026 in its metadata; no photographer or source recorded). Replaces interior-today.jpg.
+import foodBurger from './assets/7E8A9056-4066-4CDC-93B6-B1C989B87BB4.jpg'
 import whatsonLive from './assets/week-bg.jpg' // Flickr 2012 "The Henley White Swan 2" (account "Henley White Swan"; not claimed as the hotel's on the page)
 // Elliott Brown, "The White Swan Secret Garden - Henley-in-Arden - sign", 4 June 2016,
 // flickr.com/photos/ell-r-brown/27425128576, CC BY-SA 2.0 (licence checked on the Flickr
@@ -74,7 +76,8 @@ export const rooms = {
 }
 
 export const food = {
-  image: interiorToday,
+  image: foodBurger,
+  alt: 'A burger',
   intro: 'True homemade pub classics, with something for everyone.',
   menus: [
     { name: 'Lunchtime menu', when: 'Monday to Saturday, 12pm to 6pm', href: 'https://www.whiteswanhenley.co.uk/_webedit/uploaded-files/All%20Files/Lunch%20Menu%20Front%20Page.png' },

@@ -192,6 +192,7 @@ p { margin: 0 0 1em; }
 
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 6vw, 90px); align-items: center; }
 .split-img img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 16px; }
+.eat .split-img img { object-position: 50% 40%; }
 .menus { list-style: none; padding: 0; margin: 30px 0 0; }
 .menus a { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 18px 0; border-top: 1px solid var(--line); text-decoration: none; transition: padding .3s var(--ease); }
 .menus li:last-child a { border-bottom: 1px solid var(--line); }
