@@ -315,7 +315,7 @@ export const eras = [
 ]
 
 export const credits = [
-  'Present-day photos: the White Swan’s current website.',
+  'Present-day photos: the White Swan’s previous website.',
   ['Secret Garden sign, June 2016: ', { label: 'photo by Elliott Brown on Flickr', href: 'https://www.flickr.com/photos/ell-r-brown/27425128576/' }, ', licensed under ', { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, '. Resized, and on the page it may be trimmed to fit and lightly toned; the adapted photo is shared under the same licence.'],
   'The 1963 photo is linked on the White Swan’s Flickr, not reproduced here.',
   'Coach entrance, 2010: Elliott Brown, CC BY 2.0, via Wikimedia Commons.',
