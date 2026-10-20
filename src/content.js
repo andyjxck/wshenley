@@ -18,7 +18,6 @@ import coach2010 from './assets/coach-entrance-2010.jpg'
 import postcardUndated from './assets/postcard-undated.jpg'
 import postcard1914 from './assets/postcard-pre1914.jpg'
 import lantern from './assets/lantern-c1900.jpg'
-import winter2013 from './assets/white_swan_winter.jpg' // hotel's own Flickr photo, 22 Jan 2013
 import oldSepia from './assets/white_swan_sepia.jpg'
 import oldPortrait from './assets/white_swan_portrait.jpg'
 import oldMarketway from './assets/marketway.jpg'
@@ -106,16 +105,18 @@ export const events = {
 }
 
 // PRIVATE HIRE: keep to what the hotel has confirmed. No prices, packages or conditions.
+// End of Find us on the homepage: the hotel's own snow photo is All Rights Reserved on Flickr
+// (henleywhiteswan/8404955955, taken 22 Jan 2013), so it is linked, not reproduced.
+export const findUsFlickr = {
+  title: 'The White Swan in the snow, January 2013',
+  href: 'https://www.flickr.com/photos/henleywhiteswan/8404955955/',
+  label: 'View on Flickr',
+  note: 'The White Swan in the snow, January 2013, on the White Swan’s Flickr',
+}
+
 export const privateHire = {
   headline: 'Hire our function room',
   intro: 'Our function room is free to hire, and catering is available. Use the form below or give us a call to talk it through.',
-}
-
-// Photo at the end of Find us on the homepage.
-export const findUsPhoto = {
-  image: winter2013,
-  alt: 'The White Swan on Henley-in-Arden High Street in the snow',
-  caption: 'The White Swan in the snow, January 2013. The hotel’s own photo, from its Flickr account.',
 }
 
 // Andy's old photographs, shown at the top of the Our story page.
@@ -317,9 +318,8 @@ export const eras = [
 export const credits = [
   'Present-day photos: the White Swan’s previous website.',
   ['Secret Garden sign, June 2016: ', { label: 'photo by Elliott Brown on Flickr', href: 'https://www.flickr.com/photos/ell-r-brown/27425128576/' }, ', licensed under ', { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, '. Resized, and on the page it may be trimmed to fit and lightly toned; the adapted photo is shared under the same licence.'],
-  'The 1963 photo is linked on the White Swan’s Flickr, not reproduced here.',
+  'The 1963 photo and the January 2013 snow photo are linked on the White Swan’s Flickr, not reproduced here.',
   'Coach entrance, 2010: Elliott Brown, CC BY 2.0, via Wikimedia Commons.',
-  'The White Swan in the snow, January 2013: the White Swan’s own Flickr account.',
   'Three early photographs on Our story, before 1920: public domain, supplied by the White Swan.',
   'Trailer: I Bought a Vampire Motorcycle, from the film’s YouTube channel.',
   'History: the White Swan’s own history, drawing on the Henley-in-Arden Museum and Heritage Centre and Jonathan Dovey’s History of Henley-in-Arden; the Victoria County History of Warwickshire, vol. 3 (1945); Historic England list entry 1382311; the Heritage Centre’s Weeks in History; James Boswell’s Life of Johnson; The Torrington Diaries, ed. C. Bruyn Andrews.',

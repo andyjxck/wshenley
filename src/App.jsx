@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { contact, hero, rooms, food, whatsOn, privateHire, nearby, nearbyNote, eras, credits, findUsPhoto, historyPhotos } from './content.js'
+import { contact, hero, rooms, food, whatsOn, privateHire, nearby, nearbyNote, eras, credits, historyPhotos, findUsFlickr } from './content.js'
 import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
 import { useLiveAvailability, shortDate } from './liveAvailability.js'
@@ -303,10 +303,14 @@ function Visit() {
           ))}
         </ul>
         <p className="nearby-note muted reveal">{nearbyNote}</p>
-        <figure className="findus-fig reveal">
-          <img src={findUsPhoto.image} alt={findUsPhoto.alt} loading="lazy" />
-          <figcaption>{findUsPhoto.caption}</figcaption>
-        </figure>
+        <div className="entry-flickr findus-flickr reveal" style={{ marginTop: 40 }}>
+          <a className="flickr-btn" href={findUsFlickr.href} target="_blank" rel="noopener noreferrer" aria-label={`${findUsFlickr.label}: ${findUsFlickr.note} (opens in a new tab)`}>
+            <span className="flickr-dots" aria-hidden="true"><i /><i /></span>
+            <span>{findUsFlickr.label}</span>
+            <svg className="flickr-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </a>
+          <p className="flickr-note">{findUsFlickr.note}</p>
+        </div>
         <p className="story-link reveal"><a className="text-link" href={STORY}>Read the Swan’s story, from 1352 to today</a></p>
       </div>
     </section>
