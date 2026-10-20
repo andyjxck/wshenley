@@ -376,7 +376,7 @@ function Footer() {
           <summary>Picture credits and sources</summary>
           <ul>{credits.map((c, i) => (
             <li key={i}>{Array.isArray(c)
-              ? c.map((p, j) => (typeof p === 'string' ? p : <a key={j} href={p.href} target="_blank" rel="noreferrer">{p.label}</a>))
+              ? c.map((p, j) => (typeof p === 'string' ? p : p.href.startsWith('mailto:') ? <a key={j} href={p.href}>{p.label}</a> : <a key={j} href={p.href} target="_blank" rel="noreferrer">{p.label}</a>))
               : c}</li>
           ))}</ul>
         </details>

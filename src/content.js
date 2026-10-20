@@ -337,5 +337,5 @@ export const credits = [
   'Three early photographs on Our story, before 1920: public domain.',
   'Trailer: I Bought a Vampire Motorcycle, from the film’s YouTube channel.',
   'History: the White Swan’s own history, drawing on the Henley-in-Arden Museum and Heritage Centre and Jonathan Dovey’s History of Henley-in-Arden; the Victoria County History of Warwickshire, vol. 3 (1945); Historic England list entry 1382311; the Heritage Centre’s Weeks in History; James Boswell’s Life of Johnson; The Torrington Diaries, ed. C. Bruyn Andrews.',
-  'Website designed and developed by Andrew.',
+  ['Website designed and developed by ', { label: 'Andrew', href: 'mailto:andyblewett9@gmail.com' }, '.'],
 ]
