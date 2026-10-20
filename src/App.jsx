@@ -1,18 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { contact, hero, rooms, food, whatsOn, privateHire, nearby, eras, credits } from './content.js'
+import { contact, hero, rooms, food, whatsOn, privateHire, nearby, eras, credits, findUsPhoto, historyPhotos } from './content.js'
 import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
 import { useLiveAvailability, shortDate } from './liveAvailability.js'
 import WeekCalendar from './WeekCalendar.jsx'
 import { useTimeTravel, useReveal } from './useTimeTravel.js'
+import EnquiryForm from './EnquiryForm.jsx'
+import { useEventsFeed, timeLabel } from './useEventsFeed.js'
+
+// Two real pages: the homepage (index.html) and Our story (history/index.html).
+// history/index.html sets <html data-page="history">, so links can point the right way from either page.
+const ON_HISTORY = typeof document !== 'undefined' && document.documentElement.dataset.page === 'history'
+const HOME = ON_HISTORY ? '../' : './'
+const STORY = ON_HISTORY ? './' : 'history/'
+const home = (hash) => (ON_HISTORY ? `../${hash}` : hash)
+
+// Old links to the story on the homepage (#story, #living-memory, ...) now open the Our story page.
+if (!ON_HISTORY && typeof location !== 'undefined') {
+  const h = location.hash.slice(1)
+  if (h && (h === 'story' || eras.some((e) => e.id === h))) location.replace(`history/${h === 'story' ? '' : `#${h}`}`)
+}
 
 const NAV = [
-  ['Stay', '#stay'],
-  ['Eat & drink', '#eat'],
-  ['What’s on', '#whats-on'],
-  ['Private hire', '#hire'],
-  ['Our story', '#story'],
-  ['Find us', '#visit'],
+  ['Stay', home('#stay')],
+  ['Eat & drink', home('#eat')],
+  ['What’s on', home('#whats-on')],
+  ['Private hire', home('#hire')],
+  ['Our story', STORY],
+  ['Find us', home('#visit')],
 ]
 
 const ALL = eras.flatMap((e) => e.entries.map((x) => ({ ...x, era: e.id })))
@@ -32,9 +47,9 @@ function gradeFor(index) {
 }
 
 function Header({ open, setOpen }) {
-  const [solid, setSolid] = useState(false)
+  const [solid, setSolid] = useState(ON_HISTORY)
   useEffect(() => {
-    const on = () => setSolid(window.scrollY > 40)
+    const on = () => setSolid(ON_HISTORY || window.scrollY > 40)
     on()
     window.addEventListener('scroll', on, { passive: true })
     return () => window.removeEventListener('scroll', on)
@@ -45,15 +60,15 @@ function Header({ open, setOpen }) {
   return (
     <header className={`site-header${solid ? ' solid' : ''}${open ? ' menu-open' : ''}`}>
       <div className="bar">
-        <a className="brand" href="#top" onClick={() => setOpen(false)}>
+        <a className="brand" href={ON_HISTORY ? HOME : '#top'} onClick={() => setOpen(false)}>
           <b>The White Swan</b>
           <span>Henley-in-Arden · 1352</span>
         </a>
         <nav className="desk-nav" aria-label="Main">
-          {NAV.map(([l, h]) => <a key={h} href={h}>{l}</a>)}
+          {NAV.map(([l, h]) => <a key={h} href={h} aria-current={ON_HISTORY && h === STORY ? 'page' : undefined}>{l}</a>)}
         </nav>
         <div className="bar-r">
-          <a className="pill dark" href="#book">Book a room</a>
+          <a className="pill dark" href={home('#book')}>Book a room</a>
           <button className="burger" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>
             <i /><i />
           </button>
@@ -203,7 +218,17 @@ function Eat() {
   )
 }
 
+// One-off events staff have put on the website, soonest first (weekly ones are in the headline).
+function useComingUp() {
+  const feed = useEventsFeed()
+  if (!feed) return []
+  const now = new Date()
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+  return feed.filter((e) => e.repeat !== 'weekly' && e.date >= today).slice(0, 4)
+}
+
 function WhatsOn() {
+  const coming = useComingUp()
   return (
     <section className="whats-on" id="whats-on">
       <img src={whatsOn.image} alt="" loading="lazy" />
@@ -212,6 +237,16 @@ function WhatsOn() {
         <p className="eyebrow reveal">What’s on</p>
         <h2 className="reveal">{whatsOn.headline}</h2>
         <p className="lead reveal">{whatsOn.text}</p>
+        {coming.length > 0 && (
+          <ul className="coming-up">
+            {coming.map((e) => (
+              <li key={e.id}>
+                <b>{new Date(`${e.date}T12:00:00`).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</b>
+                <span>{e.title}{timeLabel(e) ? `, ${timeLabel(e)}` : ''}</span>
+              </li>
+            ))}
+          </ul>
+        )}
         <div className="reveal whats-cta">
           <a className="pill light" href={contact.instagram} target="_blank" rel="noreferrer">See this week on Instagram</a>
         </div>
@@ -225,14 +260,14 @@ function Hire() {
     <section className="section" id="hire">
       <div className="wrap">
         <p className="eyebrow reveal">Private hire</p>
-        <h2 className="reveal">Your party, our rooms</h2>
+        <h2 className="reveal">{privateHire.headline}</h2>
         <p className="lead reveal">{privateHire.intro}</p>
         <div className="spaces">
           {privateHire.spaces.map((s) => (
             <article className="space reveal" key={s.name}><h3>{s.name}</h3><p>{s.text}</p></article>
           ))}
         </div>
-        <div className="reveal"><a className="pill dark" href={contact.phoneHref}>Call {contact.phone} to plan it</a></div>
+        <EnquiryForm />
       </div>
     </section>
   )
@@ -253,7 +288,7 @@ function Visit() {
           <div>
             <h3 className="h-label">Open</h3>
             <p>{contact.hours}</p>
-            <p className="muted">Free car park at the rear for guests.</p>
+            <p className="muted">Car park at the rear for guests.</p>
           </div>
           <div>
             <h3 className="h-label">Get in touch</h3>
@@ -266,6 +301,11 @@ function Visit() {
             <li key={n.name}><a href={n.href} target="_blank" rel="noreferrer">{n.name}</a><span>{n.note}</span></li>
           ))}
         </ul>
+        <figure className="findus-fig reveal">
+          <img src={findUsPhoto.image} alt={findUsPhoto.alt} loading="lazy" />
+          <figcaption>{findUsPhoto.caption}</figcaption>
+        </figure>
+        <p className="story-link reveal"><a className="text-link" href={STORY}>Read the Swan’s story, from 1352 to today</a></p>
       </div>
     </section>
   )
@@ -278,6 +318,14 @@ function TimeGate() {
         <p className="eyebrow reveal">Our story</p>
         <h2 className="gate-title reveal">Keep scrolling.<br /><em>Go back {YEARS_BACK} years.</em></h2>
         <p className="lead reveal">Every step down this page is a step back in time, from the Swan you know to the castle across the road.</p>
+        <div className="then-photos reveal">
+          {historyPhotos.map((p) => (
+            <figure key={p.caption + p.alt}>
+              <img src={p.image} alt={p.alt} loading="lazy" />
+              <figcaption>{p.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
         <nav className="era-jump reveal" aria-label="Jump to an era">
           {eras.map((e) => <a key={e.id} href={`#${e.id}`}><b>{e.name}</b><span>{e.range}</span></a>)}
         </nav>
@@ -344,7 +392,7 @@ function Footer() {
     <footer className="site-footer">
       <div className="wrap">
         <p className="foot-line">The warmest welcome at an inn.</p>
-        <a className="pill light" href="#top">Back to today</a>
+        <a className="pill light" href={ON_HISTORY ? HOME : '#top'}>{ON_HISTORY ? 'Back to today' : 'Back to the top'}</a>
         <div className="foot-grid">
           <p>{contact.address.join(', ')}<br /><a href={contact.phoneHref}>{contact.phone}</a> · <a href={`mailto:${contact.email}`}>{contact.email}</a></p>
           <p><a href={contact.instagram} target="_blank" rel="noreferrer">Instagram</a> · <a href={contact.facebook} target="_blank" rel="noreferrer">Facebook</a> · <a href={contact.tripadvisor} target="_blank" rel="noreferrer">Tripadvisor</a></p>
@@ -362,7 +410,7 @@ function MobileBar() {
   return (
     <div className="mobile-bar">
       <a href={contact.phoneHref}>Call</a>
-      <a className="main" href="#book">Book a room</a>
+      <a className="main" href={home('#book')}>Book a room</a>
     </div>
   )
 }
@@ -373,17 +421,22 @@ export default function App() {
   return (
     <>
       <Header open={open} setOpen={setOpen} />
-      <main>
-        <Hero />
-        <ThisWeek />
-        <Stay />
-        <Eat />
-        <WhatsOn />
-        <Hire />
-        <Visit />
-        <TimeGate />
-        <Timeline />
-      </main>
+      {ON_HISTORY ? (
+        <main className="history-page">
+          <TimeGate />
+          <Timeline />
+        </main>
+      ) : (
+        <main>
+          <Hero />
+          <ThisWeek />
+          <Stay />
+          <Eat />
+          <WhatsOn />
+          <Hire />
+          <Visit />
+        </main>
+      )}
       <Footer />
       <MobileBar />
     </>

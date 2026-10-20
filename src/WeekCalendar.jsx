@@ -1,21 +1,24 @@
 import React from 'react'
 import { events } from './content.js'
+import { useEventsFeed, happensOn, timeLabel } from './useEventsFeed.js'
 
-// Shows the current week, Monday to Sunday, with the events from content.js.
-// Later, staff-added events can be merged into the same shape: { date, title, time, note }.
+// Shows the current week, Monday to Sunday. Events come from Firestore (public/events, the
+// staff app's "show on website" events). Until that loads, or if it can't, content.js is used.
 const KEYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 
-function thisWeek(today = new Date()) {
+function thisWeek(feed, today = new Date()) {
   const start = new Date(today.getFullYear(), today.getMonth(), today.getDate())
   start.setDate(start.getDate() - ((start.getDay() + 6) % 7)) // back to Monday
   return KEYS.map((key, i) => {
     const d = new Date(start)
     d.setDate(start.getDate() + i)
-    const list = [
-      ...events.weekly.filter((e) => e.day === key),
-      ...events.oneOff.filter((e) => e.date === iso(d)),
-    ]
+    const list = feed
+      ? feed.filter((e) => happensOn(e, d)).map((e) => ({ title: e.title, time: timeLabel(e), note: e.description }))
+      : [
+          ...events.weekly.filter((e) => e.day === key),
+          ...events.oneOff.filter((e) => e.date === iso(d)),
+        ]
     return { d, key, list, today: iso(d) === iso(today) }
   })
 }
@@ -23,7 +26,8 @@ function thisWeek(today = new Date()) {
 const fmt = (d, o) => d.toLocaleDateString('en-GB', o)
 
 export default function WeekCalendar() {
-  const days = thisWeek()
+  const feed = useEventsFeed()
+  const days = thisWeek(feed)
   const first = days[0].d, last = days[6].d
   const range = first.getMonth() === last.getMonth()
     ? `${first.getDate()} to ${fmt(last, { day: 'numeric', month: 'long' })}`

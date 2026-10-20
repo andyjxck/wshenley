@@ -18,6 +18,10 @@ import pint1963 from './assets/pint-1963.jpg'
 import postcardUndated from './assets/postcard-undated.jpg'
 import postcard1914 from './assets/postcard-pre1914.jpg'
 import lantern from './assets/lantern-c1900.jpg'
+import winter2013 from './assets/white_swan_winter.jpg' // hotel's own Flickr photo, 22 Jan 2013
+import oldSepia from './assets/white_swan_sepia.jpg'
+import oldPortrait from './assets/white_swan_portrait.jpg'
+import oldMarketway from './assets/marketway.jpg'
 
 export const contact = {
   phone: '01564 660 303',
@@ -44,7 +48,7 @@ export const hero = {
 }
 
 export const rooms = {
-  intro: 'Seven bedrooms, including two suites, above the bar on the High Street. Free parking at the rear for guests.',
+  intro: 'Seven bedrooms, including two suites, above the bar on the High Street. Car park at the rear for guests.',
   // Each card flips to show the description, amenity icons and a Book Room button.
   //   code   the room's code in Seekda (the Book Room button opens that room's booking page)
   //   image  leave '' to show a "photo coming soon" card
@@ -101,12 +105,29 @@ export const events = {
   ],
 }
 
+// PRIVATE HIRE: keep to what the hotel has confirmed. No prices, packages or conditions.
 export const privateHire = {
-  intro: 'Rooms for any occasion: a wedding breakfast, Christmas party, business meeting, networking event, wake, baby shower or any other gathering. Catering is bespoke, from a buffet to a sit-down meal, and we can help with a DJ or band.',
+  headline: 'Hire our function room',
+  intro: 'Our function room is free to hire, and catering is available. Use the form below or give us a call to talk it through.',
   spaces: [
-    { name: 'Sleepover', text: 'Our bedrooms, including two suites, with a group rate. End the night upstairs and wake up to breakfast.' },
+    { name: 'Function room', text: 'Free to hire.' },
+    { name: 'Catering', text: 'Available for your event. Tell us what you have in mind when you enquire.' },
   ],
 }
+
+// Photo at the end of Find us on the homepage.
+export const findUsPhoto = {
+  image: winter2013,
+  alt: 'The White Swan on Henley-in-Arden High Street in the snow',
+  caption: 'The White Swan in the snow, January 2013. The hotel’s own photo, from its Flickr account.',
+}
+
+// Andy's old photographs, shown at the top of the Our story page.
+export const historyPhotos = [
+  { image: oldSepia, alt: 'Early photograph from Henley-in-Arden', caption: 'Before 1920. Public domain.' },
+  { image: oldPortrait, alt: 'Early photograph from Henley-in-Arden', caption: 'Before 1920. Public domain.' },
+  { image: oldMarketway, alt: 'Early photograph from Henley-in-Arden', caption: 'Before 1920. Public domain.' },
+]
 
 export const nearby = [
   { name: 'Henley-in-Arden Museum and Heritage Centre', note: 'Just down the High Street', href: 'https://www.heritagehenley.org.uk/' },
@@ -139,7 +160,7 @@ export const eras = [
     intro: 'Pandemics, TV detectives and a pint in 1963.',
     entries: [
       { year: '2020', title: 'The doors close, probably for the first time ever', text: 'The White Swan shut, as did every pub and hotel in the country during the pandemic. It reopened to carry on business as usual.', body: '' },
-      { year: '2014', title: 'The Secret Garden', text: 'The garden behind the hotel, photographed in June 2014.', body: '', image: garden, credit: 'The White Swan on Flickr, 2014' },
+      { year: '2014', title: 'The Secret Garden', text: 'The garden behind the hotel, photographed in June 2014. The Secret Garden is currently closed.', body: '', image: garden, credit: 'The White Swan on Flickr, 2014' },
       { year: '2013', title: 'Cygnets Bar', text: 'Cygnets Bar, photographed in November 2013.', body: '', image: cygnets, credit: 'The White Swan on Flickr, 2013' },
       { year: '2012', title: 'The White Swan Hotel', text: 'The hotel in 2012.', body: '', image: exterior2012, credit: 'The White Swan on Flickr, 2012' },
       { year: '2010', title: 'The coach entrance', text: 'The coach entrance at 100 High Street, photographed in March 2010.', body: '', image: coach2010, credit: 'Elliott Brown, March 2010, CC BY 2.0', creditHref: 'https://commons.wikimedia.org/wiki/File:The_White_Swan_Henley-in-Arden_(4435855095).jpg' },
@@ -251,6 +272,8 @@ export const credits = [
   'Present-day photos: the White Swan’s current website.',
   '2012 to 2014 photos and the 1963 photo: the White Swan’s Flickr account.',
   'Coach entrance, 2010: Elliott Brown, CC BY 2.0, via Wikimedia Commons.',
+  'The White Swan in the snow, January 2013: the White Swan’s own Flickr account.',
+  'Three early photographs on Our story, before 1920: public domain, supplied by the White Swan.',
   'History: the White Swan’s current website, drawing on the Henley-in-Arden Museum and Heritage Centre and Jonathan Dovey’s History of Henley-in-Arden.',
 ]
 

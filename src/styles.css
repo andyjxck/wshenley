@@ -389,3 +389,45 @@ p { margin: 0 0 1em; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ---------- Private hire enquiry form ---------- */
+.enquiry { max-width: 720px; margin-top: 10px; padding: clamp(22px, 4vw, 36px); border-radius: 16px; background: var(--paper); box-shadow: 0 0 0 1px var(--line); }
+.enquiry h3 { margin-bottom: 18px; font-size: 1.7rem; }
+.enquiry label { display: flex; flex-direction: column; gap: 6px; font: 600 0.84rem/1.3 var(--sans); margin-bottom: 14px; }
+.enquiry .opt { font-weight: 400; color: var(--muted); }
+.enquiry input, .enquiry select, .enquiry textarea { font: 400 1rem/1.4 var(--sans); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; min-height: 46px; width: 100%; box-sizing: border-box; }
+.enquiry textarea { resize: vertical; min-height: 110px; }
+.enquiry input:focus, .enquiry select:focus, .enquiry textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.enq-grid { display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 16px; }
+.enquiry .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.enq-err { color: #a3261b; font-weight: 600; margin: 4px 0 12px; }
+.enq-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+.enq-actions button { border: 0; cursor: pointer; }
+.enq-actions button:disabled { opacity: .6; cursor: progress; }
+.enq-or { color: var(--muted); font-size: .95rem; }
+.enq-small { color: var(--muted); font-size: .82rem; margin: 14px 0 0; }
+.enquiry.sent p { color: var(--muted); }
+
+/* ---------- What's on: one-off events from the staff app ---------- */
+.coming-up { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 8px; max-width: 520px; }
+.coming-up li { display: flex; gap: 14px; align-items: baseline; padding: 10px 14px; border-radius: 10px; background: rgba(20,16,12,.45); box-shadow: 0 0 0 1px rgba(241,217,181,.18); }
+.coming-up b { color: #f1d9b5; font-weight: 600; min-width: 92px; }
+
+/* ---------- Find us photo and story link ---------- */
+.findus-fig { margin: 50px 0 0; }
+.findus-fig img { display: block; width: 100%; max-height: 520px; object-fit: cover; border-radius: 16px; }
+.findus-fig figcaption, .then-photos figcaption { color: var(--muted); font-size: .85rem; margin-top: 10px; }
+.story-link { margin: 26px 0 0; }
+
+/* ---------- Our story page ---------- */
+.history-page .gate { padding-top: calc(var(--header) + clamp(60px, 10vw, 120px)); }
+.then-photos { display: grid; grid-template-columns: 1.6fr .7fr 1fr; gap: 16px; max-width: 980px; margin: 44px auto 0; align-items: start; text-align: left; }
+.then-photos figure { margin: 0; }
+.then-photos img { display: block; width: 100%; height: auto; border-radius: 12px; filter: sepia(.25); }
+.site-header a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
+
+@media (max-width: 720px) {
+  .enq-grid { grid-template-columns: 1fr; }
+  .then-photos { grid-template-columns: 1fr 1fr; }
+  .then-photos figure:first-child { grid-column: 1 / -1; }
+}
