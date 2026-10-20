@@ -21,14 +21,8 @@ if (!ON_HISTORY && typeof location !== 'undefined') {
   if (h && (h === 'story' || eras.some((e) => e.id === h))) location.replace(`history/${h === 'story' ? '' : `#${h}`}`)
 }
 
-const NAV = [
-  ['Stay', home('#stay')],
-  ['Eat & drink', home('#eat')],
-  ['What’s on', home('#whats-on')],
-  ['Private hire', home('#hire')],
-  ['Our story', STORY],
-  ['Find us', home('#visit')],
-]
+// The header has one button: 'Our story' on the homepage, 'Home' on Our story.
+const SWITCH = ON_HISTORY ? ['Home', HOME] : ['Our story', STORY]
 
 const ALL = eras.flatMap((e) => e.entries.map((x) => ({ ...x, era: e.id })))
 const OLDEST = 1352
@@ -38,7 +32,7 @@ const YEARS_BACK = new Date().getFullYear() - OLDEST
 const AGES = agesFor(ALL.map((x) => x.year)).map((x) => x.age)
 const ageStyle = (a) => ({ '--age': a.toFixed(4) })
 
-function Header({ open, setOpen }) {
+function Header() {
   const [solid, setSolid] = useState(ON_HISTORY)
   useEffect(() => {
     const on = () => setSolid(ON_HISTORY || window.scrollY > 40)
@@ -46,36 +40,14 @@ function Header({ open, setOpen }) {
     window.addEventListener('scroll', on, { passive: true })
     return () => window.removeEventListener('scroll', on)
   }, [])
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
-  }, [open])
   return (
-    <header className={`site-header${solid ? ' solid' : ''}${open ? ' menu-open' : ''}`}>
+    <header className={`site-header${solid ? ' solid' : ''}`}>
       <div className="bar">
-        <a className="brand" href={ON_HISTORY ? HOME : '#top'} onClick={() => setOpen(false)}>
+        <a className="brand" href={ON_HISTORY ? HOME : '#top'}>
           <b>The White Swan</b>
           <span>Henley-in-Arden · 1352</span>
         </a>
-        <nav className="desk-nav" aria-label="Main">
-          {NAV.map(([l, h]) => <a key={h} href={h} aria-current={ON_HISTORY && h === STORY ? 'page' : undefined}>{l}</a>)}
-        </nav>
-        <div className="bar-r">
-          <a className="pill dark" href={home('#book')}>Book a room</a>
-          <button className="burger" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>
-            <i /><i />
-          </button>
-        </div>
-      </div>
-      <div className="menu" hidden={!open}>
-        <nav aria-label="Mobile">
-          {NAV.map(([l, h], i) => (
-            <a key={h} href={h} style={{ '--i': i }} onClick={() => setOpen(false)}>{l}</a>
-          ))}
-        </nav>
-        <div className="menu-foot">
-          <a href={contact.phoneHref}>{contact.phone}</a>
-          <span>{contact.hours}</span>
-        </div>
+        <a className="pill dark page-switch" href={SWITCH[1]}>{SWITCH[0]}</a>
       </div>
     </header>
   )
@@ -423,11 +395,10 @@ function MobileBar() {
 }
 
 export default function App() {
-  const [open, setOpen] = useState(false)
   useReveal()
   return (
     <>
-      <Header open={open} setOpen={setOpen} />
+      <Header />
       {ON_HISTORY ? (
         <main className="history-page">
           <TimeGate />
