@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { contact, hero, rooms, food, whatsOn, privateHire, nearby, nearbyNote, eras, credits, findUsPhoto, historyPhotos, storyKey } from './content.js'
+import { contact, hero, rooms, food, whatsOn, privateHire, nearby, nearbyNote, eras, credits, findUsPhoto, historyPhotos } from './content.js'
 import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
 import { useLiveAvailability, shortDate } from './liveAvailability.js'
@@ -328,11 +328,6 @@ function TimeGate() {
             </figure>
           ))}
         </div>
-        <dl className="story-key reveal" aria-label="How sure we are">
-          {storyKey.map((k) => (
-            <div key={k.kind}><dt className={`kind kind-${kindSlug(k.kind)}`}>{k.kind}</dt><dd>{k.text}</dd></div>
-          ))}
-        </dl>
         <nav className="era-jump reveal" aria-label="Jump to an era">
           {eras.map((e) => <a key={e.id} href={`#${e.id}`}><b>{e.name}</b><span>{e.range}</span></a>)}
         </nav>

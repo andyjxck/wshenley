@@ -145,7 +145,7 @@ export const nearby = [
 // Each era sets the art direction for its entries.
 //   year    big date shown on the left
 //   title   one-line headline
-//   kind    how sure we are: one of the labels in storyKey below
+//   kind    how sure we are: Documented, Documented in part, Hotel history, Reported, Report or Folklore
 //   text    short summary
 //   body    longer story text (blank line = new paragraph; '' to hide)
 //   quote   optional quotation shown above the text
@@ -164,15 +164,6 @@ export const nearby = [
 //          the Heritage Centre and Jonathan Dovey's History of Henley-in-Arden.
 //   Boswell = Life of Johnson (1791), 21 and 22 March 1776 (Project Gutenberg #1564)
 // ---------------------------------------------------------------------------
-
-// Shown at the top of the Our story page, so readers know what each label means.
-export const storyKey = [
-  { kind: 'Documented', text: 'Found in records or published histories.' },
-  { kind: 'Hotel history', text: 'From the Swan’s own history, which draws on Heritage Centre records. We haven’t found it in a second source yet.' },
-  { kind: 'Tradition', text: 'A story the Swan has long told. The records don’t confirm it.' },
-  { kind: 'Report', text: 'Something that was reported, told the way it was told. Not proven.' },
-  { kind: 'Folklore', text: 'A ghost story. Enjoy it as one.' },
-]
 
 export const eras = [
   {
@@ -267,7 +258,7 @@ export const eras = [
       // Henley"; last stanza as quoted by Boswell. The poem names only "Henley"; the Red
       // Lion at Henley-on-Thames claims it too, and VCH calls the Henley-in-Arden
       // tradition "groundless". Andy: "We claim it either way"; written as our claim.
-      { year: '1714–1763', kind: 'Tradition', title: 'The warmest welcome', quote: '“Whoe’er has travell’d life’s dull round, / Where’er his stages may have been, / May sigh to think he still has found / The warmest welcome at an inn.”', text: 'The Swan has long claimed that the poet William Shenstone stayed here, and that this is the inn behind his poem “Written at an Inn at Henley”.', body: 'Shenstone grew up at the Leasowes in Halesowen, near Birmingham, and studied at Oxford, and the road between the two ran through Henley-in-Arden. His poem praises the freedom of a good inn, and its last verse became one of the most quoted in the language. Dr Johnson knew it by heart.\n\nThe poem only says “Henley”, and an inn at Henley-on-Thames claims it too. No record settles it either way, and the Victoria County History calls our claim groundless. We still think the warmest welcome is here.' },
+      { year: '1714–1763', kind: 'Reported', title: 'The warmest welcome', quote: '“Whoe’er has travell’d life’s dull round, / Where’er his stages may have been, / May sigh to think he still has found / The warmest welcome at an inn.”', text: 'The Swan has long claimed that the poet William Shenstone stayed here, and that this is the inn behind his poem “Written at an Inn at Henley”.', body: 'Shenstone grew up at the Leasowes in Halesowen, near Birmingham, and studied at Oxford, and the road between the two ran through Henley-in-Arden. His poem praises the freedom of a good inn, and its last verse became one of the most quoted in the language. Dr Johnson knew it by heart.\n\nThe poem only says “Henley”, and an inn at Henley-on-Thames claims it too. No record settles it either way, and the Victoria County History calls our claim groundless. We still think the warmest welcome is here.' },
     ],
   },
   {
@@ -284,7 +275,7 @@ export const eras = [
       // about 2 miles south of Henley (Wikipedia). Hotel: the Heritage Centre documents
       // that he "most probably stayed here disguised as a groom". Wording now uses
       // "servant" throughout, matching the accounts of the escape.
-      { year: '1651', kind: 'Tradition', title: 'A king on the run', text: 'The Swan’s history says King Charles II most probably stopped here in September 1651, in disguise, as he fled after losing the Battle of Worcester. No account of his escape names Henley or the Swan.', body: 'What is recorded is this. On 10 September 1651 the King left Bentley Hall in Staffordshire dressed as a tenant farmer’s son, calling himself William Jackson. He rode on the same horse as a young woman named Jane Lane, posing as her servant, on the road to Bristol. Their party went by way of Bromsgrove, and at Wootton Wawen, about two miles south of Henley, they rode calmly through a troop of Parliament’s cavalry gathered outside the inn. That night they stopped at Long Marston, beyond Stratford.\n\nHenley sits on that stretch of road, so the story is possible, but it can’t be proved. If he did stop here, we like to think he’d have had our best room, the Diamond Suite.', source: 'Accounts of the King’s escape; the Swan’s own history' },
+      { year: '1651', kind: 'Reported', title: 'A king on the run', text: 'The Swan’s history says King Charles II most probably stopped here in September 1651, in disguise, as he fled after losing the Battle of Worcester. No account of his escape names Henley or the Swan.', body: 'What is recorded is this. On 10 September 1651 the King left Bentley Hall in Staffordshire dressed as a tenant farmer’s son, calling himself William Jackson. He rode on the same horse as a young woman named Jane Lane, posing as her servant, on the road to Bristol. Their party went by way of Bromsgrove, and at Wootton Wawen, about two miles south of Henley, they rode calmly through a troop of Parliament’s cavalry gathered outside the inn. That night they stopped at Long Marston, beyond Stratford.\n\nHenley sits on that stretch of road, so the story is possible, but it can’t be proved. If he did stop here, we like to think he’d have had our best room, the Diamond Suite.', source: 'Accounts of the King’s escape; the Swan’s own history' },
       // VCH n.4: "Thomas Wheler, who was an innkeeper in 1592 ... is definitely
       // associated with the Swan in 1608." Hotel: August 1608 tenant "Mr Tomas Kirby",
       // "An Inn called the Swan with barns and stables, orchards and courtyards".
@@ -296,7 +287,7 @@ export const eras = [
       // HOTEL: "The exposed bit of wall you can see by table 9 in the bar area ... is said
       // to be wall stone taken from the castle." Not confirmed elsewhere. Moved here from
       // the castle entry: if true, the stone was reused when the inn was built.
-      { year: '16th century', kind: 'Tradition', title: 'Stone from the castle?', text: 'An exposed stretch of wall in the bar, by table 9, is said to be stone taken from the ruins of Beaudesert Castle across the road and reused when the inn was built.', look: 'The bare stone wall by table 9 in the bar', body: 'Reusing stone from a ruined castle was common, but no record confirms where this stone came from. It is a story the Swan tells.' },
+      { year: '16th century', kind: 'Reported', title: 'Stone from the castle?', text: 'An exposed stretch of wall in the bar, by table 9, is said to be stone taken from the ruins of Beaudesert Castle across the road and reused when the inn was built.', look: 'The bare stone wall by table 9 in the bar', body: 'Reusing stone from a ruined castle was common, but no record confirms where this stone came from. It is a story the Swan tells.' },
       { year: '1358', kind: 'Hotel history', title: '“The White Swan” is written down', text: 'According to the Swan’s history, the name first appears in the records in 1358.', body: '' },
       { year: '1352', kind: 'Hotel history', title: 'An inn on this spot', text: 'The Swan’s history dates the first inn on this site to 1352. The building that stands here today came later.', body: '' },
     ],
