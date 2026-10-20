@@ -422,7 +422,10 @@ function Footer() {
         <p className="foot-line">The warmest welcome at an inn.</p>
         <a className="pill light" href={ON_HISTORY ? HOME : '#top'}>{ON_HISTORY ? 'Back to today' : 'Back to the top'}</a>
         <div className="foot-grid">
-          <p>{contact.address.join(', ')}<br /><a href={contact.phoneHref}>{contact.phone}</a> · <a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+          {/* Homepage footer leaves out the address, phone and email (Find us already shows them); Our story keeps them */}
+          {ON_HISTORY && (
+            <p>{contact.address.join(', ')}<br /><a href={contact.phoneHref}>{contact.phone}</a> · <a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+          )}
           <p><a href={contact.instagram} target="_blank" rel="noreferrer">Instagram</a> · <a href={contact.facebook} target="_blank" rel="noreferrer">Facebook</a> · <a href={contact.tripadvisor} target="_blank" rel="noreferrer">Tripadvisor</a></p>
         </div>
         <details className="credits">
