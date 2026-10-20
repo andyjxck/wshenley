@@ -9,7 +9,7 @@
 
 import heroToday from './assets/hero-today.jpg'
 import interiorToday from './assets/interior-today.jpg'
-import whatsonLive from './assets/week-bg.jpg' // Flickr 2012 "The Henley White Swan 2" (hotel's own photo)
+import whatsonLive from './assets/week-bg.jpg' // Flickr 2012 "The Henley White Swan 2" (account "Henley White Swan"; not claimed as the hotel's on the page)
 // Elliott Brown, "The White Swan Secret Garden - Henley-in-Arden - sign", 4 June 2016,
 // flickr.com/photos/ell-r-brown/27425128576, CC BY-SA 2.0 (licence checked on the Flickr
 // page, 20 Oct 2026). Flickr's 1600 x 1200 size, re-saved as JPEG; not cropped or retouched.
@@ -192,9 +192,12 @@ export const eras = [
       // says he became landlord in the 1980s. Boon (1986), died 7 Sept 2002 aged 55
       // (Wikipedia).
       { year: '1980s', kind: 'Documented in part', title: 'A TV star behind the bar', text: 'The actor Michael Elphick ran the White Swan through the 1980s and into the early 1990s. He is best remembered as Ken Boon in the TV series Boon, which began in 1986. He died in 2002, aged 55.', body: 'He is said to have kept a hideaway in a secret loft space at the Swan, where he would go to write letters to his daughter and learn his scripts for Boon (see 2013).', source: 'Landlord: the Swan’s own history. The hideaway: an online profile of Michael Elphick' },
-      // 1963 photo: the hotel's Flickr, "White-Swan-1963" (photo 7752523264), licence
-      // All Rights Reserved. Not reproduced here; linked instead (Andy, 20 Oct 2026).
-      { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', label: 'View on Flickr', note: 'The 1963 photograph, on the White Swan’s Flickr' } },
+      // 1963 photo: Flickr henleywhiteswan/7752523264, "White-Swan-1963", All Rights Reserved,
+      // so linked, not reproduced (Andy, 20 Oct 2026). Andy (20 Oct 2026): the photos do not
+      // belong to the hotel. The Flickr page names no photographer, only the account name
+      // "Henley White Swan", which does not establish who took or owns it, so the page claims
+      // no ownership or authorship (same treatment as the January 2013 snow photo).
+      { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', label: 'View on Flickr', note: 'A photograph from 1963, on Flickr' } },
       // HOTEL: "For a short time in the 1950s Cygnets Bar at The White Swan was a
       // Children's Bar." Context: the Children Act 1908 barred children from the bars of
       // pubs (Wikipedia, Children Act 1908).
@@ -210,14 +213,15 @@ export const eras = [
       { year: '1935', kind: 'Hotel history', title: 'The beams come back', text: 'In Georgian times it was the fashion to hide timber framing under plaster. When the Swan was renovated in 1935 the plaster came off, and the 16th-century beams were on show again.', look: 'The beams through the bar and restaurant', body: '' },
       // Andy's three early photographs (uploaded 20 Oct 2026 as IMG_4057-2.jpg, IMG_4090 2.jpg
       // and a numbered file; no date or caption in their metadata). The only dating we have
-      // is Andy's: "before 1920, public domain", supplied by the White Swan. No exact year
+      // is Andy's: "before 1920, public domain". Andy (20 Oct 2026): they do not belong to the
+      // hotel, so the page no longer says they were supplied by the White Swan. No exact year
       // is known, so they sit where 1920 would fall, the same way the pre-1914 postcard
       // sits by its latest possible date. Formerly a gallery at the top of the page.
-      { year: 'Before 1920', kind: 'Hotel history', title: 'Three early photographs', text: 'Three early photographs from Henley-in-Arden, supplied by the White Swan. All we know of their date is that they are from before 1920; the exact years aren’t known.', body: '', images: [
+      { year: 'Before 1920', kind: 'Documented', title: 'Three early photographs', text: 'Three early photographs from Henley-in-Arden. All we know of their date is that they are from before 1920; the exact years aren’t known.', body: '', images: [
         { image: oldSepia, alt: 'Early photograph from Henley-in-Arden, before 1920 (1 of 3)', shape: 'wide' },
         { image: oldPortrait, alt: 'Early photograph from Henley-in-Arden, before 1920 (2 of 3)', shape: 'tall' },
         { image: oldMarketway, alt: 'Early photograph from Henley-in-Arden, before 1920 (3 of 3)', shape: 'small' },
-      ], credit: 'Before 1920. Public domain, supplied by the White Swan.' },
+      ], credit: 'Before 1920. Public domain.' },
       { year: 'Undated', kind: 'Documented', title: 'A real photo postcard', text: 'The White Swan Hotel on an early photographic postcard.', body: '', image: postcardUndated, credit: 'Real photo postcard' },
       { year: 'Pre-1914', kind: 'Documented', title: 'Wish you were here', text: 'The Swan on a postcard from before the First World War.', body: '', image: postcard1914, credit: 'Real photo postcard, before 1914' },
       // Station: Henley-in-Arden station opened with the North Warwickshire Line,
@@ -319,11 +323,11 @@ export const eras = [
 ]
 
 export const credits = [
-  'Present-day photos: the White Swan’s previous website.',
+  'Present-day photos: as used on the White Swan’s previous website.',
   ['Secret Garden sign, June 2016: ', { label: 'photo by Elliott Brown on Flickr', href: 'https://www.flickr.com/photos/ell-r-brown/27425128576/' }, ', licensed under ', { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, '. Resized, and on the page it may be trimmed to fit and lightly toned; the adapted photo is shared under the same licence.'],
   'The 1963 photo and the January 2013 snow photo are linked on Flickr, not reproduced here.',
   'Coach entrance, 2010: Elliott Brown, CC BY 2.0, via Wikimedia Commons.',
-  'Three early photographs on Our story, before 1920: public domain, supplied by the White Swan.',
+  'Three early photographs on Our story, before 1920: public domain.',
   'Trailer: I Bought a Vampire Motorcycle, from the film’s YouTube channel.',
   'History: the White Swan’s own history, drawing on the Henley-in-Arden Museum and Heritage Centre and Jonathan Dovey’s History of Henley-in-Arden; the Victoria County History of Warwickshire, vol. 3 (1945); Historic England list entry 1382311; the Heritage Centre’s Weeks in History; James Boswell’s Life of Johnson; The Torrington Diaries, ed. C. Bruyn Andrews.',
 ]
