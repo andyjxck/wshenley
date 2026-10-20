@@ -105,15 +105,6 @@ export const events = {
 }
 
 // PRIVATE HIRE: keep to what the hotel has confirmed. No prices, packages or conditions.
-// End of Find us on the homepage: the hotel's own snow photo is All Rights Reserved on Flickr
-// (henleywhiteswan/8404955955, taken 22 Jan 2013), so it is linked, not reproduced.
-export const findUsFlickr = {
-  title: 'The White Swan in the snow, January 2013',
-  href: 'https://www.flickr.com/photos/henleywhiteswan/8404955955/',
-  label: 'View on Flickr',
-  note: 'The White Swan in the snow, January 2013, on the White Swan’s Flickr',
-}
-
 export const privateHire = {
   headline: 'Hire our function room',
   intro: 'Our function room is free to hire, and catering is available. Use the form below or give us a call to talk it through.',
@@ -183,7 +174,9 @@ export const eras = [
       // report found. Andy (20 Oct 2026): say rediscovered (it was Elphick's known hideaway),
       // keep IMDb out of the public copy, no dismissive conclusion; his use of the loft sits
       // in the 1980s entry. Public source line kept neutral, no other provenance implied.
-      { year: '2013', kind: 'Report', title: 'The hidden loft, rediscovered', text: 'In September 2013 the Swan’s new owners rediscovered a secret loft space, an old priest hole by repute, and the same hideaway Michael Elphick had slipped away to in his years behind the bar (see 1980s).', body: 'Who first built it, and whether a priest ever hid there, is a question the building has yet to answer.', source: 'An online profile of Michael Elphick' },
+      // Snow photo: the hotel's own Flickr (henleywhiteswan/8404955955, taken 22 Jan 2013), All Rights
+      // Reserved, so it is linked from this 2013 entry, not reproduced.
+      { year: '2013', kind: 'Report', title: 'The hidden loft, rediscovered', text: 'In September 2013 the Swan’s new owners rediscovered a secret loft space, an old priest hole by repute, and the same hideaway Michael Elphick had slipped away to in his years behind the bar (see 1980s).', body: 'Who first built it, and whether a priest ever hid there, is a question the building has yet to answer.', source: 'An online profile of Michael Elphick', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/8404955955/', label: 'View on Flickr', note: 'The White Swan in the snow, January 2013, on the White Swan’s Flickr' } },
       // Film facts: Wikipedia (released 6 July 1990, filmed in Birmingham, Neil
       // Morrissey, Michael Elphick as Inspector Cleaver). Swan's catering and rooms:
       // Hotel only. Trailer: 'I Bought A Vampire Motorcycle - Cinema Trailer' on the

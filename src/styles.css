@@ -527,13 +527,23 @@ html[data-page="history"] .site-footer { background: #2c1e11; color: #efe3cb; }
 .enq-or { color: var(--muted); font-size: .95rem; }
 .enq-small { color: var(--muted); font-size: .82rem; margin: 14px 0 0; }
 .enquiry.sent p { color: var(--muted); }
-/* Private hire: on wide screens the intro sits beside a compact form instead of the form spreading under it */
-.hire-layout { display: grid; grid-template-columns: minmax(0, 1fr); }
+/* Private hire + Find us, one section. Wide screens: hire intro, then On the High Street, in the
+   left column beside the compact enquiry form; Nearby full width below. Smaller screens stack. */
+.hire-visit { padding-bottom: 60px; }
+.hv-layout { display: grid; grid-template-columns: minmax(0, 1fr); }
+.hv-form .enquiry { margin-top: 0; }
+.findus { margin-top: clamp(56px, 8vw, 80px); }
+.findus .visit-grid { margin: 30px 0 0; }
+.visit-grid a { overflow-wrap: anywhere; }
+.nearby-block { margin-top: clamp(56px, 8vw, 80px); }
 @media (min-width: 980px) {
-  .hire-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 520px); column-gap: clamp(48px, 7vw, 100px); align-items: start; }
-  .hire-intro { padding-top: 10px; }
+  .hv-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 520px); grid-template-areas: "intro form" "findus form"; grid-template-rows: auto 1fr; column-gap: clamp(48px, 7vw, 100px); align-items: start; }
+  .hire-intro { grid-area: intro; padding-top: 10px; }
   #hire .lead { margin-bottom: 0; }
-  .hire-layout .enquiry { margin-top: 0; justify-self: end; }
+  .hv-form { grid-area: form; justify-self: end; width: 100%; max-width: 520px; }
+  .findus { grid-area: findus; margin-top: 56px; }
+  .findus .visit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 36px; }
+  .nearby-block { margin-top: 72px; }
 }
 
 /* ---------- What's on: one-off events from the staff app ---------- */

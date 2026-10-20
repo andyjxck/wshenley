@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { contact, hero, rooms, food, whatsOn, privateHire, nearby, nearbyNote, eras, credits, findUsFlickr } from './content.js'
+import { contact, hero, rooms, food, whatsOn, privateHire, nearby, nearbyNote, eras, credits } from './content.js'
 import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
 import { useLiveAvailability, shortDate } from './liveAvailability.js'
@@ -256,43 +256,43 @@ function WhatsOn() {
   )
 }
 
-function Hire() {
+// Private hire and Find us share one section: on wide screens the hire intro and the
+// On the High Street details sit in the left column beside the enquiry form, and Nearby
+// runs full width underneath. On smaller screens it all stacks in that order.
+function HireAndVisit() {
   return (
-    <section className="section" id="hire">
-      <div className="wrap hire-layout">
+    <section className="section hire-visit" id="hire">
+      <div className="wrap hv-layout">
         <div className="hire-intro">
           <p className="eyebrow reveal">Private hire</p>
           <h2 className="reveal">{privateHire.headline}</h2>
           <p className="lead reveal">{privateHire.intro}</p>
         </div>
-        <EnquiryForm />
-      </div>
-    </section>
-  )
-}
-
-function Visit() {
-  return (
-    <section className="section visit" id="visit">
-      <div className="wrap">
-        <p className="eyebrow reveal">Find us</p>
-        <h2 className="reveal">On the High Street</h2>
-        <div className="visit-grid reveal">
-          <div>
-            <h3 className="h-label">Address</h3>
-            <p>{contact.address.map((l) => <span className="line" key={l}>{l}</span>)}</p>
-            <a className="text-link" href={contact.mapsHref} target="_blank" rel="noreferrer">Open in Maps</a>
-          </div>
-          <div>
-            <h3 className="h-label">Open</h3>
-            <p>{contact.hours}</p>
-            <p className="muted">Car park at the rear for guests.</p>
-          </div>
-          <div>
-            <h3 className="h-label">Get in touch</h3>
-            <p><a href={contact.phoneHref}>{contact.phone}</a><br /><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+        <div className="hv-form">
+          <EnquiryForm />
+        </div>
+        <div className="findus" id="visit">
+          <p className="eyebrow reveal">Find us</p>
+          <h2 className="reveal">On the High Street</h2>
+          <div className="visit-grid reveal">
+            <div>
+              <h3 className="h-label">Address</h3>
+              <p>{contact.address.map((l) => <span className="line" key={l}>{l}</span>)}</p>
+              <a className="text-link" href={contact.mapsHref} target="_blank" rel="noreferrer">Open in Maps</a>
+            </div>
+            <div>
+              <h3 className="h-label">Open</h3>
+              <p>{contact.hours}</p>
+              <p className="muted">Car park at the rear for guests.</p>
+            </div>
+            <div>
+              <h3 className="h-label">Get in touch</h3>
+              <p><a href={contact.phoneHref}>{contact.phone}</a><br /><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+            </div>
           </div>
         </div>
+      </div>
+      <div className="wrap nearby-block" id="nearby">
         <h3 className="h-label reveal">Nearby</h3>
         <ul className="nearby reveal">
           {nearby.map((n) => (
@@ -303,14 +303,6 @@ function Visit() {
           ))}
         </ul>
         <p className="nearby-note muted reveal">{nearbyNote}</p>
-        <div className="entry-flickr findus-flickr reveal" style={{ marginTop: 40 }}>
-          <a className="flickr-btn" href={findUsFlickr.href} target="_blank" rel="noopener noreferrer" aria-label={`${findUsFlickr.label}: ${findUsFlickr.note} (opens in a new tab)`}>
-            <span className="flickr-dots" aria-hidden="true"><i /><i /></span>
-            <span>{findUsFlickr.label}</span>
-            <svg className="flickr-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </a>
-          <p className="flickr-note">{findUsFlickr.note}</p>
-        </div>
         <p className="story-link reveal"><a className="text-link" href={STORY}>Read the Swan’s story, from 1352 to today</a></p>
       </div>
     </section>
@@ -473,8 +465,7 @@ export default function App() {
           <Stay />
           <Eat />
           <WhatsOn />
-          <Hire />
-          <Visit />
+          <HireAndVisit />
         </main>
       )}
       <Footer />
