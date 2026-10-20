@@ -12,7 +12,6 @@ import interiorToday from './assets/interior-today.jpg'
 import whatsonLive from './assets/week-bg.jpg' // Flickr 2012 "The Henley White Swan 2" (hotel's own photo)
 import garden from './assets/garden.jpg'
 import coach2010 from './assets/coach-entrance-2010.jpg'
-import pint1963 from './assets/pint-1963.jpg'
 import postcardUndated from './assets/postcard-undated.jpg'
 import postcard1914 from './assets/postcard-pre1914.jpg'
 import lantern from './assets/lantern-c1900.jpg'
@@ -207,7 +206,9 @@ export const eras = [
       // says he became landlord in the 1980s. Boon (1986), died 7 Sept 2002 aged 55
       // (Wikipedia).
       { year: '1980s', kind: 'Documented', title: 'A TV star behind the bar', text: 'The actor Michael Elphick ran the White Swan through the 1980s and into the early 1990s. He is best remembered as Ken Boon in the TV series Boon, which began in 1986. He died in 2002, aged 55.', body: '' },
-      { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', image: pint1963, credit: 'The White Swan on Flickr' },
+      // 1963 photo: the hotel's Flickr, "White-Swan-1963" (photo 7752523264), licence
+      // All Rights Reserved. Not reproduced here; linked instead (Andy, 20 Oct 2026).
+      { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', label: 'View on Flickr', note: 'The 1963 photograph, on the White Swan’s Flickr' } },
       // HOTEL: "For a short time in the 1950s Cygnets Bar at The White Swan was a
       // Children's Bar." Context: the Children Act 1908 barred children from the bars of
       // pubs (Wikipedia, Children Act 1908).
@@ -323,7 +324,7 @@ export const eras = [
 
 export const credits = [
   'Present-day photos: the White Swan’s current website.',
-  'Secret Garden (2014) and the 1963 photo: the White Swan’s Flickr account.',
+  'Secret Garden (2014): the White Swan’s Flickr account. The 1963 photo is linked on Flickr, not reproduced here.',
   'Coach entrance, 2010: Elliott Brown, CC BY 2.0, via Wikimedia Commons.',
   'The White Swan in the snow, January 2013: the White Swan’s own Flickr account.',
   'Three early photographs on Our story, before 1920: public domain, supplied by the White Swan.',

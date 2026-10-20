@@ -380,6 +380,16 @@ function Entry({ e, index }) {
             </figcaption>
           </figure>
         )}
+        {e.flickr && (
+          <div className="entry-flickr">
+            <a className="flickr-btn" href={e.flickr.href} target="_blank" rel="noopener noreferrer" aria-label={`${e.flickr.label}: ${e.flickr.note} (opens in a new tab)`}>
+              <span className="flickr-dots" aria-hidden="true"><i /><i /></span>
+              <span>{e.flickr.label}</span>
+              <svg className="flickr-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </a>
+            {e.flickr.note && <p className="flickr-note">{e.flickr.note}</p>}
+          </div>
+        )}
         {e.source && <p className="entry-source">Source: {e.source}</p>}
       </div>
     </article>
