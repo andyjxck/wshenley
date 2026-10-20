@@ -259,10 +259,12 @@ function WhatsOn() {
 function Hire() {
   return (
     <section className="section" id="hire">
-      <div className="wrap">
-        <p className="eyebrow reveal">Private hire</p>
-        <h2 className="reveal">{privateHire.headline}</h2>
-        <p className="lead reveal">{privateHire.intro}</p>
+      <div className="wrap hire-layout">
+        <div className="hire-intro">
+          <p className="eyebrow reveal">Private hire</p>
+          <h2 className="reveal">{privateHire.headline}</h2>
+          <p className="lead reveal">{privateHire.intro}</p>
+        </div>
         <EnquiryForm />
       </div>
     </section>
