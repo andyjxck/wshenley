@@ -297,28 +297,30 @@ p { margin: 0 0 1em; }
 .entry.in .frame img { transform: scale(1); }
 .entry-fig figcaption { font-size: .8rem; color: var(--muted); margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .entry-fig figcaption a { color: inherit; }
-/* Link out to a photo we can't reproduce (no image shown) */
-.entry-flickr { margin-top: 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+/* Link out to a photo we can't reproduce (no image shown).
+   A small outlined pill, no fill of its own: the ageing page shows through it, and its
+   text and border take the page's current ink (--ink, set on scroll by useTimeTravel.js),
+   so it is never a bright white block on sepia or old paper. */
+.entry-flickr { margin-top: 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .flickr-btn {
-  display: inline-flex; align-items: center; gap: 12px;
-  padding: 12px 20px 12px 16px; border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  background: color-mix(in srgb, var(--paper) 88%, var(--accent) 4%);
+  display: inline-flex; align-items: center; gap: 8px; width: auto; max-width: 100%;
+  min-height: 34px; padding: 6px 13px 6px 11px; border-radius: 999px; box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, var(--ink) 42%, transparent);
+  background: transparent; box-shadow: none;
   color: var(--ink); text-decoration: none;
-  font: 600 .74rem/1 var(--sans); letter-spacing: .16em; text-transform: uppercase;
-  box-shadow: 0 10px 24px -18px rgba(60,40,20,.55);
-  transition: background-color .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease), transform .35s var(--ease), box-shadow .35s var(--ease);
+  font: 600 .66rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase;
+  transition: background-color .3s var(--ease), border-color .3s var(--ease);
 }
-.flickr-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); transform: translateY(-1px); box-shadow: 0 16px 30px -18px rgba(60,40,20,.7); }
-.flickr-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.flickr-dots { display: inline-flex; gap: 3px; }
-.flickr-dots i { width: 8px; height: 8px; border-radius: 50%; background: #0063dc; display: block; }
+.flickr-btn:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); border-color: color-mix(in srgb, var(--ink) 70%, transparent); }
+.flickr-btn:active { background: color-mix(in srgb, var(--ink) 14%, transparent); }
+.flickr-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; background: color-mix(in srgb, var(--ink) 8%, transparent); }
+.flickr-dots { display: inline-flex; gap: 2px; }
+.flickr-dots i { width: 6px; height: 6px; border-radius: 50%; background: #0063dc; display: block; opacity: .85; }
 .flickr-dots i + i { background: #ff0084; }
-.flickr-btn:hover .flickr-dots i { box-shadow: 0 0 0 1.5px var(--paper); }
-.flickr-arrow { width: 14px; height: 14px; transition: transform .35s var(--ease); }
-.flickr-btn:hover .flickr-arrow { transform: translate(2px, -2px); }
-.flickr-note { margin: 0; padding-left: 4px; font-size: .8rem; color: var(--muted); font-style: italic; }
-@media (prefers-reduced-motion: reduce) { .flickr-btn, .flickr-arrow { transition: none; } .flickr-btn:hover, .flickr-btn:hover .flickr-arrow { transform: none; } }
+.flickr-arrow { width: 11px; height: 11px; opacity: .75; transition: transform .3s var(--ease); }
+.flickr-btn:hover .flickr-arrow, .flickr-btn:focus-visible .flickr-arrow { transform: translate(1px, -1px); opacity: 1; }
+.flickr-note { margin: 0; padding-left: 2px; font-size: .78rem; color: var(--muted); font-style: italic; }
+@media (prefers-reduced-motion: reduce) { .flickr-btn, .flickr-arrow { transition: none; } .flickr-btn:hover .flickr-arrow, .flickr-btn:focus-visible .flickr-arrow { transform: none; } }
 
 .rights { background: #b3261e; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: .7rem; font-weight: 600; }
 
