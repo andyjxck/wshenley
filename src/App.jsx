@@ -6,7 +6,6 @@ import { useLiveAvailability, shortDate } from './liveAvailability.js'
 import WeekCalendar from './WeekCalendar.jsx'
 import { useTimeTravel, useReveal } from './useTimeTravel.js'
 import EnquiryForm from './EnquiryForm.jsx'
-import { useEventsFeed, timeLabel } from './useEventsFeed.js'
 
 // Two real pages: the homepage (index.html) and Our story (history/index.html).
 // history/index.html sets <html data-page="history">, so links can point the right way from either page.
@@ -219,35 +218,16 @@ function Eat() {
   )
 }
 
-// One-off events staff have put on the website, soonest first (weekly ones are in the headline).
-function useComingUp() {
-  const feed = useEventsFeed()
-  if (!feed) return []
-  const now = new Date()
-  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
-  return feed.filter((e) => e.repeat !== 'weekly' && e.date >= today).slice(0, 4)
-}
-
+// The bar photo stays put behind the section (like the hero) while the words scroll over it.
 function WhatsOn() {
-  const coming = useComingUp()
   return (
     <section className="whats-on" id="whats-on">
-      <img src={whatsOn.image} alt="" loading="lazy" />
+      <img className="whats-img" src={whatsOn.image} alt="" />
       <div className="whats-shade" />
       <div className="wrap whats-copy">
         <p className="eyebrow reveal">What’s on</p>
         <h2 className="reveal">{whatsOn.headline}</h2>
         <p className="lead reveal">{whatsOn.text}</p>
-        {coming.length > 0 && (
-          <ul className="coming-up">
-            {coming.map((e) => (
-              <li key={e.id}>
-                <b>{new Date(`${e.date}T12:00:00`).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</b>
-                <span>{e.title}{timeLabel(e) ? `, ${timeLabel(e)}` : ''}</span>
-              </li>
-            ))}
-          </ul>
-        )}
         <div className="reveal whats-cta">
           <a className="pill light" href={contact.instagram} target="_blank" rel="noreferrer">See this week on Instagram</a>
         </div>
