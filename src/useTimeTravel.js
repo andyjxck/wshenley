@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react'
 
 // Page colour from today (0) to the oldest entry (1).
-// Warm paper first, then sepia, then cold black-and-white paper.
+// White, then sepia, then progressively older, darker aged paper.
+// It never turns black and never goes back to white or grey.
 const BG = [
   [0.0, [247, 245, 241]],
-  [0.22, [244, 238, 226]],
-  [0.5, [236, 224, 200]],
-  [0.68, [231, 220, 202]],
-  [0.84, [226, 225, 222]],
-  [1.0, [214, 214, 212]],
+  [0.2, [245, 239, 227]],
+  [0.45, [238, 225, 199]],
+  [0.7, [226, 208, 172]],
+  [1.0, [214, 192, 150]],
 ]
 const INK = [
   [0.0, [22, 20, 18]],
-  [0.5, [48, 34, 22]],
-  [0.84, [24, 24, 24]],
-  [1.0, [14, 14, 14]],
+  [0.45, [52, 36, 22]],
+  [0.7, [50, 33, 18]],
+  [1.0, [44, 28, 14]],
 ]
 
 function mix(stops, p) {
@@ -54,7 +54,7 @@ export function useTimeTravel(ref) {
       root.style.setProperty('--bg', `rgb(${bg.join(',')})`)
       root.style.setProperty('--ink', `rgb(${ink.join(',')})`)
       root.style.setProperty('--progress', p.toFixed(4))
-      root.style.setProperty('--grain', (0.02 + p * 0.07).toFixed(3))
+      root.style.setProperty('--grain', (0.02 + p * 0.06).toFixed(3))
       const meta = document.querySelector('meta[name=theme-color]')
       if (meta) meta.setAttribute('content', `rgb(${bg.join(',')})`)
     }

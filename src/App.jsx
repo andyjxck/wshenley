@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { contact, hero, rooms, food, whatsOn, privateHire, nearby, eras, credits, findUsPhoto, historyPhotos, storyKey } from './content.js'
+import { contact, hero, rooms, food, whatsOn, privateHire, nearby, nearbyNote, eras, credits, findUsPhoto, historyPhotos, storyKey } from './content.js'
 import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
 import { useLiveAvailability, shortDate } from './liveAvailability.js'
@@ -39,11 +39,12 @@ const YEARS_BACK = new Date().getFullYear() - OLDEST
 function gradeFor(index) {
   const t = index / Math.max(1, TOTAL - 1)
   const ease = (a, b, x) => Math.min(1, Math.max(0, (x - a) / (b - a)))
-  const sepia = 0.85 * ease(0.02, 0.4, t)
-  const grey = ease(0.42, 0.72, t)
-  const contrast = 1 + 0.12 * t
-  const bright = 1 - 0.04 * t
-  return `sepia(${sepia.toFixed(3)}) grayscale(${grey.toFixed(3)}) contrast(${contrast.toFixed(3)}) brightness(${bright.toFixed(3)})`
+  // Photos warm into sepia and keep ageing: never grey or black and white.
+  const sepia = 0.95 * ease(0.02, 0.55, t)
+  const contrast = 1 - 0.08 * ease(0.4, 1, t)
+  const bright = 1 - 0.05 * t
+  const sat = 1 - 0.15 * ease(0.5, 1, t)
+  return `sepia(${sepia.toFixed(3)}) saturate(${sat.toFixed(3)}) contrast(${contrast.toFixed(3)}) brightness(${bright.toFixed(3)})`
 }
 
 function Header({ open, setOpen }) {
@@ -298,9 +299,13 @@ function Visit() {
         <h3 className="h-label reveal">Nearby</h3>
         <ul className="nearby reveal">
           {nearby.map((n) => (
-            <li key={n.name}><a href={n.href} target="_blank" rel="noreferrer">{n.name}</a><span>{n.note}</span></li>
+            <li key={n.name}>
+              <span className="nb-main"><a href={n.href} target="_blank" rel="noreferrer">{n.name}</a><small>{n.place}</small></span>
+              <span className="nb-dist">{n.distance}</span>
+            </li>
           ))}
         </ul>
+        <p className="nearby-note muted reveal">{nearbyNote}</p>
         <figure className="findus-fig reveal">
           <img src={findUsPhoto.image} alt={findUsPhoto.alt} loading="lazy" />
           <figcaption>{findUsPhoto.caption}</figcaption>

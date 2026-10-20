@@ -127,16 +127,22 @@ export const historyPhotos = [
   { image: oldMarketway, alt: 'Early photograph from Henley-in-Arden', caption: 'Before 1920. Public domain.' },
 ]
 
+// Distances: road distance from the White Swan (100 High Street, B95 5BY) to each
+// place, from OpenStreetMap routing (OSRM, fastest car route), checked 20 Oct 2026,
+// rounded to the nearest mile. The Heritage Centre is the walking distance.
+// Raw figures: Heritage Centre 0.16 mi walk; RST 8.7; Birthplace 8.0; Warwick Castle 9.9;
+// Baddesley Clinton 7.6; Packwood 6.2; Coughton Court 9.5; Kenilworth Castle 15.9; NEC 14.2.
+export const nearbyNote = 'Distances are approximate, by road from the White Swan.'
 export const nearby = [
-  { name: 'Henley-in-Arden Museum and Heritage Centre', note: 'Just down the High Street', href: 'https://www.heritagehenley.org.uk/' },
-  { name: 'Royal Shakespeare Theatre', note: 'Stratford-upon-Avon', href: 'http://www.rsc.org.uk/' },
-  { name: 'Shakespeare Birthplace Trust', note: 'Stratford-upon-Avon', href: 'http://www.shakespeare.org.uk/' },
-  { name: 'Warwick Castle', note: '9 miles', href: 'http://www.warwick-castle.com/' },
-  { name: 'Baddesley Clinton', note: 'National Trust', href: 'http://www.nationaltrust.org.uk/baddesleyclinton/' },
-  { name: 'Packwood House', note: 'National Trust', href: 'http://www.nationaltrust.org.uk/packwood-house' },
-  { name: 'Coughton Court', note: 'National Trust', href: 'http://nationaltrust.org.uk/coughtoncourt' },
-  { name: 'Kenilworth Castle', note: 'English Heritage', href: 'http://www.english-heritage.org.uk/daysout/properties/kenilworth-castle/' },
-  { name: 'NEC and Resorts World Arena', note: 'Exhibitions and concerts', href: 'http://www.thenec.co.uk/' },
+  { name: 'Henley-in-Arden Museum and Heritage Centre', place: 'High Street, Henley-in-Arden', distance: '0.2 miles, a 3-minute walk', href: 'https://www.heritagehenley.org.uk/' },
+  { name: 'Packwood House', place: 'Lapworth (National Trust)', distance: 'about 6 miles', href: 'http://www.nationaltrust.org.uk/packwood-house' },
+  { name: 'Baddesley Clinton', place: 'Kingswood (National Trust)', distance: 'about 8 miles', href: 'http://www.nationaltrust.org.uk/baddesleyclinton/' },
+  { name: 'Shakespeare’s Birthplace', place: 'Henley Street, Stratford-upon-Avon', distance: 'about 8 miles', href: 'http://www.shakespeare.org.uk/' },
+  { name: 'Royal Shakespeare Theatre', place: 'Waterside, Stratford-upon-Avon', distance: 'about 9 miles', href: 'http://www.rsc.org.uk/' },
+  { name: 'Coughton Court', place: 'Near Alcester (National Trust)', distance: 'about 9 miles', href: 'http://nationaltrust.org.uk/coughtoncourt' },
+  { name: 'Warwick Castle', place: 'Warwick', distance: 'about 10 miles', href: 'http://www.warwick-castle.com/' },
+  { name: 'NEC and Resorts World Arena', place: 'Birmingham', distance: 'about 14 miles', href: 'http://www.thenec.co.uk/' },
+  { name: 'Kenilworth Castle', place: 'Kenilworth (English Heritage)', distance: 'about 16 miles', href: 'http://www.english-heritage.org.uk/daysout/properties/kenilworth-castle/' },
 ]
 
 // ---------------------------------------------------------------------------

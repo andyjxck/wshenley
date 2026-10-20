@@ -235,7 +235,10 @@ p { margin: 0 0 1em; }
 .nearby { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 30px; }
 .nearby li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: .95rem; }
 .nearby a { text-decoration: none; font-weight: 500; }
-.nearby span { color: var(--muted); font-size: .85rem; text-align: right; }
+.nearby .nb-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.nearby small { color: var(--muted); font-size: .8rem; }
+.nearby .nb-dist { color: var(--muted); font-size: .85rem; text-align: right; flex: none; max-width: 45%; }
+.nearby-note { font-size: .82rem; margin: 12px 0 0; }
 
 /* the time gate */
 .gate { padding: clamp(110px, 16vw, 200px) 0 60px; text-align: center; }
@@ -316,8 +319,71 @@ p { margin: 0 0 1em; }
 .era-the-old-inn .entry { border-top-style: dashed; }
 .era-the-old-inn .entry h3::first-letter { font-size: 1.3em; }
 
-.era-before-the-inn { background: #121110; color: #e9e6df; margin-top: 80px; --ink: #e9e6df; --line: rgba(233,230,223,.16); --muted: rgba(233,230,223,.66); --accent: #c9b48f; }
-.era-before-the-inn::before { content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 40vh; background: linear-gradient(transparent, #121110); pointer-events: none; }
+/* ---------- Ageing: white, then sepia, then older and older paper ----------
+   The page colour itself comes from useTimeTravel.js. Here the older eras get
+   paper texture, worn edges and a small curled corner, stronger the older the era.
+   --age: 0 (none) to 1 (oldest). */
+.timeline { --muted: color-mix(in srgb, var(--ink) 76%, transparent); }
+.era-postcards { --age: .35; }
+.era-coaching-days { --age: .6; --sheet: rgba(255, 248, 230, .34); }
+.era-the-old-inn { --age: .8; --sheet: rgba(255, 246, 224, .3); }
+.era-before-the-inn { --age: 1; --sheet: rgba(252, 240, 212, .26); margin-top: 40px; }
+.era-postcards, .era-coaching-days, .era-the-old-inn, .era-before-the-inn { --accent: #7a4a1c; }
+
+/* Mottled foxing and fibre, drawn once as SVG; tinted brown, mostly transparent */
+.timeline {
+  --foxing: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.035 .05' numOctaves='4' seed='7'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .30  0 0 0 0 .13  0 0 0 .9 -.32'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");
+  --fibre: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9 .25' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .24  0 0 0 0 .1  0 0 0 .5 -.12'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+}
+
+/* Older eras: each entry's text sits on a sheet of aged paper */
+.era-coaching-days .entry-main,
+.era-the-old-inn .entry-main,
+.era-before-the-inn .entry-main {
+  position: relative; padding: clamp(20px, 3vw, 30px) clamp(20px, 3vw, 32px) 46px;
+  background-color: var(--sheet);
+  background-image: var(--foxing), var(--fibre);
+  background-size: 260px 260px, 180px 180px;
+  border-radius: 3px 7px 4px 9px / 8px 3px 9px 4px;
+  box-shadow:
+    inset 0 0 0 1px rgba(110, 72, 30, calc(.10 + var(--age) * .10)),
+    inset 0 0 calc(18px + var(--age) * 26px) rgba(120, 76, 28, calc(.10 + var(--age) * .16)),
+    0 14px 28px -22px rgba(70, 45, 15, .55);
+}
+.era-coaching-days .entry-main > *,
+.era-the-old-inn .entry-main > *,
+.era-before-the-inn .entry-main > * { position: relative; z-index: 1; }
+
+/* Curled bottom corner: a fold of the page colour lifting off the sheet */
+.era-coaching-days .entry-main::after,
+.era-the-old-inn .entry-main::after,
+.era-before-the-inn .entry-main::after,
+.era-postcards .frame::after,
+.era-coaching-days .frame::after,
+.era-the-old-inn .frame::after,
+.era-before-the-inn .frame::after {
+  content: ''; position: absolute; right: 0; bottom: 0; z-index: 2; pointer-events: none;
+  width: calc(16px + var(--age) * 20px); height: calc(16px + var(--age) * 20px);
+  background: linear-gradient(315deg, var(--bg) 0 46%, rgba(60, 38, 12, .22) 50%, #efe2c4 54%, #dcc69c 100%);
+  border-top-left-radius: 6px;
+  box-shadow: -2px -2px 5px rgba(60, 38, 12, .16);
+}
+
+/* Photos in older eras: worn print edges and a light brown burn */
+.era-postcards .frame, .era-coaching-days .frame, .era-the-old-inn .frame, .era-before-the-inn .frame { position: relative; }
+.era-coaching-days .frame, .era-the-old-inn .frame, .era-before-the-inn .frame {
+  border-radius: 2px 5px 3px 6px / 5px 2px 6px 3px; padding: 8px; background: #efe3c6;
+}
+.era-postcards .frame::before, .era-coaching-days .frame::before, .era-the-old-inn .frame::before, .era-before-the-inn .frame::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit;
+  background-image: var(--fibre);
+  box-shadow: inset 0 0 0 1px rgba(110, 72, 30, .18), inset 0 0 calc(14px + var(--age) * 22px) rgba(110, 70, 25, calc(.18 + var(--age) * .2));
+  mix-blend-mode: multiply;
+}
+
+/* The oldest era: the darkest, most worn parchment, still readable */
+.era-before-the-inn .era-head h2 { letter-spacing: .01em; }
+.era-before-the-inn .entry { border-top-color: rgba(110, 72, 30, .28); border-top-style: dashed; }
 
 /* footer */
 .site-footer { background: #0b0b0a; color: #e9e6df; text-align: center; padding: 120px 0 calc(120px + env(safe-area-inset-bottom)); }
@@ -391,6 +457,8 @@ p { margin: 0 0 1em; }
   .entry-year span { position: static; font-size: 2.2rem; color: var(--accent); }
   .era-head { padding: 40px 0 20px; }
   .era-postcards .frame { padding: 6px; }
+  .era-coaching-days .frame, .era-the-old-inn .frame, .era-before-the-inn .frame { padding: 6px; }
+  .era-coaching-days .entry-main, .era-the-old-inn .entry-main, .era-before-the-inn .entry-main { margin-inline: -6px; }
   .mobile-bar { display: flex; position: fixed; z-index: 48; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); gap: 8px; padding: 6px; border-radius: 999px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 10px 30px -10px rgba(0,0,0,.35), 0 0 0 1px var(--line); }
   .mobile-bar a { flex: 1; text-align: center; padding: 13px 0; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .95rem; }
   .mobile-bar a.main { flex: 2; background: var(--ink); color: var(--bg); }
