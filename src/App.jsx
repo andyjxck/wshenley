@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { contact, hero, rooms, food, whatsOn, privateHire, nearby, eras, credits, findUsPhoto, historyPhotos } from './content.js'
+import { contact, hero, rooms, food, whatsOn, privateHire, nearby, eras, credits, findUsPhoto, historyPhotos, storyKey } from './content.js'
 import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
 import { useLiveAvailability, shortDate } from './liveAvailability.js'
@@ -326,6 +326,11 @@ function TimeGate() {
             </figure>
           ))}
         </div>
+        <dl className="story-key reveal" aria-label="How sure we are">
+          {storyKey.map((k) => (
+            <div key={k.kind}><dt className={`kind kind-${kindSlug(k.kind)}`}>{k.kind}</dt><dd>{k.text}</dd></div>
+          ))}
+        </dl>
         <nav className="era-jump reveal" aria-label="Jump to an era">
           {eras.map((e) => <a key={e.id} href={`#${e.id}`}><b>{e.name}</b><span>{e.range}</span></a>)}
         </nav>
@@ -335,17 +340,32 @@ function TimeGate() {
   )
 }
 
+const kindSlug = (k) => k.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '')
+
 function Entry({ e, index }) {
   const paras = e.body ? e.body.split(/\n\s*\n/) : []
   return (
     <article className={`entry reveal${e.image ? ' has-img' : ''}${e.quote ? ' has-quote' : ''}`} data-year={e.year} data-era={e.era} id={`y-${index}`}>
       <div className="entry-year"><span>{e.year}</span></div>
       <div className="entry-main">
+        {e.kind && <p className={`kind kind-${kindSlug(e.kind)}`}>{e.kind}</p>}
         <h3>{e.title}</h3>
         {e.quote && <blockquote>{e.quote}</blockquote>}
         <p className="entry-text">{e.text}</p>
         {paras.map((p, i) => <p className="entry-body" key={i}>{p}</p>)}
         {e.look && <p className="look"><span>Look for it</span>{e.look}</p>}
+        {e.video && (
+          <div className="entry-video">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${e.video}?rel=0`}
+              title={e.videoTitle || e.title}
+              loading="lazy"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+        )}
         {e.image && (
           <figure className="entry-fig">
             <div className="frame"><img src={e.image} alt={e.title} loading="lazy" style={{ filter: gradeFor(index) }} /></div>
@@ -355,6 +375,7 @@ function Entry({ e, index }) {
             </figcaption>
           </figure>
         )}
+        {e.source && <p className="entry-source">Source: {e.source}</p>}
       </div>
     </article>
   )

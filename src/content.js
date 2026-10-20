@@ -11,8 +11,6 @@ import heroToday from './assets/hero-today.jpg'
 import interiorToday from './assets/interior-today.jpg'
 import whatsonLive from './assets/week-bg.jpg' // Flickr 2012 "The Henley White Swan 2" (hotel's own photo)
 import garden from './assets/garden.jpg'
-import cygnets from './assets/cygnets.jpg'
-import exterior2012 from './assets/exterior-2012.jpg'
 import coach2010 from './assets/coach-entrance-2010.jpg'
 import pint1963 from './assets/pint-1963.jpg'
 import postcardUndated from './assets/postcard-undated.jpg'
@@ -146,134 +144,183 @@ export const nearby = [
 // Each era sets the art direction for its entries.
 //   year    big date shown on the left
 //   title   one-line headline
-//   text    short summary (from the current website's history page)
-//   body    YOUR longer story text goes here (leave '' to hide)
+//   kind    how sure we are: one of the labels in storyKey below
+//   text    short summary
+//   body    longer story text (blank line = new paragraph; '' to hide)
+//   quote   optional quotation shown above the text
 //   look    optional 'look for it' note for things guests can still see
-//   image / credit / rights   optional photo
+//   video   optional YouTube video id (embedded without autoplay)
+//   source  optional short source line shown under the entry
+//   image / credit / creditHref / rights   optional photo
+//
+// SOURCES CHECKED (Oct 2026):
+//   VCH  = Victoria County History of Warwickshire, vol. 3 (1945), Henley-in-Arden,
+//          british-history.ac.uk/vch/warks/vol3/pp206-212
+//   HE   = Historic England list entry 1382311 (Grade II*, first listed 6 Feb 1952)
+//   HHC  = Henley-in-Arden Heritage Centre, 'Weeks in history'
+//          heritagehenley.org.uk/weeks_in_history.php
+//   Hotel = the White Swan's own website history (whiteswanhenley.co.uk), which cites
+//          the Heritage Centre and Jonathan Dovey's History of Henley-in-Arden.
+//   Boswell = Life of Johnson (1791), 21 and 22 March 1776 (Project Gutenberg #1564)
 // ---------------------------------------------------------------------------
+
+// Shown at the top of the Our story page, so readers know what each label means.
+export const storyKey = [
+  { kind: 'Documented', text: 'Found in records or published histories.' },
+  { kind: 'Hotel history', text: 'From the Swan’s own history, which draws on Heritage Centre records. We haven’t found it in a second source yet.' },
+  { kind: 'Tradition', text: 'A story the Swan has long told. The records don’t confirm it.' },
+  { kind: 'Report', text: 'Something that was reported, told the way it was told. Not proven.' },
+  { kind: 'Folklore', text: 'A ghost story. Enjoy it as one.' },
+]
 
 export const eras = [
   {
     id: 'living-memory',
     name: 'Living memory',
     range: '2020 to the 1950s',
-    intro: 'Pandemics, TV detectives and a pint in 1963.',
+    intro: 'A pandemic, a TV star behind the bar, a cult film and a hidden loft.',
     entries: [
-      { year: '2020', title: 'The doors close, probably for the first time ever', text: 'The White Swan shut, as did every pub and hotel in the country during the pandemic. It reopened to carry on business as usual.', body: '' },
-      { year: '2014', title: 'The Secret Garden', text: 'The garden behind the hotel, photographed in June 2014. The Secret Garden is currently closed.', body: '', image: garden, credit: 'The White Swan on Flickr, 2014' },
-      { year: '2013', title: 'Cygnets Bar', text: 'Cygnets Bar, photographed in November 2013.', body: '', image: cygnets, credit: 'The White Swan on Flickr, 2013' },
-      { year: '2012', title: 'The White Swan Hotel', text: 'The hotel in 2012.', body: '', image: exterior2012, credit: 'The White Swan on Flickr, 2012' },
-      { year: '2010', title: 'The coach entrance', text: 'The coach entrance at 100 High Street, photographed in March 2010.', body: '', image: coach2010, credit: 'Elliott Brown, March 2010, CC BY 2.0', creditHref: 'https://commons.wikimedia.org/wiki/File:The_White_Swan_Henley-in-Arden_(4435855095).jpg' },
-      { year: '1990', title: 'I Bought a Vampire Motorcycle', text: 'During filming of the cult comedy-horror, starring Neil Morrissey as a despatch rider, the White Swan did the catering and put up the cast.', body: '' },
-      { year: '1980s', title: 'A TV star behind the bar', text: 'Actor Michael Elphick became landlord. He is best remembered as Ken Boon in the hit series Boon (1986), and died aged just 55.', body: '' },
-      { year: '1963', title: 'Enjoying a pint, 1963 style', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', image: pint1963, credit: 'The White Swan on Flickr' },
-      { year: 'c.1960', title: 'The High Street frontage', text: 'Photographed by the Francis Frith company, which recorded towns and villages across Britain.', body: '' },
-      { year: '1950s', title: 'A bar just for children', text: 'For a short time Cygnets Bar was a children’s bar. Children had soft drinks there while the grown-ups had much more interesting tipples in the main bar.', body: '' },
+      { year: '2020', kind: 'Documented', title: 'The doors close', text: 'Like every pub and hotel in the country, the White Swan had to close its doors during the Covid-19 pandemic. It reopened afterwards and carried on as before.', body: '' },
+      // Garden photo: hotel's own Flickr, June 2014. Bowling green: Hotel (1855) and
+      // HHC (1891 photograph). Andy: the Secret Garden is condemned; public wording
+      // agreed with him is "currently closed" (no legal/building status stated).
+      { year: '2014', kind: 'Documented', title: 'The Secret Garden', text: 'The garden behind the hotel, photographed in June 2014. This is the same lawn that was the Swan’s bowling green in Victorian times (see 1891 and 1855). The Secret Garden is currently closed.', body: '', image: garden, credit: 'The White Swan on Flickr, 2014' },
+      // REPORT. IMDb trivia for Michael Elphick (imdb.com/name/nm0255573/trivia/),
+      // read Oct 2026: "In September 2013, the new owners of the pub found a secret loft
+      // space (an old priest hole) where Michael used to go to write letters to his
+      // daughter and to learn scripts of programmes such as Boon." IMDb trivia is
+      // user-submitted; no news report of the find was found.
+      { year: '2013', kind: 'Report', title: 'A hidden loft, or a priest hole?', text: 'In September 2013, the story goes, the Swan’s new owners came across a secret loft space, described as an old priest hole.', body: 'The account comes from a trivia entry on Michael Elphick’s IMDb page, which says this was the hideaway where he used to go to write letters to his daughter and learn his scripts for Boon. IMDb trivia is written by its users, and we haven’t found a newspaper report of the find.\n\nSo treat it as a good story rather than proof. Nobody has shown that the space was ever a priest hole, or that a priest hid in it.', source: 'Trivia entry for Michael Elphick on IMDb (user-submitted)' },
+      // Film facts: Wikipedia (released 6 July 1990, filmed in Birmingham, Neil
+      // Morrissey, Michael Elphick as Inspector Cleaver). Swan's catering and rooms:
+      // Hotel only. Trailer: 'I Bought A Vampire Motorcycle - Cinema Trailer' on the
+      // VampireMotorcycle YouTube channel, which is dedicated to the film and also posts
+      // its teaser, premiere footage and audio-described version; embedding allowed.
+      { year: '1990', kind: 'Hotel history', title: 'I Bought a Vampire Motorcycle', text: 'The cult British comedy-horror was filmed in Birmingham and reached cinemas in July 1990. Neil Morrissey starred as the bike’s owner, and the Swan’s own landlord, Michael Elphick, played the police inspector.', body: 'The Swan’s history says that while the film was being made, the hotel did the catering and put up members of the cast.', video: 'fbvqz-nv7Zw', videoTitle: 'I Bought a Vampire Motorcycle: cinema trailer', source: 'Film details: published cast and release records. Catering and rooms: the Swan’s own history.' },
+      // Elphick: IMDb trivia says he owned the pub in the 1980s and early 1990s; Hotel
+      // says he became landlord in the 1980s. Boon (1986), died 7 Sept 2002 aged 55
+      // (Wikipedia).
+      { year: '1980s', kind: 'Documented', title: 'A TV star behind the bar', text: 'The actor Michael Elphick ran the White Swan through the 1980s and into the early 1990s. He is best remembered as Ken Boon in the TV series Boon, which began in 1986. He died in 2002, aged 55.', body: '' },
+      { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', image: pint1963, credit: 'The White Swan on Flickr' },
+      // HOTEL: "For a short time in the 1950s Cygnets Bar at The White Swan was a
+      // Children's Bar." Context: the Children Act 1908 barred children from the bars of
+      // pubs (Wikipedia, Children Act 1908).
+      { year: '1950s', kind: 'Hotel history', title: 'A bar just for children', text: 'For a short time in the 1950s, Cygnets, the bar that is part of the White Swan, was set aside as a children’s bar.', body: 'Children had been kept out of pub bars by law since the Children Act of 1908. So while the grown-ups had a drink in the main bar, children could sit in Cygnets with a soft drink. The name fits: cygnets are young swans.' },
     ],
   },
   {
     id: 'postcards',
     name: 'Picture postcards',
     range: '1935 to the 1890s',
-    intro: 'Beams uncovered, a path to the railway, and the Swan on glass and card.',
+    intro: 'Beams uncovered, the magistrates move out, a path to the railway, and bowls on the lawn.',
     entries: [
-      { year: '1935', title: 'The beams come back', text: 'Covering timber was the fashion in Georgian times. During renovation in 1935 the plaster came off, revealing the original mid-16th-century beams.', look: 'The beams through the bar and restaurant', body: '' },
-      { year: 'Undated', title: 'Sketched for Ansells', text: 'A sketch of the White Swan by R. G. Snary, made for the Ansells brewery.', body: '' },
-      { year: 'Undated', title: 'A real photo postcard', text: 'The White Swan Hotel on an early photographic postcard.', body: '', image: postcardUndated, credit: 'Real photo postcard' },
-      { year: 'Pre-1914', title: 'Wish you were here', text: 'The Swan on a postcard from before the First World War.', body: '', image: postcard1914, credit: 'Real photo postcard, before 1914' },
-      { year: '1908', title: 'A walk to the railway', text: 'The path beside the hotel through to the new railway was created. Henley-in-Arden station is still only a short walk away.', body: '' },
-      { year: 'c.1890–1910', title: 'Projected on glass', text: 'The White Swan on a magic lantern slide, shown on a screen by lamplight.', body: '', image: lantern, credit: 'Magic lantern slide, c.1890 to 1910' },
+      { year: '1935', kind: 'Hotel history', title: 'The beams come back', text: 'In Georgian times it was the fashion to hide timber framing under plaster. When the Swan was renovated in 1935 the plaster came off, and the 16th-century beams were on show again.', look: 'The beams through the bar and restaurant', body: '' },
+      { year: 'Undated', kind: 'Documented', title: 'A real photo postcard', text: 'The White Swan Hotel on an early photographic postcard.', body: '', image: postcardUndated, credit: 'Real photo postcard' },
+      { year: 'Pre-1914', kind: 'Documented', title: 'Wish you were here', text: 'The Swan on a postcard from before the First World War.', body: '', image: postcard1914, credit: 'Real photo postcard, before 1914' },
+      // Station: Henley-in-Arden station opened with the North Warwickshire Line,
+      // passengers from 1 July 1908 (Wikipedia). Path: Hotel.
+      { year: '1908', kind: 'Hotel history', title: 'A walk to the railway', text: 'The path beside the hotel through to the railway was made in 1908, the year Henley’s new station opened on the North Warwickshire Line. The station is still only a short walk away.', body: '' },
+      // HHC, week 35: "Prior to 1903 the magistrates of the Henley Petty Sessional
+      // Division sat at the White Swan." Courthouse opened 26 Aug 1903.
+      { year: '1903', kind: 'Documented', title: 'The court moves out', text: 'Until 1903, the local magistrates held their petty sessions at the White Swan, trying the lesser cases for the Henley district. On 26 August 1903 Henley’s new Courthouse opened, and the court moved there.', body: '', source: 'Henley-in-Arden Heritage Centre' },
+      // HHC, week 51: photo captioned "Harry Hawkes (far right), The original White Swan
+      // Bowling Green in 1891" (heritagehenley.org.uk/images/weeks/week_image_51.jpg).
+      // Rights not cleared, so the photo is not reproduced here.
+      { year: '1891', kind: 'Documented', title: 'Bowls on the lawn', text: 'The Heritage Centre has a photograph of the original White Swan bowling green in 1891, with the local butcher Harry Hawkes in the picture. That lawn is today’s Secret Garden.', body: '', source: 'Henley-in-Arden Heritage Centre' },
+      { year: 'c.1890–1910', kind: 'Documented', title: 'Projected on glass', text: 'The White Swan on a magic lantern slide, made to be shown on a screen by lamplight.', body: '', image: lantern, credit: 'Magic lantern slide, c.1890 to 1910' },
     ],
   },
   {
     id: 'coaching-days',
     name: 'Coaching days',
-    range: '1855 to 1735',
-    intro: 'Bowls on the lawn, a ghost on the landing, Dr Johnson in town and dinner for two shillings.',
+    range: '1855 to the 1720s',
+    intro: 'Coaches at the gate, a diarist’s bill, Dr Johnson in town, and the poem we claim.',
     entries: [
-      { year: '1855', title: 'A bowling green out the back', text: 'The lawn behind the hotel was a bowling green.', body: '' },
-      // LEGEND. Source: the hotel's own earlier website history page, quoted on
-      // Mysterious Britain (mysteriousbritain.co.uk/england/warwickshire/hauntings/
-      // the-white-swan-hotel-henley-in-arden/): "an 18 year old lady of the night named
-      // Virginia Black ... said to have died after falling down the stairs during a
-      // quarrel with a gentleman in 1845. Virginia used to haunt the corridor outside
-      // bedroom 17 ... she has not been seen in recent years." Andy: Room 17 and the
-      // corridor outside are the same story. No independent record of her has been found.
-      // The same old page also claims public hangings in the courtyard; left out, as
-      // executions were never carried out at a local court or inn.
-      { year: '1845', title: 'The girl outside Room 17', text: 'Legend says the Swan has a ghost: Virginia Black, eighteen years old, who died here in 1845.', body: 'The story goes like this. Virginia was a young woman of the night, just eighteen, and one evening in 1845 she fell into a furious quarrel with a gentleman at the top of the stairs. Whether she slipped or was pushed, nobody can say. She fell, and she never got up.\n\nRumour has it she never left, either. For years, guests and staff told of her in the corridor outside Room 17, the stretch of landing where it all happened. If you’re staying in Room 17 and you hear footsteps on the landing after the bar has closed, you’ll know whose they might be.', look: 'The corridor outside Room 17' },
-      { year: '1792', title: 'Dinner for 2s 2d', text: 'In Jonathan Dovey’s History of Henley-in-Arden, the travel diarist John Byng “stayed at the (White) Swan and had food and drink for 2s 2d”. That is about £8.32 in 2017 money: not far off a main on our lunch menu.', body: '' },
-      { year: '1781', title: 'A diarist arrives', text: 'John Byng, whose diaries ran from 1781 to 1794, is thought to have first visited Henley on 5 July 1781.', body: '' },
-      // FACT: Boswell, Life of Johnson (1791), entries for Thursday 21 and Friday
-      // 22 March 1776: they left Oxford by post-chaise, dined at Chapel House inn where
-      // Johnson praised inns and "repeated, with great emotion, Shenstone's lines", then
-      // "set out early from Henley, where we had lain the preceding night" and reached
-      // Birmingham about nine. (Project Gutenberg #1564.) Boswell does not name the inn.
-      // RUMOUR: that he stayed at the Swan and was working on something while here. The
-      // hotel's old site said the Dictionary; Andy says the rumour is only that he was
-      // working on SOMETHING, so the Dictionary is not claimed. VCH Warwick vol. 3 (1945)
-      // calls the Johnson tradition at the Swan "groundless". Johnson's Lives of the
-      // Poets (1779 to 1781) does include a life of Shenstone (Project Gutenberg #4678).
-      { year: '1776', title: 'Dr Johnson comes to Henley', text: 'On 21 March 1776, Dr Samuel Johnson and his biographer James Boswell spent the night in Henley. Boswell wrote it down. He just didn’t write down where.', look: 'A copy of the Dictionary in the Johnson Suite', body: 'They’d left Oxford that morning by post-chaise, heading north for Birmingham and Johnson’s home town of Lichfield. When they stopped to dine at an inn called Chapel House, Johnson got talking about inns. “There is nothing which has yet been contrived by man,” he said, “by which so much happiness is produced as by a good tavern or inn.” Then, Boswell says, he recited Shenstone’s lines about the warmest welcome at an inn “with great emotion”.\n\nThat night they lay in Henley. The next morning they set out early and were in Birmingham by nine.\n\nSo picture it: Johnson, with Shenstone’s inn poem still fresh on his lips, pulling into the very town the poem is named after. Boswell never says which inn they chose. Rumour has it it was the Swan, and that Johnson sat up working on something. We like to think he found the warmest welcome here.' },
-      { year: 'Coaching era', title: 'A 30-mile staging post', text: 'In the days of stagecoaches, the White Swan was a well-known stop on the road from Lichfield to London.', body: '' },
-      { year: '1735', title: 'The fireplace', text: 'Some time after Shenstone wrote his famous lines, the current fireplace was put in.', look: 'The year 1735, still inscribed on the fireplace', body: '' },
-      // HOTEL CLAIM. Poem: William Shenstone (1714 to 1763), "Written at an Inn at
-      // Henley"; final stanza as quoted in Boswell's Life of Johnson (21 March 1776).
-      // The poem names only "Henley": the Red Lion at Henley-on-Thames claims it too,
-      // and VCH Warwick vol. 3 (1945) calls the Henley-in-Arden tradition "groundless".
-      // The Guardian's Poem of the Week on it (Carol Rumens, 2010) names the White Swan
-      // as the inn. Boswell shows Henley-in-Arden was on the Oxford to Birmingham road,
-      // and Shenstone, from Halesowen near Birmingham, studied at Pembroke College,
-      // Oxford. Andy: "Shenstone apparently did stay at the White Swan. We claim it
-      // either way." Written as the hotel's claim, not as proven fact.
-      { year: '1714–1763', title: 'The warmest welcome', quote: '“Whoe’er has travell’d life’s dull round, / Where’er his stages may have been, / May sigh to think he still has found / The warmest welcome at an inn.”', text: 'The poet William Shenstone stayed at the White Swan, and it’s here, we say, that he wrote “Written at an Inn at Henley”.', body: 'Shenstone grew up at the Leasowes in Halesowen, just outside Birmingham, and went up to Oxford as a young man. The road from Oxford up to Birmingham ran through Henley-in-Arden, right past our front door. We say he stopped here, stayed the night, and was so taken with the place that he wrote a poem about it.\n\nThe poem is called “Written at an Inn at Henley”, and it’s a love letter to the freedom of a good inn, where nobody fusses over you and you can come and go as you please. Its last verse became one of the most quoted in the language. Dr Johnson knew it by heart.\n\nA certain inn on the Thames likes to say the poem is about them. They’re welcome to their opinion. We know where the warmest welcome is.' },
+      { year: '1855', kind: 'Hotel history', title: 'A bowling green out the back', text: 'By 1855 the lawn behind the hotel was a bowling green.', body: '' },
+      // FOLKLORE. Hotel's earlier website history, quoted on Mysterious Britain: Virginia
+      // Black, 18, "said to have died after falling down the stairs during a quarrel
+      // with a gentleman in 1845 ... used to haunt the corridor outside bedroom 17 ... she
+      // has not been seen in recent years." No record of her has been found. Rewritten
+      // respectfully per brief: no labels for her, no graphic detail.
+      { year: '1845', kind: 'Folklore', title: 'The Swan’s ghost story', text: 'Every old inn has a ghost story, and this is ours. It tells of a young woman named Virginia Black, said to have been eighteen, who died after a fall on the stairs in 1845.', body: 'Over the years, guests and staff said they had sensed her in the corridor outside Room 17. Nobody has found a record of Virginia herself, and by the hotel’s own account she hasn’t been seen in a long time. We tell her story as folklore, and with respect for the young woman it remembers.' },
+      // Byng: The Torrington Diaries, ed. C. Bruyn Andrews (4 vols, 1934 to 1938); the
+      // index in vol. 4 lists "The Swan. At Henley in Arden, III, 150, 152" (archive.org,
+      // torringtondiarie009253mbp). Vol. 3 text not accessible, so the visit is
+      // documented but the 2s 2d detail is Dovey's, via the Hotel.
+      { year: '1792', kind: 'Documented', title: 'A diarist’s bill', text: 'John Byng, later Viscount Torrington, kept diaries of his rides around England between 1781 and 1794. The published edition of his diaries records the Swan at Henley-in-Arden.', body: 'Jonathan Dovey’s History of Henley-in-Arden says Byng stopped here in July 1792, and that he “stayed at the (White) Swan and had food and drink for 2s 2d”, two shillings and twopence. The Swan’s history adds that he is thought to have first passed through Henley on 5 July 1781.', source: 'The Torrington Diaries, ed. C. Bruyn Andrews (1934 to 1938), index; Jonathan Dovey, History of Henley-in-Arden' },
+      // Boswell: left Oxford by post-chaise 21 Mar 1776, dined at Chapel House, Johnson's
+      // tavern remark and Shenstone's lines, then "set out early from Henley, where we
+      // had lain the preceding night", Birmingham about nine. Boswell names no inn.
+      // VCH: the tradition of the Johnson and Boswell visit at the Swan is "groundless".
+      // Andy: the rumour is only that Johnson was working on something here, so the
+      // Dictionary (published 1755) is not claimed as the work.
+      { year: '1776', kind: 'Documented in part', title: 'Dr Johnson comes to Henley', text: 'On 21 March 1776, Dr Samuel Johnson and his biographer James Boswell spent the night in Henley. Boswell wrote that down. He didn’t write down which inn.', look: 'A copy of Johnson’s Dictionary in the Johnson Suite', body: 'They had left Oxford that morning by post-chaise, heading for Birmingham and Johnson’s home town of Lichfield. Over dinner at an inn called Chapel House, Johnson said that “there is nothing which has yet been contrived by man, by which so much happiness is produced as by a good tavern or inn”, and then recited Shenstone’s lines on the warmest welcome at an inn. That night they lay at Henley, and the next morning they set out early and reached Birmingham at about nine.\n\nThe Swan’s tradition is that they stayed here, and that Johnson sat up working on something while he was here. No record names the inn, and the Victoria County History calls the tradition groundless.', source: 'James Boswell, Life of Johnson (1791); Victoria County History of Warwickshire, vol. 3 (1945)' },
+      { year: '1735', kind: 'Hotel history', title: 'The fireplace', text: 'The fireplace in the Swan carries the year 1735, according to the hotel’s history the year it was put in.', look: 'The date 1735 inscribed on the fireplace', body: '' },
+      // HHC, week 25: Birmingham to Stratford turnpike trust first met 20 June 1726; at
+      // the peak of the coaching age seven coaches a day passed through Henley; the trust
+      // folded in 1872. Staging post: Hotel. Photo: Elliott Brown, CC BY 2.0.
+      { year: 'Coaching era', kind: 'Documented', title: 'Coaches at the gate', text: 'In 1726 a turnpike trust was set up to look after the road from Birmingham to Stratford, which runs through Henley and had been described as “ruinous and bad”. At the height of the coaching age, seven coaches a day passed through the town.', body: 'The Swan’s history says it was a well-known 30-mile staging post on the route between Lichfield and London, where coaches stopped to change horses. The wide gateway on the High Street, known as the coach entrance, is still there today.', look: 'The old coach entrance on the High Street', image: coach2010, credit: 'The coach entrance in 2010. Elliott Brown, CC BY 2.0', creditHref: 'https://commons.wikimedia.org/wiki/File:The_White_Swan_Henley-in-Arden_(4435855095).jpg', source: 'Henley-in-Arden Heritage Centre; the Swan’s own history' },
+      // TRADITION. Poem: William Shenstone (1714 to 1763), "Written at an Inn at
+      // Henley"; last stanza as quoted by Boswell. The poem names only "Henley"; the Red
+      // Lion at Henley-on-Thames claims it too, and VCH calls the Henley-in-Arden
+      // tradition "groundless". Andy: "We claim it either way"; written as our claim.
+      { year: '1714–1763', kind: 'Tradition', title: 'The warmest welcome', quote: '“Whoe’er has travell’d life’s dull round, / Where’er his stages may have been, / May sigh to think he still has found / The warmest welcome at an inn.”', text: 'The Swan has long claimed that the poet William Shenstone stayed here, and that this is the inn behind his poem “Written at an Inn at Henley”.', body: 'Shenstone grew up at the Leasowes in Halesowen, near Birmingham, and studied at Oxford, and the road between the two ran through Henley-in-Arden. His poem praises the freedom of a good inn, and its last verse became one of the most quoted in the language. Dr Johnson knew it by heart.\n\nThe poem only says “Henley”, and an inn at Henley-on-Thames claims it too. No record settles it either way, and the Victoria County History calls our claim groundless. We still think the warmest welcome is here.' },
     ],
   },
   {
     id: 'the-old-inn',
     name: 'The old inn',
     range: '1663 to 1352',
-    intro: 'Hearths, a king in disguise, barns and stables.',
+    intro: 'Hearths, a king on the run, barns and stables, and the building you stand in.',
     entries: [
-      { year: '1663', title: 'Six hearths, the most in town', text: 'The Hearth Tax returns record six hearths at the White Swan, more than any other building in Henley at the time.', body: '' },
-      // FACT: Escape of Charles II (Wikipedia, citing Matthews 1966 and others); Jane
-      // Lane entry (Wikipedia, citing DNB). Defeat at Worcester 3 Sept 1651; Moseley Old
-      // Hall priest hole; at Bentley Hall early on 10 Sept he took the alias "William
-      // Jackson" and rode as Jane Lane's servant, on the same horse in front of her, with
-      // Henry Lascelles and the Petres. Route that day: Bromsgrove (he took the horse to
-      // the blacksmith), Wootton Wawen (rode through Parliamentary cavalry gathered
-      // outside the inn), Stratford, Long Marston (house of John Tomes, where the cook
-      // set him to wind the roasting jack). Wootton Wawen is about 2 miles south of
-      // Henley on the same road (Wikipedia, Wootton Wawen). No record names Henley or the
-      // Swan; the Henley Heritage Centre says he "most probably" stayed here disguised as
-      // a groom. Tied to the Diamond Suite at Andy's request, as the hotel's best room.
-      { year: '1651', title: 'A king disguised as a groom', text: 'Rumour has it that King Charles II, on the run after the Battle of Worcester and dressed as a servant, stopped at the White Swan. We like to think he stayed in our best room.', look: 'The Diamond Suite, our best room, fit for a king', body: 'In September 1651 the young King Charles II lost the Battle of Worcester and became the most wanted man in England. For a week he hid wherever he could: up an oak tree, and squeezed into a priest hole at Moseley Old Hall while Parliament’s soldiers searched the house.\n\nOn the morning of 10 September he set out from Bentley Hall in Staffordshire in disguise. He called himself William Jackson, and he rode as the servant of a young woman named Jane Lane, sitting in front of her on the same horse and seeing to it like any groom. At Bromsgrove the horse threw a shoe, and the King of England had to take it to the blacksmith himself. A little further on, at Wootton Wawen, just two miles down the road from our door, the party rode straight through a troop of Parliamentary cavalry gathered outside the inn, and nobody looked twice. That night, at Long Marston, the cook told him off for not knowing how to turn the roasting spit.\n\nThe history books don’t mention Henley. But Henley sits just up the road from Wootton Wawen, and the Heritage Centre reckons the King most probably stopped here. Rumour has it he did, at the Swan. We like to think he stayed in our best room, the Diamond Suite.' },
-      { year: '1608', title: '“An Inn called the Swan”', text: 'The tenant, Mr Tomas Kirby, ran “an Inn called the Swan with barns and stables, orchards and courtyards”.', body: '' },
-      { year: '16th century', title: 'The building you stand in', text: 'The timber frame of today’s coaching inn goes up. Its mid-16th-century beams are still overhead.', body: '' },
-      { year: '1358', title: '“The White Swan” is written down', text: 'The first time the name appears in the records.', body: '' },
-      { year: '1352', title: 'An inn on this spot', text: 'The first record of an inn on the site. Travellers have been stopping here ever since.', body: '' },
+      { year: '1663', kind: 'Hotel history', title: 'Six hearths, the most in town', text: 'The Hearth Tax returns of 1663 record six hearths at the White Swan, more than at any other building in Henley at the time.', body: '' },
+      // Route (Wikipedia, Escape of Charles II): Bentley Hall, 10 Sept 1651, dressed as a
+      // tenant farmer's son, alias William Jackson, riding the same horse as Jane Lane, to
+      // travel to Bristol as her servant; via Bromsgrove and Wootton Wawen (rode through
+      // New Model Army cavalry outside the inn), Stratford, Long Marston. Wootton Wawen is
+      // about 2 miles south of Henley (Wikipedia). Hotel: the Heritage Centre documents
+      // that he "most probably stayed here disguised as a groom". Wording now uses
+      // "servant" throughout, matching the accounts of the escape.
+      { year: '1651', kind: 'Tradition', title: 'A king on the run', text: 'The Swan’s history says King Charles II most probably stopped here in September 1651, in disguise, as he fled after losing the Battle of Worcester. No account of his escape names Henley or the Swan.', body: 'What is recorded is this. On 10 September 1651 the King left Bentley Hall in Staffordshire dressed as a tenant farmer’s son, calling himself William Jackson. He rode on the same horse as a young woman named Jane Lane, posing as her servant, on the road to Bristol. Their party went by way of Bromsgrove, and at Wootton Wawen, about two miles south of Henley, they rode calmly through a troop of Parliament’s cavalry gathered outside the inn. That night they stopped at Long Marston, beyond Stratford.\n\nHenley sits on that stretch of road, so the story is possible, but it can’t be proved. If he did stop here, we like to think he’d have had our best room, the Diamond Suite.', source: 'Accounts of the King’s escape; the Swan’s own history' },
+      // VCH n.4: "Thomas Wheler, who was an innkeeper in 1592 ... is definitely
+      // associated with the Swan in 1608." Hotel: August 1608 tenant "Mr Tomas Kirby",
+      // "An Inn called the Swan with barns and stables, orchards and courtyards".
+      { year: '1608', kind: 'Documented', title: '“An Inn called the Swan”', text: 'A record of August 1608 describes “an Inn called the Swan with barns and stables, orchards and courtyards”.', body: 'The Swan’s history names the tenant that year as Tomas Kirby. The Victoria County History links the innkeeper Thomas Wheler, recorded as an innkeeper in 1592, with the Swan in 1608.', source: 'The Swan’s own history; Victoria County History of Warwickshire, vol. 3 (1945)' },
+      // VCH: "dating from the late 16th century and partly refronted in the late 17th
+      // century". HE: Grade II*, "Late C16 with early C17 refronting and C19 alterations";
+      // first listed 6 Feb 1952.
+      { year: 'Late 16th century', kind: 'Documented', title: 'The building you stand in', text: 'The timber-framed building you see today dates from the late 16th century, with its front partly rebuilt in the 1600s. It has been a listed building since 1952, and is now listed at Grade II*.', look: 'The jettied, timber-framed gable and the stone-mullioned bay windows on the High Street', body: '', source: 'Victoria County History of Warwickshire, vol. 3 (1945); Historic England' },
+      // HOTEL: "The exposed bit of wall you can see by table 9 in the bar area ... is said
+      // to be wall stone taken from the castle." Not confirmed elsewhere. Moved here from
+      // the castle entry: if true, the stone was reused when the inn was built.
+      { year: '16th century', kind: 'Tradition', title: 'Stone from the castle?', text: 'An exposed stretch of wall in the bar, by table 9, is said to be stone taken from the ruins of Beaudesert Castle across the road and reused when the inn was built.', look: 'The bare stone wall by table 9 in the bar', body: 'Reusing stone from a ruined castle was common, but no record confirms where this stone came from. It is a story the Swan tells.' },
+      { year: '1358', kind: 'Hotel history', title: '“The White Swan” is written down', text: 'According to the Swan’s history, the name first appears in the records in 1358.', body: '' },
+      { year: '1352', kind: 'Hotel history', title: 'An inn on this spot', text: 'The Swan’s history dates the first inn on this site to 1352. The building that stands here today came later.', body: '' },
     ],
   },
   {
     id: 'before-the-inn',
     name: 'Before the inn',
     range: '1265 to before 1066',
-    intro: 'A castle across the road, and the crest that gave the Swan its name.',
+    intro: 'A castle across the road, and the crest that may have given the Swan its name.',
     entries: [
-      { year: '1265', title: 'The castle falls', text: 'After Henry III won the Battle of Evesham, the de Montforts’ castle at Beaudesert was destroyed for their leading part in the revolt against the King. Henley-in-Arden rose from the ruins.', look: 'The Mount, across the road by the Church of St Nicholas', body: '' },
-      { year: 'Late 11th century', title: 'Beaudesert Castle', text: 'Thurstan, the first of the de Montforts of Beaudesert, built a castle on the Mount, across the road from today’s hotel. Henley grew up under its protection.', look: 'Castle wall stone, by table 9 in the bar', body: '' },
-      { year: 'After 1066', title: '“Beautiful waste”', text: 'The Norman settlers named the place Beaudesert. Henley was a small part of the lands held in Wootton Wawen by Robert de Toeni, later Robert de Stafford. The White Swan probably takes its name from the Staffords’ crest.', body: '' },
-      { year: 'Before 1066', title: 'Wagen’s land', text: 'Just before the Norman Conquest, the land was held by the Saxon thane Wagen, a name later worn down to Wawen.', body: '' },
+      // VCH: "After Peter de Montfort was slain at the Battle of Evesham in 1265 Henley
+      // was burnt down, perhaps in revenge for the part he had taken against the king."
+      // Castle destroyed: Hotel.
+      { year: '1265', kind: 'Documented in part', title: 'Fire and ruin', text: 'Peter de Montfort of Beaudesert was killed fighting against Henry III at the Battle of Evesham in 1265. Afterwards Henley was burnt down, perhaps in revenge for the part he had taken against the King.', body: 'The Swan\u2019s history adds that the de Montforts\u2019 castle at Beaudesert was destroyed too, and that the town grew up again from the ruins.', look: 'The Mount, the castle mound by the Church of St Nicholas, across the road', source: 'Victoria County History of Warwickshire, vol. 3 (1945); the Swan\u2019s own history' },
+      { year: 'Late 11th century', kind: 'Hotel history', title: 'Beaudesert Castle', text: 'Thurstan, the first of the de Montforts of Beaudesert, built a castle on the Mount, across the road from today’s hotel. Henley grew up under its protection.', body: '' },
+      { year: 'After 1066', kind: 'Hotel history', title: '“Beautiful waste”', text: 'The Norman settlers named the place Beaudesert. Henley was a small part of the lands held in Wootton Wawen by Robert de Toeni, later known as Robert de Stafford. Heritage Centre records suggest the White Swan probably takes its name from the Staffords’ crest.', body: '' },
+      { year: 'Before 1066', kind: 'Hotel history', title: 'Wagen’s land', text: 'Just before the Norman Conquest, the land was held by the Saxon thane Wagen, a name later worn down to Wawen.', body: '' },
     ],
   },
 ]
 
 export const credits = [
   'Present-day photos: the White Swan’s current website.',
-  '2012 to 2014 photos and the 1963 photo: the White Swan’s Flickr account.',
+  'Secret Garden (2014) and the 1963 photo: the White Swan’s Flickr account.',
   'Coach entrance, 2010: Elliott Brown, CC BY 2.0, via Wikimedia Commons.',
   'The White Swan in the snow, January 2013: the White Swan’s own Flickr account.',
   'Three early photographs on Our story, before 1920: public domain, supplied by the White Swan.',
-  'History: the White Swan’s current website, drawing on the Henley-in-Arden Museum and Heritage Centre and Jonathan Dovey’s History of Henley-in-Arden.',
+  'Trailer: I Bought a Vampire Motorcycle, from the film’s YouTube channel.',
+  'History: the White Swan’s own history, drawing on the Henley-in-Arden Museum and Heritage Centre and Jonathan Dovey’s History of Henley-in-Arden; the Victoria County History of Warwickshire, vol. 3 (1945); Historic England list entry 1382311; the Heritage Centre’s Weeks in History; James Boswell’s Life of Johnson; The Torrington Diaries, ed. C. Bruyn Andrews.',
 ]
-
