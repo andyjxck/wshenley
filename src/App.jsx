@@ -368,6 +368,8 @@ function Entry({ e, index }) {
             <div className="frame"><img src={e.image} alt={e.title} loading="lazy" style={{ filter: gradeFor(index) }} /></div>
             <figcaption>
               {e.creditHref ? <a href={e.creditHref} target="_blank" rel="noreferrer">{e.credit}</a> : e.credit}
+              {e.licence && <a className="licence" href={e.licence.href} target="_blank" rel="license noreferrer">{e.licence.label}</a>}
+              {e.changes && <span className="changes">{e.changes}</span>}
               {e.rights && <span className="rights">{e.rights}</span>}
             </figcaption>
           </figure>
@@ -427,7 +429,11 @@ function Footer() {
         </div>
         <details className="credits">
           <summary>Picture credits and sources</summary>
-          <ul>{credits.map((c) => <li key={c}>{c}</li>)}</ul>
+          <ul>{credits.map((c, i) => (
+            <li key={i}>{Array.isArray(c)
+              ? c.map((p, j) => (typeof p === 'string' ? p : <a key={j} href={p.href} target="_blank" rel="noreferrer">{p.label}</a>))
+              : c}</li>
+          ))}</ul>
         </details>
       </div>
     </footer>

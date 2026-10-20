@@ -10,7 +10,10 @@
 import heroToday from './assets/hero-today.jpg'
 import interiorToday from './assets/interior-today.jpg'
 import whatsonLive from './assets/week-bg.jpg' // Flickr 2012 "The Henley White Swan 2" (hotel's own photo)
-import garden from './assets/garden.jpg'
+// Elliott Brown, "The White Swan Secret Garden - Henley-in-Arden - sign", 4 June 2016,
+// flickr.com/photos/ell-r-brown/27425128576, CC BY-SA 2.0 (licence checked on the Flickr
+// page, 20 Oct 2026). Flickr's 1600 x 1200 size, re-saved as JPEG; not cropped or retouched.
+import garden from './assets/secret-garden-elliott-brown-2016.jpg'
 import coach2010 from './assets/coach-entrance-2010.jpg'
 import postcardUndated from './assets/postcard-undated.jpg'
 import postcard1914 from './assets/postcard-pre1914.jpg'
@@ -173,10 +176,12 @@ export const eras = [
     intro: 'A pandemic, a TV star behind the bar, a cult film and a hidden loft.',
     entries: [
       { year: '2020', kind: 'Documented', title: 'The doors close', text: 'Like every pub and hotel in the country, the White Swan had to close its doors during the Covid-19 pandemic. It reopened afterwards and carried on as before.', body: '' },
-      // Garden photo: hotel's own Flickr, June 2014. Bowling green: Hotel (1855) and
-      // HHC (1891 photograph). Andy: the Secret Garden is condemned; public wording
-      // agreed with him is "currently closed" (no legal/building status stated).
-      { year: '2014', kind: 'Documented', title: 'The Secret Garden', text: 'The garden behind the hotel, photographed in June 2014. This is the same lawn that was the Swan’s bowling green in Victorian times (see 1891 and 1855). The Secret Garden is currently closed.', body: '', image: garden, credit: 'The White Swan on Flickr, 2014' },
+      // Garden photo: Elliott Brown on Flickr, 4 June 2016, CC BY-SA 2.0 (see import).
+      // Replaces the hotel's own All Rights Reserved Flickr photo from June 2014.
+      // Bowling green: Hotel (1855) and HHC (1891 photograph). Andy: the Secret Garden
+      // is condemned; public wording agreed with him is "currently closed" (no
+      // legal/building status stated).
+      { year: '2016', kind: 'Documented', title: 'The Secret Garden', text: 'The Secret Garden sign, photographed in June 2016. The garden behind the hotel is the same lawn that was the Swan’s bowling green in Victorian times (see 1891 and 1855). The Secret Garden is currently closed.', body: '', image: garden, credit: 'Photo: Elliott Brown, “The White Swan Secret Garden - Henley-in-Arden - sign”, on Flickr', creditHref: 'https://www.flickr.com/photos/ell-r-brown/27425128576/', licence: { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, changes: 'Resized. On this page it may be trimmed at the edges to fit and lightly toned by the page’s ageing effect; this adapted version is shared under CC BY-SA 2.0 too.' },
       // REPORT. IMDb trivia for Michael Elphick (imdb.com/name/nm0255573/trivia/),
       // read Oct 2026: "In September 2013, the new owners of the pub found a secret loft
       // space (an old priest hole) where Michael used to go to write letters to his
@@ -311,7 +316,8 @@ export const eras = [
 
 export const credits = [
   'Present-day photos: the White Swan’s current website.',
-  'Secret Garden (2014): the White Swan’s Flickr account. The 1963 photo is linked on Flickr, not reproduced here.',
+  ['Secret Garden sign, June 2016: ', { label: 'photo by Elliott Brown on Flickr', href: 'https://www.flickr.com/photos/ell-r-brown/27425128576/' }, ', licensed under ', { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, '. Resized, and on the page it may be trimmed to fit and lightly toned; the adapted photo is shared under the same licence.'],
+  'The 1963 photo is linked on the White Swan’s Flickr, not reproduced here.',
   'Coach entrance, 2010: Elliott Brown, CC BY 2.0, via Wikimedia Commons.',
   'The White Swan in the snow, January 2013: the White Swan’s own Flickr account.',
   'Three early photographs on Our story, before 1920: public domain, supplied by the White Swan.',
