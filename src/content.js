@@ -7,7 +7,10 @@
 // and it appears under that entry automatically.
 // ---------------------------------------------------------------------------
 
-import heroToday from './assets/hero-today.jpg'
+// Homepage hero: Elliott Brown, "The White Swan, 100 High Street, Henley-in-Arden", taken 14 March 2010,
+// flickr.com/photos/ell-r-brown/4435838679, CC BY 2.0 (licence checked on the Flickr page, 20 Oct 2026).
+// Uploaded to the repo as 4435838679_56b8a794c8_o.jpg (Flickr original); resized to 2400 x 1800 for the web.
+import heroToday from './assets/hero-white-swan-elliott-brown-2010.jpg'
 import interiorToday from './assets/interior-today.jpg'
 import whatsonLive from './assets/week-bg.jpg' // Flickr 2012 "The Henley White Swan 2" (account "Henley White Swan"; not claimed as the hotel's on the page)
 // Elliott Brown, "The White Swan Secret Garden - Henley-in-Arden - sign", 4 June 2016,
@@ -324,6 +327,7 @@ export const eras = [
 
 export const credits = [
   'Present-day photos: as used on the White Swan’s previous website.',
+  ['Homepage photo of the White Swan, March 2010: ', { label: 'photo by Elliott Brown on Flickr', href: 'https://www.flickr.com/photos/ell-r-brown/4435838679/' }, ', licensed under ', { label: 'CC BY 2.0', href: 'https://creativecommons.org/licenses/by/2.0/' }, '. Resized, trimmed to fit the screen and darkened behind the text.'],
   ['Secret Garden sign, June 2016: ', { label: 'photo by Elliott Brown on Flickr', href: 'https://www.flickr.com/photos/ell-r-brown/27425128576/' }, ', licensed under ', { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, '. Resized, and on the page it may be trimmed to fit and lightly toned; the adapted photo is shared under the same licence.'],
   'The 1963 photo and the January 2013 snow photo are linked on Flickr, not reproduced here.',
   'Coach entrance, 2010: Elliott Brown, CC BY 2.0, via Wikimedia Commons.',
