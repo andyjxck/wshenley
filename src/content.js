@@ -182,12 +182,6 @@ export const eras = [
       // keep IMDb out of the public copy, no dismissive conclusion; his use of the loft sits
       // in the 1980s entry. Public source line kept neutral, no other provenance implied.
       { year: '2013', kind: 'Report', title: 'The hidden loft, rediscovered', text: 'In September 2013 the Swan’s new owners rediscovered a secret loft space, an old priest hole by repute, and said to be the hideaway Michael Elphick slipped away to in his years behind the bar (see 1980s).', body: 'Who first built it, and whether a priest ever hid there, is a question the building has yet to answer.', source: 'An online profile of Michael Elphick' },
-      // Snow photo: Flickr henleywhiteswan/8404955955, "White Swan Hotel in Henley-in-Arden in the
-      // snow 1", taken 22 Jan 2013, All Rights Reserved, so linked, not reproduced. Andy (20 Oct
-      // 2026): it is NOT one of the hotel's own photographs. The Flickr page names no photographer
-      // and the account it sits on does not establish who took it, so no ownership or authorship
-      // is claimed on the page. Its own entry: January 2013 is not the September 2013 loft rediscovery.
-      { year: '2013', kind: 'Documented', title: 'The Swan in the snow', text: 'The White Swan under snow on 22 January 2013.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/8404955955/', label: 'View on Flickr', note: 'A photograph of the White Swan in the snow, January 2013, on Flickr' } },
       // Film facts: Wikipedia (released 6 July 1990, filmed in Birmingham, Neil
       // Morrissey, Michael Elphick as Inspector Cleaver). Swan's catering and rooms:
       // Hotel only. Trailer: 'I Bought A Vampire Motorcycle - Cinema Trailer' on the
@@ -203,7 +197,7 @@ export const eras = [
       // so linked, not reproduced (Andy, 20 Oct 2026). Andy (20 Oct 2026): the photos do not
       // belong to the hotel. The Flickr page names no photographer, only the account name
       // "Henley White Swan", which does not establish who took or owns it, so the page claims
-      // no ownership or authorship (same treatment as the January 2013 snow photo).
+      // no ownership or authorship.
       { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', label: 'View on Flickr', note: 'A photograph from 1963, on Flickr' } },
       // HOTEL: "For a short time in the 1950s Cygnets Bar at The White Swan was a
       // Children's Bar." Context: the Children Act 1908 barred children from the bars of
@@ -333,7 +327,7 @@ export const credits = [
   'Present-day photos: as used on the White Swan’s previous website.',
   ['Homepage photo of the White Swan, March 2010: ', { label: 'photo by Elliott Brown on Flickr', href: 'https://www.flickr.com/photos/ell-r-brown/4435838679/' }, ', licensed under ', { label: 'CC BY 2.0', href: 'https://creativecommons.org/licenses/by/2.0/' }, '. Resized, trimmed to fit the screen and darkened behind the text.'],
   ['Secret Garden sign, June 2016: ', { label: 'photo by Elliott Brown on Flickr', href: 'https://www.flickr.com/photos/ell-r-brown/27425128576/' }, ', licensed under ', { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, '. Resized, and on the page it may be trimmed to fit and lightly toned; the adapted photo is shared under the same licence.'],
-  'The 1963 photo and the January 2013 snow photo are linked on Flickr, not reproduced here.',
+  'The 1963 photo is linked on Flickr, not reproduced here.',
   'Coach entrance, 2010: Elliott Brown, CC BY 2.0, via Wikimedia Commons.',
   'Three early photographs on Our story, before 1920: public domain.',
   'Trailer: I Bought a Vampire Motorcycle, from the film’s YouTube channel.',
