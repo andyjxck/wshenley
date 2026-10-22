@@ -7,6 +7,7 @@ import WeekCalendar from './WeekCalendar.jsx'
 import { useTimeTravel, useReveal } from './useTimeTravel.js'
 import { agesFor, gradeFor } from './ageing.js'
 import EnquiryForm from './EnquiryForm.jsx'
+import BeforeAfter from './BeforeAfter.jsx'
 
 // Two real pages: the homepage (index.html) and Our story (history/index.html).
 // history/index.html sets <html data-page="history">, so links can point the right way from either page.
@@ -317,6 +318,16 @@ function Entry({ e, index }) {
               ))}
             </div>
             {e.credit && <figcaption>{e.credit}</figcaption>}
+          </figure>
+        )}
+        {e.compare && (
+          <figure className="entry-fig entry-compare">
+            {e.compare.title && <p className="compare-title">{e.compare.title}</p>}
+            <BeforeAfter {...e.compare} beforeFilter={gradeFor(age)} />
+            <figcaption>
+              <span>{e.compare.caption}</span>
+              {e.compare.credit && <span className="rights">{e.compare.credit}</span>}
+            </figcaption>
           </figure>
         )}
         {e.flickr && (

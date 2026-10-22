@@ -26,6 +26,11 @@ import lantern from './assets/lantern-c1900.jpg'
 import oldSepia from './assets/white_swan_sepia.jpg'
 import oldPortrait from './assets/white_swan_portrait.jpg'
 import oldMarketway from './assets/marketway.jpg'
+// Before-and-after pair: the marketway photo upscaled and lined up with a Street View frame of
+// the same spot (see /home/sprite/slider/make_pair.py). The "now" frame is a stand-in until a
+// photo is taken from the same place.
+import crossThen from './assets/marketcross-then.jpg'
+import crossNow from './assets/marketcross-now.jpg'
 
 export const contact = {
   phone: '01564 660 303',
@@ -222,7 +227,16 @@ export const eras = [
         { image: oldSepia, alt: 'Early photograph from Henley-in-Arden, before 1920 (1 of 3)', shape: 'wide' },
         { image: oldPortrait, alt: 'Early photograph from Henley-in-Arden, before 1920 (2 of 3)', shape: 'tall' },
         { image: oldMarketway, alt: 'Early photograph from Henley-in-Arden, before 1920 (3 of 3)', shape: 'small' },
-      ], credit: 'Before 1920. Public domain.' },
+      ], credit: 'Before 1920. Public domain.',
+      compare: {
+        title: 'Then and now: the Market Cross',
+        before: crossThen, after: crossNow, width: 733, height: 412,
+        beforeLabel: 'Before 1920', afterLabel: 'Today',
+        beforeAlt: 'The timber-framed building behind the Market Cross on High Street, Henley-in-Arden, before 1920',
+        afterAlt: 'The same view of the Market Cross and the timber-framed building on High Street today',
+        caption: 'Drag the handle to compare the third photograph with the same spot on High Street today.',
+        credit: 'Today: Google Street View, a stand-in until we take our own photo from the same spot.',
+      } },
       { year: 'Undated', kind: 'Documented', title: 'A real photo postcard', text: 'The White Swan Hotel on an early photographic postcard.', body: '', image: postcardUndated, credit: 'Real photo postcard' },
       { year: 'Pre-1914', kind: 'Documented', title: 'Wish you were here', text: 'The Swan on a postcard from before the First World War.', body: '', image: postcard1914, credit: 'Real photo postcard, before 1914' },
       // Station: Henley-in-Arden station opened with the North Warwickshire Line,
