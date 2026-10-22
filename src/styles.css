@@ -317,7 +317,7 @@ p { margin: 0 0 1em; }
 .flickr-dots i + i { background: #ff0084; }
 .flickr-arrow { width: 11px; height: 11px; opacity: .75; transition: transform .3s var(--ease); }
 .flickr-btn:hover .flickr-arrow, .flickr-btn:focus-visible .flickr-arrow { transform: translate(1px, -1px); opacity: 1; }
-.flickr-note { margin: 0; padding-left: 2px; font-size: .78rem; color: var(--muted); font-style: italic; }
+.flickr-note { margin: 0; padding-left: 2px; font-size: .84rem; color: color-mix(in srgb, var(--ink) 88%, transparent); font-style: italic; }
 @media (prefers-reduced-motion: reduce) { .flickr-btn, .flickr-arrow { transition: none; } .flickr-btn:hover .flickr-arrow, .flickr-btn:focus-visible .flickr-arrow { transform: none; } }
 
 .rights { background: #b3261e; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: .7rem; font-weight: 600; }
