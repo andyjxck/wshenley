@@ -116,22 +116,23 @@ export const privateHire = {
   intro: 'Our function room is free to hire, and catering is available. Use the form below or give us a call to talk it through.',
 }
 
-// Distances: road distance from the White Swan (100 High Street, B95 5BY) to each
-// place, from OpenStreetMap routing (OSRM, fastest car route), checked 20 Oct 2026,
-// rounded to the nearest mile. The Heritage Centre is the walking distance.
+// Distances: road distance and drive time from the White Swan (100 High Street, B95 5BY)
+// to each place, from OpenStreetMap routing (OSRM, fastest car route, no traffic),
+// checked 19-20 Oct 2026, distances rounded to the nearest mile. The Heritage Centre
+// is on the same street, so it gets the walking distance and time.
 // Raw figures: Heritage Centre 0.16 mi walk; RST 8.7; Birthplace 8.0; Warwick Castle 9.9;
 // Baddesley Clinton 7.6; Packwood 6.2; Coughton Court 9.5; Kenilworth Castle 15.9; NEC 14.2.
-export const nearbyNote = 'Distances are approximate, by road from the White Swan.'
+export const nearbyNote = 'Distances and drive times are approximate, by road from the White Swan, without traffic.'
 export const nearby = [
-  { name: 'Henley-in-Arden Museum and Heritage Centre', place: 'High Street, Henley-in-Arden', distance: '0.2 miles, a 3-minute walk', href: 'https://www.heritagehenley.org.uk/' },
-  { name: 'Packwood House', place: 'Lapworth (National Trust)', distance: 'about 6 miles', href: 'http://www.nationaltrust.org.uk/packwood-house' },
-  { name: 'Baddesley Clinton', place: 'Kingswood (National Trust)', distance: 'about 8 miles', href: 'http://www.nationaltrust.org.uk/baddesleyclinton/' },
-  { name: 'Shakespeare’s Birthplace', place: 'Henley Street, Stratford-upon-Avon', distance: 'about 8 miles', href: 'http://www.shakespeare.org.uk/' },
-  { name: 'Royal Shakespeare Theatre', place: 'Waterside, Stratford-upon-Avon', distance: 'about 9 miles', href: 'http://www.rsc.org.uk/' },
-  { name: 'Coughton Court', place: 'Near Alcester (National Trust)', distance: 'about 9 miles', href: 'http://nationaltrust.org.uk/coughtoncourt' },
-  { name: 'Warwick Castle', place: 'Warwick', distance: 'about 10 miles', href: 'http://www.warwick-castle.com/' },
-  { name: 'NEC and Resorts World Arena', place: 'Birmingham', distance: 'about 14 miles', href: 'http://www.thenec.co.uk/' },
-  { name: 'Kenilworth Castle', place: 'Kenilworth (English Heritage)', distance: 'about 16 miles', href: 'http://www.english-heritage.org.uk/daysout/properties/kenilworth-castle/' },
+  { name: 'Henley-in-Arden Museum and Heritage Centre', place: 'High Street, Henley-in-Arden', distance: '0.2 miles · 3 min walk', href: 'https://www.heritagehenley.org.uk/' },
+  { name: 'Packwood House', place: 'Lapworth (National Trust)', distance: '6 miles · 11 min drive', href: 'https://www.nationaltrust.org.uk/visit/warwickshire/packwood-house' },
+  { name: 'Baddesley Clinton', place: 'Kingswood (National Trust)', distance: '8 miles · 17 min drive', href: 'https://www.nationaltrust.org.uk/visit/warwickshire/baddesley-clinton' },
+  { name: 'Shakespeare’s Birthplace', place: 'Henley Street, Stratford-upon-Avon', distance: '8 miles · 16 min drive', href: 'https://www.shakespeare.org.uk/visit/shakespeares-birthplace/' },
+  { name: 'Royal Shakespeare Theatre', place: 'Waterside, Stratford-upon-Avon', distance: '9 miles · 18 min drive', href: 'https://www.rsc.org.uk/' },
+  { name: 'Coughton Court', place: 'Near Alcester (National Trust)', distance: '9 miles · 18 min drive', href: 'https://www.nationaltrust.org.uk/visit/warwickshire/coughton-court' },
+  { name: 'Warwick Castle', place: 'Warwick', distance: '10 miles · 25 min drive', href: 'https://www.warwick-castle.com/' },
+  { name: 'NEC and Resorts World Arena', place: 'Birmingham', distance: '14 miles · 20 min drive', href: 'https://www.thenec.co.uk/' },
+  { name: 'Kenilworth Castle', place: 'Kenilworth (English Heritage)', distance: '16 miles · 26 min drive', href: 'https://www.english-heritage.org.uk/visit/places/kenilworth-castle/' },
 ]
 
 // ---------------------------------------------------------------------------
