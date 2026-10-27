@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { sendEnquiry } from './firebase.js'
 import { contact } from './content.js'
+import { titleCase } from './titleCase.js'
 
 const OCCASIONS = ['Birthday', 'Wedding or engagement', 'Christening', 'Wake', 'Work do', 'Christmas party', 'Other']
 const blank = { name: '', email: '', phone: '', occasion: 'Birthday', date: '', guests: '', message: '', website: '' }
@@ -35,7 +36,7 @@ export default function EnquiryForm() {
   if (state === 'sent') {
     return (
       <div className="enquiry sent" role="status">
-        <h3>Thanks, we’ve got it</h3>
+        <h3>{titleCase('Thanks, we’ve got it')}</h3>
         <p>Someone from the team will be in touch soon. If it’s urgent, call {contact.phone}.</p>
         <button type="button" className="pill dark" onClick={() => setState('idle')}>Send another</button>
       </div>
@@ -43,7 +44,7 @@ export default function EnquiryForm() {
   }
   return (
     <form className="enquiry" onSubmit={submit} noValidate>
-      <h3>Enquire about private hire</h3>
+      <h3>{titleCase('Enquire about private hire')}</h3>
       <div className="enq-grid">
         <label>Your name<input value={f.name} onChange={set('name')} autoComplete="name" maxLength={100} required /></label>
         <label>Email<input type="email" value={f.email} onChange={set('email')} autoComplete="email" maxLength={150} required /></label>

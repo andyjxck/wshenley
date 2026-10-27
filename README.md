@@ -6,8 +6,23 @@ then the page travels back in time as you scroll, from 2020 to before 1066. Colo
 sepia, then go grey; photos get older and more faded; the typeface turns old-fashioned; the
 last era goes dark.
 
-## Editing the words
-Everything you read on the site is in `src/content.js`.
+## Editing on the page (website editor)
+Open the site with `#admin` on the end of the address (for example `.../wshenley/#admin`) and sign in with
+a Staff Hub account that's approved to edit (owners, plus anyone an owner adds; see `firebase/README.md`).
+
+- Click any outlined heading or paragraph and type. Paragraphs have a toolbar for bold, italic, links
+  and lists. Headings are put in Title Case automatically. "Back to original" undoes a change.
+- "Edit photos" on a photo spot replaces, adds, removes and reorders photos. Two or more photos become a
+  slideshow (a gentle crossfade every 10 seconds).
+- "Sections" changes the order of the homepage sections.
+- "Preview" shows the page exactly as visitors will see it. "Save draft" keeps changes privately.
+  "Publish" puts them on the live site.
+
+Edits are stored in Firebase and laid over the built-in words and photos below, so the built-in content
+is always the fallback. The editor needs the rules in `firebase/` deployed first.
+
+## Editing the words in code
+The built-in words are in `src/content.js`.
 
 - Timeline entries are in `eras`, newest first.
 - Each entry has an empty `body: ''`. Write your longer story text there. A blank line starts a

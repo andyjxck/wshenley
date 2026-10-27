@@ -116,6 +116,17 @@ export function useReveal() {
       })
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 })
     els.forEach((e) => io.observe(e))
+    // Parts that appear later (published edits loading, sections reordered in the editor, a slideshow
+    // replacing a single photo) are picked up too, so nothing is left hidden.
+    const mo = new MutationObserver((list) => {
+      list.forEach((m) => m.addedNodes.forEach((n) => {
+        if (n.nodeType !== 1) return
+        const found = n.matches('.reveal:not(.in)') ? [n] : []
+        n.querySelectorAll('.reveal:not(.in)').forEach((x) => found.push(x))
+        found.forEach((x) => io.observe(x))
+      }))
+    })
+    mo.observe(document.body, { childList: true, subtree: true })
     // Safety net: a fast fling or a jump link can skip past an element
     // between observer checks, so anything already above the fold gets shown.
     let t = 0
@@ -127,6 +138,6 @@ export function useReveal() {
     }
     const onScroll = () => { if (!t) t = setTimeout(sweep, 200) }
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => { io.disconnect(); window.removeEventListener('scroll', onScroll); clearTimeout(t) }
+    return () => { io.disconnect(); mo.disconnect(); window.removeEventListener('scroll', onScroll); clearTimeout(t) }
   }, [])
 }

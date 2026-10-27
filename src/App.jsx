@@ -8,6 +8,8 @@ import { useTimeTravel, useReveal } from './useTimeTravel.js'
 import { agesFor, gradeFor } from './ageing.js'
 import EnquiryForm from './EnquiryForm.jsx'
 import BeforeAfter from './BeforeAfter.jsx'
+import { SiteProvider, EditorGate, Edit, Slideshow, usePhotos, PhotoEditButton, useOrder, useTextValue, useSite } from './site.jsx'
+import { titleCase } from './titleCase.js'
 
 // Two real pages: the homepage (index.html) and Our story (history/index.html).
 // history/index.html sets <html data-page="history">, so links can point the right way from either page.
@@ -57,16 +59,33 @@ function Header() {
   )
 }
 
+// The hero heading is one phrase over three lines, so it is put in Title Case as a whole
+// ("The Warmest / Welcome / at an Inn"), then split back into its lines.
+function caseLines(lines) {
+  const words = lines.map((l) => l.trim().split(/\s+/).filter(Boolean))
+  const all = titleCase(words.flat().join(' ')).split(' ')
+  let n = 0
+  return words.map((w) => { const out = all.slice(n, n + w.length).join(' '); n += w.length; return out })
+}
+
+const HERO_PHOTOS = [{ src: hero.image, alt: 'The White Swan, Henley-in-Arden' }]
+
 function Hero() {
+  const photos = usePhotos('home.hero', HERO_PHOTOS)
+  const lines = hero.title.map((t, i) => useTextValue(`home.hero.title.${i}`, t)) // eslint-disable-line react-hooks/rules-of-hooks
+  const cased = caseLines(lines)
   return (
     <section className="hero" id="top">
-      <img className="hero-img" src={hero.image} alt="The White Swan, Henley-in-Arden" fetchpriority="high" />
+      <Slideshow photos={photos} imgClass="hero-img" imgProps={{ fetchpriority: 'high' }} label="Photos of the White Swan" />
       <div className="hero-shade" />
       <div className="hero-copy wrap">
+        <PhotoEditButton k="home.hero" fallback={HERO_PHOTOS} label="Edit hero photos" />
         <p className="hero-place"><i className="hrule" />{hero.place}<i className="hrule" /></p>
-        <h1 className="hero-title" aria-label={`${hero.title.join(' ')} since ${hero.since}`}>
+        <h1 className="hero-title" aria-label={`${cased.join(' ')} since ${hero.since}`}>
           {hero.title.map((t, i) => (
-            <span className={`ht ht-${i + 1}`} key={t} aria-hidden="true"><span style={{ '--d': `${0.15 + i * 0.14}s` }}>{t}</span></span>
+            <span className={`ht ht-${i + 1}`} key={i} aria-hidden="true">
+              <Edit k={`home.hero.title.${i}`} as="span" heading caseFn={(v) => caseLines(lines.map((l, j) => (j === i ? v : l)))[i]} style={{ '--d': `${0.15 + i * 0.14}s` }}>{t}</Edit>
+            </span>
           ))}
         </h1>
         <div className="hero-since" aria-hidden="true">
@@ -75,7 +94,7 @@ function Hero() {
           <b>{hero.since}</b>
           <i className="hrule long" />
         </div>
-        <p className="hero-intro">{hero.intro}</p>
+        <Edit k="home.hero.intro" className="hero-intro" rich>{hero.intro}</Edit>
         <div className="hero-cta">
           <a className="pill light" href="#book">Book a room</a>
           <a className="pill ghost" href="#eat">Eat & drink</a>
@@ -102,7 +121,7 @@ function Book({ avail }) {
   return (
     <div className="book reveal" id="book">
       <div className="book-head">
-        <h3 className="h-sm">Book direct</h3>
+        <Edit k="home.stay.book" as="h3" className="h-sm" heading>Book direct</Edit>
       </div>
       <BookingWidget />
       <LiveStatus avail={avail} />
@@ -133,18 +152,18 @@ function Stay() {
     <section className="section" id="stay">
       <div className="wrap">
         <p className="eyebrow reveal">Stay</p>
-        <h2 className="reveal">Rooms above the inn</h2>
+        <Edit k="home.stay.heading" as="h2" className="reveal" heading>Rooms above the inn</Edit>
       </div>
       <div className="wrap">
         <Book avail={avail} />
         <RoomCards avail={avail} />
         <div className="two-col reveal">
           <div>
-            <h3 className="h-label">In every room</h3>
+            <Edit k="home.stay.amenities" as="h3" className="h-label" heading>In every room</Edit>
             <ul className="ticks">{rooms.amenities.map((a) => <li key={a}>{a}</li>)}</ul>
           </div>
           <div>
-            <h3 className="h-label">Good to know</h3>
+            <Edit k="home.stay.terms" as="h3" className="h-label" heading>Good to know</Edit>
             <ul className="plain">{rooms.terms.map((a) => <li key={a}>{a}</li>)}</ul>
           </div>
         </div>
@@ -153,15 +172,21 @@ function Stay() {
   )
 }
 
+const EAT_PHOTOS = [{ src: food.image, alt: food.alt }]
+
 function Eat() {
+  const photos = usePhotos('home.eat', EAT_PHOTOS)
   return (
     <section className="section eat" id="eat">
       <div className="wrap split">
-        <div className="split-img reveal"><img src={food.image} alt={food.alt} loading="lazy" /></div>
+        <div className="split-img reveal">
+          <Slideshow photos={photos} wrapClass="stack" imgProps={{ loading: 'lazy' }} label="Food photos" />
+          <PhotoEditButton k="home.eat" fallback={EAT_PHOTOS} />
+        </div>
         <div>
           <p className="eyebrow reveal">Eat & drink</p>
-          <h2 className="reveal">Homemade pub classics</h2>
-          <p className="lead reveal">{food.intro}</p>
+          <Edit k="home.eat.heading" as="h2" className="reveal" heading>Homemade pub classics</Edit>
+          <Edit k="home.eat.intro" className="lead reveal" rich>{food.intro}</Edit>
           <ul className="menus">
             {food.menus.map((m) => (
               <li className="reveal" key={m.name}>
@@ -176,8 +201,8 @@ function Eat() {
       <div className="wrap drinks">
         {food.drinks.map((d) => (
           <div className="drink reveal" key={d.name}>
-            <h3>{d.href ? <a href={d.href} target="_blank" rel="noreferrer">{d.name}</a> : d.name}</h3>
-            <p>{d.text}</p>
+            <h3>{d.href ? <a href={d.href} target="_blank" rel="noreferrer">{titleCase(d.name)}</a> : titleCase(d.name)}</h3>
+            <Edit k={`home.drinks.${slug(d.name)}.text`} rich>{d.text}</Edit>
           </div>
         ))}
       </div>
@@ -186,15 +211,19 @@ function Eat() {
 }
 
 // The bar photo stays put behind the section (like the hero) while the words scroll over it.
+const WHATS_PHOTOS = [{ src: whatsOn.image, alt: '' }]
+
 function WhatsOn() {
+  const photos = usePhotos('home.whatson', WHATS_PHOTOS)
   return (
     <section className="whats-on" id="whats-on">
-      <img className="whats-img" src={whatsOn.image} alt="" />
+      <Slideshow photos={photos} imgClass="whats-img" label="Photos of the bar" />
       <div className="whats-shade" />
       <div className="wrap whats-copy">
+        <PhotoEditButton k="home.whatson" fallback={WHATS_PHOTOS} label="Edit background photos" />
         <p className="eyebrow reveal">What’s on</p>
-        <h2 className="reveal">{whatsOn.headline}</h2>
-        <p className="lead reveal">{whatsOn.text}</p>
+        <Edit k="home.whatson.heading" as="h2" className="reveal" heading>{whatsOn.headline}</Edit>
+        <Edit k="home.whatson.text" className="lead reveal" rich>{whatsOn.text}</Edit>
         <div className="reveal whats-cta">
           <a className="pill light" href={contact.instagram} target="_blank" rel="noreferrer">See this week on Instagram</a>
         </div>
@@ -212,35 +241,35 @@ function HireAndVisit() {
       <div className="wrap hv-layout">
         <div className="hire-intro">
           <p className="eyebrow reveal">Private hire</p>
-          <h2 className="reveal">{privateHire.headline}</h2>
-          <p className="lead reveal">{privateHire.intro}</p>
+          <Edit k="home.hire.heading" as="h2" className="reveal" heading>{privateHire.headline}</Edit>
+          <Edit k="home.hire.intro" className="lead reveal" rich>{privateHire.intro}</Edit>
         </div>
         <div className="hv-form">
           <EnquiryForm />
         </div>
         <div className="findus" id="visit">
           <p className="eyebrow reveal">Find us</p>
-          <h2 className="reveal">On the High Street</h2>
+          <Edit k="home.visit.heading" as="h2" className="reveal" heading>On the High Street</Edit>
           <div className="visit-grid reveal">
             <div>
-              <h3 className="h-label">Address</h3>
+              <Edit k="home.visit.address" as="h3" className="h-label" heading>Address</Edit>
               <p>{contact.address.map((l) => <span className="line" key={l}>{l}</span>)}</p>
               <a className="text-link" href={contact.mapsHref} target="_blank" rel="noreferrer">Open in Maps</a>
             </div>
             <div>
-              <h3 className="h-label">Open</h3>
+              <Edit k="home.visit.open" as="h3" className="h-label" heading>Open</Edit>
               <p>{contact.hours}</p>
               <p className="muted">Car park at the rear for guests.</p>
             </div>
             <div>
-              <h3 className="h-label">Get in touch</h3>
+              <Edit k="home.visit.contact" as="h3" className="h-label" heading>Get in touch</Edit>
               <p><a href={contact.phoneHref}>{contact.phone}</a><br /><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
             </div>
           </div>
         </div>
       </div>
       <div className="wrap nearby-block" id="nearby">
-        <h3 className="h-label reveal">Nearby</h3>
+        <Edit k="home.nearby.heading" as="h3" className="h-label reveal" heading>Nearby</Edit>
         <ul className="nearby reveal">
           {nearby.map((n) => (
             <li key={n.name}>
@@ -249,7 +278,7 @@ function HireAndVisit() {
             </li>
           ))}
         </ul>
-        <p className="nearby-note muted reveal">{nearbyNote}</p>
+        <Edit k="home.nearby.note" className="nearby-note muted reveal" rich>{nearbyNote}</Edit>
         <p className="story-link reveal"><a className="text-link" href={STORY}>Read the Swan’s story, from 1352 to today</a></p>
       </div>
     </section>
@@ -261,8 +290,8 @@ function TimeGate() {
     <section className="gate" id="story">
       <div className="wrap">
         <p className="eyebrow reveal">Our story</p>
-        <h2 className="gate-title reveal">Keep scrolling.<br /><em>Go back {YEARS_BACK} years.</em></h2>
-        <p className="lead reveal">Every step down this page is a step back in time, from the Swan you know to the castle across the road.</p>
+        <h2 className="gate-title reveal">{titleCase('Keep scrolling.')}<br /><em>{titleCase(`Go back ${YEARS_BACK} years.`)}</em></h2>
+        <Edit k="story.gate.lead" className="lead reveal" rich>Every step down this page is a step back in time, from the Swan you know to the castle across the road.</Edit>
         <nav className="era-jump reveal" aria-label="Jump to an era">
           {eras.map((e) => <a key={e.id} href={`#${e.id}`}><b>{e.name}</b><span>{e.range}</span></a>)}
         </nav>
@@ -272,21 +301,39 @@ function TimeGate() {
   )
 }
 
+const slug = (t) => String(t).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60)
 const kindSlug = (k) => k.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '')
+
+// Stable key for an entry's editable parts: era + its original title (the built-in one, so it
+// doesn't change when an editor renames the entry).
+const entryKey = (e) => `story.${e.era}.${slug(`${e.year}-${e.title}`)}`
+
+function Credit({ p }) {
+  if (!p || !p.credit) return null
+  return /^https?:\/\//.test(p.creditHref || '') ? <a href={p.creditHref} target="_blank" rel="noreferrer">{p.credit}</a> : <span>{p.credit}</span>
+}
 
 function Entry({ e, index }) {
   const age = AGES[index]
-  const paras = e.body ? e.body.split(/\n\s*\n/) : []
+  const k = entryKey(e)
+  const { content, editor } = useSite()
+  const editing = !!(editor && editor.editing)
+  const own = content.photos[k]
+  const changed = Array.isArray(own) && own.length > 0
+  const builtIn = e.image ? [{ src: e.image, alt: e.title }] : e.images ? e.images.map((p) => ({ src: p.image, alt: p.alt })) : []
+  const photos = usePhotos(k, builtIn)
+  const [slide, setSlide] = useState(0)
+  const grade = { filter: gradeFor(age) }
   return (
-    <article className={`entry reveal${e.image || e.images ? ' has-img' : ''}${e.quote ? ' has-quote' : ''}`} data-year={e.year} data-era={e.era} data-age={age.toFixed(4)} style={ageStyle(age)} id={`y-${index}`}>
+    <article className={`entry reveal${photos.length ? ' has-img' : ''}${e.quote ? ' has-quote' : ''}`} data-year={e.year} data-era={e.era} data-age={age.toFixed(4)} style={ageStyle(age)} id={`y-${index}`}>
       <div className="entry-year"><span>{e.year}</span></div>
       <div className="entry-main">
         {e.kind && <p className={`kind kind-${kindSlug(e.kind)}`}>{e.kind}</p>}
-        <h3>{e.title}</h3>
+        <Edit k={`${k}.title`} as="h3" heading>{e.title}</Edit>
         {e.quote && <blockquote>{e.quote}</blockquote>}
-        <p className="entry-text">{e.text}</p>
-        {paras.map((p, i) => <p className="entry-body" key={i}>{p}</p>)}
-        {e.look && <p className="look"><span>Look for it</span>{e.look}</p>}
+        <Edit k={`${k}.text`} className="entry-text" rich>{e.text}</Edit>
+        {(e.body || editing || content.text[`${k}.body`]) && <Edit k={`${k}.body`} as="div" className="entry-body" paras>{e.body || ''}</Edit>}
+        {e.look && <p className="look"><span>Look for it</span><Edit k={`${k}.look`} as="span" rich>{e.look}</Edit></p>}
         {e.video && (
           <div className="entry-video">
             <iframe
@@ -299,30 +346,25 @@ function Entry({ e, index }) {
             />
           </div>
         )}
-        {e.image && (
-          <figure className="entry-fig">
-            <div className="frame"><img src={e.image} alt={e.title} loading="lazy" style={{ filter: gradeFor(age) }} /></div>
-            <figcaption>
-              {e.creditHref ? <a href={e.creditHref} target="_blank" rel="noreferrer">{e.credit}</a> : e.credit}
-              {e.licence && <a className="licence" href={e.licence.href} target="_blank" rel="license noreferrer">{e.licence.label}</a>}
-              {e.changes && <span className="changes">{e.changes}</span>}
-              {e.rights && <span className="rights">{e.rights}</span>}
-            </figcaption>
+        {photos.length > 0 && (
+          <figure className={`entry-fig${photos.length > 1 ? ' entry-photos' : ''}`}>
+            <div className="frame"><Slideshow photos={photos} wrapClass="stack" style={grade} imgProps={{ loading: 'lazy' }} onIndex={setSlide} label={`Photos: ${e.title}`} /></div>
+            {changed ? (
+              <figcaption><Credit p={photos[slide] || photos[0]} /></figcaption>
+            ) : e.image ? (
+              <figcaption>
+                {e.creditHref ? <a href={e.creditHref} target="_blank" rel="noreferrer">{e.credit}</a> : e.credit}
+                {e.licence && <a className="licence" href={e.licence.href} target="_blank" rel="license noreferrer">{e.licence.label}</a>}
+                {e.changes && <span className="changes">{e.changes}</span>}
+                {e.rights && <span className="rights">{e.rights}</span>}
+              </figcaption>
+            ) : (e.credit && <figcaption>{e.credit}</figcaption>)}
           </figure>
         )}
-        {e.images && (
-          <figure className="entry-fig entry-photos">
-            <div className="photo-set">
-              {e.images.map((p) => (
-                <div className={`frame shape-${p.shape || 'wide'}`} key={p.alt}><img src={p.image} alt={p.alt} loading="lazy" style={{ filter: gradeFor(age) }} /></div>
-              ))}
-            </div>
-            {e.credit && <figcaption>{e.credit}</figcaption>}
-          </figure>
-        )}
+        <PhotoEditButton k={k} fallback={builtIn} credits label={photos.length ? 'Edit photos' : 'Add photos'} />
         {e.compare && (
           <figure className="entry-fig entry-compare">
-            {e.compare.title && <p className="compare-title">{e.compare.title}</p>}
+            {e.compare.title && <p className="compare-title">{titleCase(e.compare.title)}</p>}
             <BeforeAfter {...e.compare} beforeFilter={gradeFor(age)} />
             <figcaption>
               <span>{e.compare.caption}</span>
@@ -361,8 +403,8 @@ function Timeline() {
         <section className={`era era-${era.id}`} id={era.id} key={era.id} data-era-name={era.name} style={ageStyle(AGES[i + 1])}>
           <header className="era-head wrap reveal">
             <p className="eyebrow">{era.range}</p>
-            <h2>{era.name}</h2>
-            <p className="lead">{era.intro}</p>
+            <Edit k={`story.${era.id}.name`} as="h2" heading>{era.name}</Edit>
+            <Edit k={`story.${era.id}.intro`} className="lead" rich>{era.intro}</Edit>
           </header>
           <div className="wrap entries">
             {era.entries.map((e) => { i += 1; return <Entry key={i} e={{ ...e, era: era.id }} index={i} /> })}
@@ -408,7 +450,23 @@ function MobileBar() {
   )
 }
 
+const SECTIONS = { stay: Stay, eat: Eat, whatson: WhatsOn, hire: HireAndVisit }
+
+function HomeSections() {
+  const order = useOrder()
+  return order.map((id) => { const S = SECTIONS[id]; return <S key={id} /> })
+}
+
 export default function App() {
+  return (
+    <SiteProvider>
+      <Page />
+      <EditorGate />
+    </SiteProvider>
+  )
+}
+
+function Page() {
   useReveal()
   return (
     <>
@@ -422,10 +480,7 @@ export default function App() {
         <main>
           <Hero />
           <ThisWeek />
-          <Stay />
-          <Eat />
-          <WhatsOn />
-          <HireAndVisit />
+          <HomeSections />
         </main>
       )}
       <Footer />

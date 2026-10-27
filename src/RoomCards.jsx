@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { rooms, seekda } from './content.js'
 import { money } from './liveAvailability.js'
+import { titleCase } from './titleCase.js'
 
 // Simple line icons. Each has a label for screen readers and a tooltip on hover.
 const I = (d) => (
@@ -53,13 +54,13 @@ function RoomCard({ room, live, stay }) {
           {off && <span className="flip-badge off">{offText}</span>}
           {free && <span className="flip-badge free">{priceText || 'Available'}</span>}
           <div className="flip-name">
-            <h3>{room.name}</h3>
+            <h3>{titleCase(room.name)}</h3>
             <span className="flip-hint">Tap for details</span>
           </div>
         </div>
         <div className="flip-face flip-back" aria-hidden={!flipped} onClick={flip}>
           <div className="flip-back-top">
-            <h3>{room.name}</h3>
+            <h3>{titleCase(room.name)}</h3>
             <p className="flip-sleeps">Sleeps {room.sleeps}</p>
           </div>
           <div className="flip-body">

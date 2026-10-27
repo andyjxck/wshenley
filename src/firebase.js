@@ -1,9 +1,11 @@
-// Firebase (project twsched-f8b16): the public events feed and the private hire enquiry form.
+// Firebase (project twsched-f8b16): the public events feed, the private hire enquiry form and the
+// website's published edits (siteContent/published, written only by approved editors).
 // Uses the lightweight Firestore build. This web config is public by design; security rules
-// only let visitors read website events. Enquiries go through the submitEnquiry Cloud Function,
-// which validates and rate-limits them on the server (visitors can't write to Firestore).
+// only let visitors read website events and published website content. Enquiries go through the
+// submitEnquiry Cloud Function, which validates and rate-limits them on the server (visitors can't
+// write to Firestore). The editor (src/editor/, loaded only for editors) adds Auth and Storage.
 import { initializeApp } from 'firebase/app'
-import { getFirestore, doc, getDoc } from 'firebase/firestore/lite'
+import { getFirestore, doc, getDoc, connectFirestoreEmulator } from 'firebase/firestore/lite'
 
 const app = initializeApp({
   apiKey: 'AIzaSyDe67skrRZG6TcHFcDUI45zY6Az4Jn5Y2I',
@@ -15,6 +17,25 @@ const app = initializeApp({
   measurementId: 'G-KTN344M0X3',
 })
 const db = getFirestore(app)
+
+// Local testing only: `VITE_FIREBASE_EMULATORS=1 npm run build` points everything at the Firebase
+// emulators on this machine. Never set for the real site.
+export const EMULATORS = import.meta.env.VITE_FIREBASE_EMULATORS === '1'
+export const EMU = {
+  firestore: Number(import.meta.env.VITE_EMU_FIRESTORE || 8080),
+  auth: Number(import.meta.env.VITE_EMU_AUTH || 9099),
+  storage: Number(import.meta.env.VITE_EMU_STORAGE || 9199),
+}
+if (EMULATORS) connectFirestoreEmulator(db, '127.0.0.1', EMU.firestore)
+
+export { app, db }
+export const BUCKET = 'twsched-f8b16.firebasestorage.app'
+
+// The website's published edits. Empty object when nothing has been published yet.
+export async function loadPublishedContent() {
+  const snap = await getDoc(doc(db, 'siteContent', 'published'))
+  return snap.exists() ? snap.data() : {}
+}
 
 // Events the staff app marks "show on website" (kept up to date by a Cloud Function).
 export async function loadEventsFeed() {
