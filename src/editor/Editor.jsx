@@ -25,6 +25,10 @@ import './editor.css'
 
 const auth = getAuth(app)
 const storage = getStorage(app)
+// Firebase keeps retrying a failed upload for 10 minutes by default, with no sign of trouble, so a dropped
+// connection left "Uploading…" on screen for ages. Give up on retries after 30 seconds and say so instead.
+storage.maxUploadRetryTime = 30 * 1000
+storage.maxOperationRetryTime = 30 * 1000
 if (EMULATORS) {
   connectAuthEmulator(auth, `http://127.0.0.1:${EMU.auth}`, { disableWarnings: true })
   connectStorageEmulator(storage, '127.0.0.1', EMU.storage)
@@ -64,8 +68,20 @@ async function shrink(file) {
   return blob
 }
 
+// Uploads a photo. Gives up with an error after UPLOAD_LIMIT_MS: a request that just hangs (the connection dropped
+// mid-upload) is never retried or ended by Firebase, so without this the box said "Uploading…" for good.
+const UPLOAD_LIMIT_MS = 90 * 1000
+function putPhoto(ref, blob, meta) {
+  let timer
+  const limit = new Promise((_, reject) => {
+    timer = setTimeout(() => { const err = new Error('stalled'); err.code = 'storage/stalled'; reject(err) }, UPLOAD_LIMIT_MS)
+  })
+  return Promise.race([uploadBytes(ref, blob, meta), limit]).finally(() => clearTimeout(timer))
+}
+
 const errText = (e) => {
   const c = (e && e.code) || ''
+  if (c.includes('retry-limit-exceeded') || c.includes('stalled')) return 'The photo didn’t upload because the connection to the website dropped. Check your internet and try again.'
   if (c.includes('invalid-credential') || c.includes('wrong-password') || c.includes('user-not-found') || c.includes('invalid-email')) return 'That email and password don’t match an account.'
   if (c.includes('too-many-requests')) return 'Too many attempts. Wait a few minutes and try again.'
   if (c.includes('network')) return 'No connection. Check the internet and try again.'
@@ -243,7 +259,7 @@ export default function Editor({ onClose }) {
             try { await getMetadata(pubRef); exists = true } catch { /* not copied yet */ }
             if (!exists) {
               const blob = await getBlob(sref(storage, p.path))
-              await uploadBytes(pubRef, blob, { contentType: 'image/jpeg', cacheControl: 'public, max-age=31536000, immutable' })
+              await putPhoto(pubRef, blob, { contentType: 'image/jpeg', cacheControl: 'public, max-age=31536000, immutable' })
             }
             photos[k].push({ url: publicUrl(`site/${name}`), alt: p.alt || '', credit: p.credit || '', creditHref: p.creditHref || '' })
           } else {
@@ -504,7 +520,7 @@ function PhotoDialog({ k, fallback, credits, list, photoUrl, onChange, onClose, 
       try {
         const blob = await shrink(f)
         const path = `site-draft/${randomName()}`
-        await uploadBytes(sref(storage, path), blob, { contentType: 'image/jpeg' })
+        await putPhoto(sref(storage, path), blob, { contentType: 'image/jpeg' })
         addBlob(path, URL.createObjectURL(blob))
         added.push({ path, alt: '', credit: '', creditHref: '' })
       } catch (e) { setErr(e.code ? errText(e) : e.message) }
