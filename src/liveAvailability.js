@@ -139,7 +139,8 @@ const nightsBetween = (a, b) => Math.round((new Date(`${b}T12:00:00`) - new Date
 // Returns { status: 'idle' | 'loading' | 'ok' | 'error', stay, byCode }
 // byCode[roomCode] = { state: 'free', total } | { state: 'off', reason: 'dates' | 'size' }
 // A room missing from byCode is left as normal.
-export function useLiveAvailability() {
+// listRef (optional): ref to the rooms as currently shown (the website editor can change them).
+export function useLiveAvailability(listRef) {
   const [res, setRes] = useState({ status: 'idle', stay: null, byCode: {} })
   const touched = useRef(false)
   const lastKey = useRef('')
@@ -180,7 +181,7 @@ export function useLiveAvailability() {
         .then((offers) => {
           if (id !== seq.current) return
           const byCode = {}
-          for (const room of rooms.list) {
+          for (const room of ((listRef && listRef.current) || rooms.list)) {
             const o = offers.find((x) => x.code === room.code)
             if (o) {
               const totals = (o.rates || []).map((x) => Number(x.total)).filter((n) => Number.isFinite(n) && n > 0)

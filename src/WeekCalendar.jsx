@@ -1,6 +1,7 @@
 import React from 'react'
 import { events } from './content.js'
 import { useEventsFeed, happensOn, timeLabel } from './useEventsFeed.js'
+import { Edit, useTextValue, useSite } from './site.jsx'
 
 // Shows the current week, Monday to Sunday. Events come from Firestore (public/events, the
 // staff app's "show on website" events). Until that loads, or if it can't, content.js is used.
@@ -27,6 +28,9 @@ const fmt = (d, o) => d.toLocaleDateString('en-GB', o)
 
 export default function WeekCalendar() {
   const feed = useEventsFeed()
+  const { editor } = useSite()
+  const todayWord = useTextValue('week.today', 'Today')
+  const noneWord = useTextValue('week.none', 'Nothing on')
   const days = thisWeek(feed)
   const first = days[0].d, last = days[6].d
   const range = first.getMonth() === last.getMonth()
@@ -36,7 +40,7 @@ export default function WeekCalendar() {
   return (
     <div className="week reveal" aria-label={`What's on this week, ${range}`}>
       <div className="week-head">
-        <span>This week</span>
+        <Edit k="week.title" as="span" plain>This week</Edit>
         <span>{range}</span>
       </div>
       <ol className="week-days">
@@ -45,7 +49,7 @@ export default function WeekCalendar() {
             <div className="week-date">
               <b>{fmt(d, { weekday: 'short' })}</b>
               <span>{d.getDate()}</span>
-              {today && <em>Today</em>}
+              {today && (editor && editor.editing ? <Edit k="week.today" as="em" plain>Today</Edit> : <em>{todayWord}</em>)}
             </div>
             <div className="week-events">
               {list.length ? list.map((e, i) => (
@@ -53,11 +57,12 @@ export default function WeekCalendar() {
                   <strong>{e.title}</strong>
                   {(e.note || e.time) && <small>{[e.note, e.time].filter(Boolean).join(' · ')}</small>}
                 </div>
-              )) : <span className="week-none">Nothing on</span>}
+              )) : (editor && editor.editing ? <Edit k="week.none" as="span" className="week-none" plain>Nothing on</Edit> : <span className="week-none">{noneWord}</span>)}
             </div>
           </li>
         ))}
       </ol>
+      {editor && editor.editing && <p className="ed-week-note">The events come from the Staff Hub calendar (events set to show on the website), so change them there.</p>}
     </div>
   )
 }

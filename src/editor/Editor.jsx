@@ -19,7 +19,7 @@ import {
 import { getStorage, connectStorageEmulator, ref as sref, uploadBytes, getBlob, getMetadata } from 'firebase/storage'
 import { doc, getDoc, writeBatch, collection, serverTimestamp } from 'firebase/firestore/lite'
 import { app, db, EMULATORS, EMU, BUCKET } from '../firebase.js'
-import { useSite, cleanContent, HOME_SECTIONS, SECTION_NAMES } from '../site.jsx'
+import { useSite, cleanContent, HOME_SECTIONS, SECTION_NAMES, safeLinkHref, parseList, parseRecord } from '../site.jsx'
 import { safeHref } from '../richText.js'
 import './editor.css'
 
@@ -166,14 +166,34 @@ export default function Editor({ onClose }) {
   }, [blobs])
 
   const openPhotos = useCallback((k, fallback, opts) => setDialog({ type: 'photos', k, fallback, opts }), [])
+  const openLink = useCallback((spec) => { setField(null); setDialog({ type: 'link', ...spec }) }, [])
+  const openList = useCallback((spec) => { setField(null); setDialog({ type: 'list', spec }) }, [])
+  // Closing a box that changed words shown on the page refreshes the editable boxes from the draft.
+  const closeDialog = useCallback(() => { setDialog(null); setRevision((r) => r + 1) }, [])
+
+  // While editing, links and buttons on the page don't go anywhere and forms don't send, so clicking
+  // into words inside a link or a form just edits them.
+  useEffect(() => {
+    if (status !== 'ready' || !editing) return undefined
+    const inEditor = (t) => t && t.closest && t.closest('.ed-bar, .ed-modal, .ed-toolbar, .ed-reset')
+    const onClick = (e) => {
+      const t = e.target
+      if (inEditor(t)) return
+      if (t && t.closest && t.closest('a[href]')) e.preventDefault()
+    }
+    const onSubmit = (e) => { if (!inEditor(e.target)) e.preventDefault() }
+    document.addEventListener('click', onClick, true)
+    document.addEventListener('submit', onSubmit, true)
+    return () => { document.removeEventListener('click', onClick, true); document.removeEventListener('submit', onSubmit, true) }
+  }, [status, editing])
   const onFocusField = useCallback((el, info) => setField({ el, ...info }), [])
   const onBlurField = useCallback(() => setTimeout(() => {
     if (!document.activeElement || !document.activeElement.closest('.ed-field, .ed-toolbar')) setField(null)
   }, 150), [])
 
   const ctx = useMemo(() => (status === 'ready' && draft ? {
-    draft, editing, revision, setText, photoUrl, openPhotos, onFocusField, onBlurField,
-  } : null), [status, draft, editing, revision, setText, photoUrl, openPhotos, onFocusField, onBlurField])
+    draft, editing, revision, setText, photoUrl, openPhotos, openLink, openList, onFocusField, onBlurField,
+  } : null), [status, draft, editing, revision, setText, photoUrl, openPhotos, openLink, openList, onFocusField, onBlurField])
   useEffect(() => { setEditor(ctx) }, [ctx, setEditor])
   useEffect(() => () => setEditor(null), [setEditor])
 
@@ -287,6 +307,12 @@ export default function Editor({ onClose }) {
           onClose={() => setDialog(null)}
           addBlob={(path, url) => setBlobs((m) => ({ ...m, [path]: url }))}
         />
+      )}
+      {dialog && dialog.type === 'link' && (
+        <LinkDialog spec={dialog} text={draft.text} setText={setText} onClose={closeDialog} />
+      )}
+      {dialog && dialog.type === 'list' && (
+        <ListDialog spec={dialog.spec} text={draft.text} setText={setText} onClose={closeDialog} />
       )}
       {dialog && dialog.type === 'sections' && (
         <SectionsDialog order={draft.order || HOME_SECTIONS} onChange={(order) => setDraft((d) => ({ ...d, order }))} onClose={() => setDialog(null)} />
@@ -539,6 +565,153 @@ function SectionsDialog({ order, onChange, onClose }) {
         <div className="ed-row">
           <button type="button" onClick={() => onChange(HOME_SECTIONS)}>Original order</button>
           <button type="button" className="primary" onClick={onClose}>Done</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ------------------------------------------------------------------ links and buttons
+const LINK_HELP = 'A web address (https://…), an email (mailto:name@example.com), a phone number (tel:+441564660303), or a part of this page (#book, #eat, #stay, #whats-on, #hire, #visit, #nearby).'
+
+function LinkDialog({ spec, text, setText, onClose }) {
+  const { k, label, href } = spec
+  const curLabel = text[k] != null ? text[k] : ''
+  const curHref = text[`${k}.href`] != null ? text[`${k}.href`] : ''
+  const bad = curHref.trim() !== '' && !safeLinkHref(curHref)
+  const changed = text[k] != null || text[`${k}.href`] != null
+  const close = () => { if (!bad) onClose() }
+  return (
+    <div className="ed-modal" role="dialog" aria-modal="true" aria-labelledby="ed-link-title" onKeyDown={(e) => { if (e.key === 'Escape') close() }}>
+      <div className="ed-card">
+        <h2 id="ed-link-title">Button or link</h2>
+        <label>Words on it<input value={curLabel} maxLength={200} placeholder={label} onChange={(e) => setText(k, e.target.value)} autoFocus /></label>
+        <label>Where it goes<input value={curHref} maxLength={600} placeholder={href} onChange={(e) => setText(`${k}.href`, e.target.value)} inputMode="url" autoCapitalize="off" spellCheck="false" /></label>
+        <p className="ed-help">{LINK_HELP} Leave a box empty to keep the original shown in grey.</p>
+        {bad && <p className="ed-error" role="alert">That address isn’t allowed. Start it with https://, mailto: or tel:, or use a part of the page like #book.</p>}
+        <div className="ed-row">
+          {changed && <button type="button" onClick={() => { setText(k, ''); setText(`${k}.href`, '') }}>Back to original</button>}
+          <button type="button" className="primary" onClick={close} disabled={bad}>Done</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ------------------------------------------------------------------ lists and grouped details
+const ICON_NAMES = {
+  double: 'Double bed', king: 'King size bed', single: 'Single bed', shower: 'Shower', bath: 'Bath', tv: 'Television',
+  kettle: 'Tea and coffee', heating: 'Heating', hairdryer: 'Hairdryer', towels: 'Towels', bedding: 'Extra bedding', historic: 'Historic room',
+}
+
+function FieldInput({ f, value, onChange }) {
+  const bad = f.type === 'url' && value.trim() !== '' && !safeLinkHref(value)
+  let input
+  if (f.type === 'rich') {
+    input = <span className="ed-rich-note">Change these words on the page: click them.</span>
+  } else if (f.type === 'textarea' || f.type === 'lines') {
+    input = <textarea value={value} maxLength={f.max || 3000} rows={f.type === 'lines' ? 3 : 3} onChange={(e) => onChange(e.target.value)} placeholder={f.placeholder || ''} />
+  } else if (f.type === 'icons') {
+    const on = new Set(value.split(',').map((s) => s.trim()).filter(Boolean))
+    input = (
+      <span className="ed-icons">
+        {Object.entries(ICON_NAMES).map(([id, name]) => (
+          <span key={id} className="ed-check">
+            <input type="checkbox" id={`ic-${f.name}-${id}-${f._row}`} checked={on.has(id)} onChange={(e) => { const n = new Set(on); if (e.target.checked) n.add(id); else n.delete(id); onChange(Object.keys(ICON_NAMES).filter((x) => n.has(x)).join(',')) }} />
+            <label htmlFor={`ic-${f.name}-${id}-${f._row}`}>{name}</label>
+          </span>
+        ))}
+      </span>
+    )
+  } else {
+    input = (
+      <input
+        value={value}
+        maxLength={f.max || 600}
+        inputMode={f.type === 'number' ? 'numeric' : f.type === 'url' ? 'url' : undefined}
+        autoCapitalize={f.type === 'url' ? 'off' : undefined}
+        spellCheck={f.type === 'url' ? 'false' : undefined}
+        placeholder={f.placeholder || ''}
+        onChange={(e) => onChange(f.type === 'number' ? e.target.value.replace(/[^0-9]/g, '') : e.target.value)}
+      />
+    )
+  }
+  return (
+    <div className="ed-fieldrow">
+      {f.type === 'icons' ? <span className="ed-flabel">{f.label}</span> : <label className="ed-flabel">{f.label}{f.type !== 'rich' && input}</label>}
+      {(f.type === 'icons' || f.type === 'rich') && input}
+      {f.help && <span className="ed-help">{f.help}</span>}
+      {bad && <span className="ed-error" role="alert">That address isn’t allowed. Use https://, mailto:, tel: or a part of the page like #book.</span>}
+    </div>
+  )
+}
+
+function ListDialog({ spec, text, setText, onClose }) {
+  const { key, fields, fallback, title, help, record, extras = [], newItem, itemName = 'item', max = 40, min = 0 } = spec
+  const raw = text[key]
+  const changed = raw != null && raw !== ''
+  const items = record
+    ? (parseRecord(raw, fields, fallback, false) || fallback)
+    : (parseList(raw, fields, false) || fallback)
+  const write = (next) => setText(key, JSON.stringify(next))
+  const setField = (i, name, v) => {
+    if (record) write({ ...items, [name]: v })
+    else write(items.map((x, j) => (j === i ? { ...x, [name]: v } : x)))
+  }
+  const move = (i, d) => { const n = [...items]; const [x] = n.splice(i, 1); n.splice(i + d, 0, x); write(n) }
+  const remove = (i) => write(items.filter((_, j) => j !== i))
+  const add = () => {
+    const blank = {}
+    for (const f of fields) blank[f.name] = ''
+    write([...items, { ...blank, ...(newItem ? newItem() : {}) }])
+  }
+  const anyBad = (record ? [items] : items).some((it) => fields.some((f) => f.type === 'url' && (it[f.name] || '').trim() && !safeLinkHref(it[f.name])))
+  const visible = fields.filter((f) => !f.hidden)
+  const close = () => { if (!anyBad) onClose() }
+  const extraVal = (x) => (text[x.k] != null ? text[x.k] : '')
+  return (
+    <div className="ed-modal" role="dialog" aria-modal="true" aria-labelledby="ed-list-title" onKeyDown={(e) => { if (e.key === 'Escape') close() }}>
+      <div className="ed-card wide">
+        <h2 id="ed-list-title">{title}</h2>
+        {help && <p className="ed-help">{help}</p>}
+        {record ? (
+          <div className="ed-item">
+            {visible.map((f) => <FieldInput key={f.name} f={{ ...f, _row: 0 }} value={items[f.name] || ''} onChange={(v) => setField(0, f.name, v)} />)}
+          </div>
+        ) : (
+          <ol className="ed-items">
+            {items.map((it, i) => (
+              <li className="ed-item" key={i}>
+                <div className="ed-item-head">
+                  <b>{(it[visible[0].name] || '').replace(/<[^>]*>/g, '').slice(0, 60) || `New ${itemName}`}</b>
+                  <span className="ed-item-move">
+                    <button type="button" onClick={() => move(i, -1)} disabled={i === 0} aria-label={`Move ${itemName} ${i + 1} up`}>↑</button>
+                    <button type="button" onClick={() => move(i, 1)} disabled={i === items.length - 1} aria-label={`Move ${itemName} ${i + 1} down`}>↓</button>
+                    <button type="button" onClick={() => remove(i)} disabled={items.length <= min} aria-label={`Remove ${itemName} ${i + 1}`}>Remove</button>
+                  </span>
+                </div>
+                {visible.map((f) => <FieldInput key={f.name} f={{ ...f, _row: i }} value={it[f.name] || ''} onChange={(v) => setField(i, f.name, v)} />)}
+              </li>
+            ))}
+            {!items.length && <li className="ed-none">Nothing here yet.</li>}
+          </ol>
+        )}
+        {!record && items.length < max && <div className="ed-row"><button type="button" onClick={add}>Add {itemName}</button></div>}
+        {extras.length > 0 && (
+          <div className="ed-extras">
+            <h3>{spec.extrasTitle || 'Other words'}</h3>
+            {extras.map((x) => (
+              <label key={x.k} className="ed-flabel">{x.label}
+                <input value={extraVal(x)} maxLength={400} placeholder={x.fallback} onChange={(e) => setText(x.k, e.target.value)} />
+              </label>
+            ))}
+            <p className="ed-help">Leave a box empty to keep the original shown in grey.</p>
+          </div>
+        )}
+        {anyBad && <p className="ed-error" role="alert">One of the links isn’t allowed. Fix it before closing.</p>}
+        <div className="ed-row">
+          {changed && <button type="button" onClick={() => setText(key, '')}>Back to original {record ? 'details' : 'list'}</button>}
+          <button type="button" className="primary" onClick={close} disabled={anyBad}>Done</button>
         </div>
       </div>
     </div>

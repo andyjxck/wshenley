@@ -58,3 +58,35 @@ body.ws-editing .hero-title .ht > span { animation: none !important; transform: 
 .ed-sections { margin: 0; padding: 0 0 0 1.2em; }
 .ed-sections li { display: flex; align-items: center; gap: 6px; padding: 6px 0; }
 .ed-sections li span { flex: 1; }
+
+/* Buttons and links: while editing, a click opens the box for their words and destination */
+.ed-link { outline: 1px dashed rgba(184, 116, 52, .8); outline-offset: 3px; cursor: pointer !important; }
+.ed-link:hover, .ed-link:focus-visible { outline: 2px solid #b87434; }
+.hero .ed-link, .whats-on .ed-link, .site-foot .ed-link { outline-color: rgba(255, 220, 170, .85); }
+.ed-list-btn { margin: 8px 0; }
+.ed-list-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Lists and grouped details */
+.ed-card textarea { display: block; width: 100%; margin-top: 4px; padding: 9px 10px; border: 1px solid #cdbfa9; border-radius: 8px; background: #fff; color: #1f1a15; font: 15px/1.4 system-ui, sans-serif; resize: vertical; }
+.ed-card h3 { margin: 16px 0 8px; font: 700 1rem/1.2 system-ui, sans-serif; text-transform: none; letter-spacing: 0; }
+.ed-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.ed-item { padding: 12px; border-radius: 10px; background: #fff; box-shadow: 0 0 0 1px #e4d9c7; }
+.ed-item-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.ed-item-head b { font-size: .95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ed-item-move { display: flex; gap: 4px; flex: none; }
+.ed-item-move button { padding: 4px 9px; }
+.ed-fieldrow { margin-bottom: 8px; }
+.ed-fieldrow .ed-help, .ed-fieldrow .ed-error { display: block; font-size: .8rem; margin-top: 2px; }
+.ed-card .ed-flabel { display: block; margin: 0 0 4px; font-weight: 600; font-size: .85rem; }
+.ed-icons { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.ed-check { display: inline-flex; align-items: center; gap: 6px; }
+.ed-card .ed-check input { display: inline-block; width: auto; margin: 0; }
+.ed-card .ed-check label { display: inline; margin: 0; font-weight: 400; }
+.ed-rich-note { display: block; color: #5f5446; font-weight: 400; font-style: italic; }
+.ed-extras { margin-top: 12px; padding-top: 4px; border-top: 1px solid #e4d9c7; }
+.ed-items .ed-none { color: #5f5446; }
+/* Room cards don't flip while their words are being clicked */
+body.ws-editing .flip-card .ed-photo-btn { position: absolute; left: 10px; top: 10px; margin: 0; z-index: 6; }
+.enquiry .enq-lbl { display: flex; flex-direction: column; gap: 6px; font: 600 0.84rem/1.3 var(--sans, system-ui); margin-bottom: 14px; }
+.ed-week-note { margin: 8px 0 0; font: 400 .8rem/1.3 system-ui, sans-serif; opacity: .75; }
+body.ws-editing .flip-card { position: relative; }

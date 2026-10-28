@@ -12,7 +12,7 @@
 //   order:  ['stay', 'eat', 'whatson', 'hire']   homepage section order
 import React, { createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { loadPublishedContent } from './firebase.js'
-import { sanitizeHtml, escapeHtml, hasBlocks } from './richText.js'
+import { sanitizeHtml, escapeHtml, hasBlocks, safeHref } from './richText.js'
 import { titleCase } from './titleCase.js'
 
 const CACHE_KEY = 'ws-site-published-v1'
@@ -108,7 +108,10 @@ export function useTextValue(k, fallback) {
 // <Edit k="home.eat.heading" as="h2" heading>Homemade pub classics</Edit>   a heading: plain text, shown in Title Case
 // <Edit k="home.eat.intro" as="p" rich>{food.intro}</Edit>                  a paragraph: bold, italic, links and lists
 // <Edit k="..." rich paras>{bodyWithBlankLines}</Edit>                       several paragraphs (blank line between)
-export function Edit({ k, as = 'p', className = '', heading = false, rich = false, paras = false, caseFn = titleCase, children, ...rest }) {
+// <Edit k="home.hero.since" as="b" plain>1352</Edit>                         a single line of plain text, shown exactly as typed
+const asIs = (v) => v
+export function Edit({ k, as = 'p', className = '', heading = false, plain = false, rich = false, paras = false, caseFn = titleCase, children, ...rest }) {
+  if (plain) { heading = true; caseFn = asIs } // eslint-disable-line no-param-reassign
   const { content, editor } = useSite()
   const fallback = typeof children === 'string' ? children : ''
   const override = content.text[k]
@@ -135,7 +138,7 @@ export function Edit({ k, as = 'p', className = '', heading = false, rich = fals
 
 // While editing, the browser owns the words inside the box (so the cursor never jumps); React only
 // fills it when the box first opens or the draft is reset.
-function EditingField({ k, Tag, className, html, heading, rich, paras, editor, caseFn, fallback, defaultHtml, ...rest }) {
+function EditingField({ k, Tag, className, html, heading, rich, paras, editor, caseFn, fallback, defaultHtml, onValue, ...rest }) {
   const ref = useRef(null)
   const rev = editor.revision
   // Keep the same element while typing (adding a list mustn't swap the box and lose the cursor).
@@ -147,11 +150,13 @@ function EditingField({ k, Tag, className, html, heading, rich, paras, editor, c
     if (heading) {
       const t = el.textContent.replace(/\s+/g, ' ').trim()
       // Unchanged from the built-in heading: store nothing, so it keeps following the default.
-      editor.setText(k, (t === fallback || caseFn(t) === caseFn(fallback)) ? '' : t)
+      if (onValue) onValue(t)
+      else editor.setText(k, (t === fallback || caseFn(t) === caseFn(fallback)) ? '' : t)
       if (final) el.textContent = caseFn(t)
     } else {
       const v = sanitizeHtml(el.innerHTML)
-      editor.setText(k, (v === defaultHtml || v === sanitizeHtml(defaultHtml)) ? '' : v)
+      if (onValue) onValue(v)
+      else editor.setText(k, (v === defaultHtml || v === sanitizeHtml(defaultHtml)) ? '' : v)
     }
   }
   return (
@@ -171,6 +176,139 @@ function EditingField({ k, Tag, className, html, heading, rich, paras, editor, c
       onKeyDown={(e) => { if (heading && e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
       {...rest}
     />
+  )
+}
+
+// ---------------------------------------------------------------- Links and buttons
+// Edited link destinations may be a web address (https://), an email (mailto:), a phone number (tel:),
+// a section of the page (#book) or another page of this site (history/, ../#book).
+export function safeLinkHref(href) {
+  const h = String(href || '').trim()
+  const s = safeHref(h)
+  if (s) return s
+  if (/^[\w-]+(\/[\w-]+)*\/?(#[\w-]*)?$/.test(h)) return h
+  if (/^\.\.\/#[\w-]*$/.test(h)) return h
+  return ''
+}
+
+// <EditLink k="home.hero.book" href="#book" className="pill light">Book a room</EditLink>
+// The words and where it goes can both be changed. While editing, clicking it opens a small box for both.
+export function EditLink({ k, href, children, className = '', newTab, onClick, mapHref, inner = false, ...rest }) {
+  const { editor } = useSite()
+  const fallback = typeof children === 'string' ? children : ''
+  const label = useTextValue(k, fallback)
+  const edited = useTextValue(`${k}.href`, '')
+  const ok = edited && safeLinkHref(edited)
+  const dest = ok ? (mapHref && ok.startsWith('#') ? mapHref(ok) : ok) : href
+  const ext = newTab != null ? newTab : /^https?:/i.test(dest)
+  const editing = !!(editor && editor.editing)
+  const cls = `${className}${editing ? ' ed-link' : ''}`.trim()
+  return (
+    <a
+      className={cls || undefined}
+      href={dest}
+      target={ext ? '_blank' : undefined}
+      rel={ext ? 'noreferrer' : undefined}
+      data-edit-link={editing ? k : undefined}
+      title={editing ? 'Click to change the words and where this goes' : undefined}
+      {...rest}
+      onClick={editing
+        ? (e) => { e.preventDefault(); e.stopPropagation(); editor.openLink({ k, label: fallback, href }) }
+        : onClick}
+    >
+      {inner ? <span>{label}</span> : label}
+    </a>
+  )
+}
+
+// ---------------------------------------------------------------- Lists and grouped details
+// Lists (rooms, menus, nearby places, ...) and grouped details (the contact details) are kept in the
+// same text map as everything else, as JSON, under 'list:<name>' and 'rec:<name>'. That keeps the
+// stored shape (text, photos, order) the security rules already check, and a list nobody has changed
+// just uses the built-in one from content.js.
+//   fields: [{ name, label, type: 'text' | 'textarea' | 'url' | 'number' | 'icons' | 'rich', max, help }]
+// Every value is a string. Links are checked again whenever they are shown.
+function cleanItem(x, fields, strict) {
+  const o = {}
+  for (const f of fields) {
+    let v = typeof x[f.name] === 'string' ? x[f.name] : (typeof x[f.name] === 'number' ? String(x[f.name]) : '')
+    v = v.slice(0, f.max || 3000)
+    if (strict && f.type === 'url' && v && !safeLinkHref(v)) v = ''
+    o[f.name] = v
+  }
+  return o
+}
+export function parseList(raw, fields, strict = true) {
+  if (typeof raw !== 'string' || !raw) return null
+  let a
+  try { a = JSON.parse(raw) } catch { return null }
+  if (!Array.isArray(a)) return null
+  return a.slice(0, 80).filter((x) => x && typeof x === 'object').map((x) => cleanItem(x, fields, strict))
+}
+export function parseRecord(raw, fields, fallback, strict = true) {
+  if (typeof raw !== 'string' || !raw) return null
+  let a
+  try { a = JSON.parse(raw) } catch { return null }
+  if (!a || typeof a !== 'object' || Array.isArray(a)) return null
+  const c = cleanItem(a, fields, strict)
+  const out = { ...fallback }
+  for (const f of fields) if (f.name in a) out[f.name] = c[f.name]
+  return out
+}
+
+export function useList(name, fallback, fields) {
+  const { content, editor } = useSite()
+  const key = `list:${name}`
+  const raw = content.text[key]
+  const items = useMemo(() => parseList(raw, fields) || fallback, [raw, fallback, fields])
+  const setItems = (next) => editor && editor.setText(key, next == null ? '' : JSON.stringify(next))
+  const setItem = (i, f, v) => setItems(items.map((x, j) => (j === i ? { ...x, [f]: v } : x)))
+  return { key, items, setItems, setItem, fields, fallback }
+}
+
+export function useRecord(name, fallback, fields) {
+  const { content } = useSite()
+  const raw = content.text[`rec:${name}`]
+  return useMemo(() => parseRecord(raw, fields, fallback) || fallback, [raw, fallback, fields])
+}
+
+// One field of one list item, edited right on the page (plain text, or rich text with links).
+export function ItemEdit({ list, i, f, as = 'span', rich = false, className = '', ...rest }) {
+  const { editor } = useSite()
+  const v = (list.items[i] && list.items[i][f]) || ''
+  const html = rich ? sanitizeHtml(v) : escapeHtml(v)
+  const Tag = as
+  if (editor && editor.editing) {
+    return (
+      <EditingField
+        key={editor.revision}
+        Tag={Tag}
+        className={className}
+        html={html}
+        heading={!rich}
+        rich={rich}
+        paras={false}
+        editor={editor}
+        caseFn={asIs}
+        fallback={v}
+        defaultHtml={html}
+        onValue={(val) => list.setItem(i, f, val)}
+        {...rest}
+      />
+    )
+  }
+  return <Tag className={className || undefined} {...rest} dangerouslySetInnerHTML={{ __html: html }} />
+}
+
+// Button (only while editing) that opens the box for a whole list or a group of details.
+//   spec: { key: 'list:home.menus' | 'rec:contact', fields, fallback, title, help, record?, extras?, newItem? }
+export function ListEditButton({ spec, label, className = '' }) {
+  const { editor } = useSite()
+  if (!editor || !editor.editing) return null
+  return (
+    <button type="button" className={`ed-photo-btn ed-list-btn ${className}`.trim()} onClick={(e) => { e.preventDefault(); e.stopPropagation(); editor.openList(spec) }}>
+      {label}
+    </button>
   )
 }
 

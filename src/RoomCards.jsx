@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { rooms, seekda } from './content.js'
+import { seekda } from './content.js'
 import { money } from './liveAvailability.js'
 import { titleCase } from './titleCase.js'
+import { useTextValue, usePhotos, PhotoEditButton, useSite } from './site.jsx'
+import { ROOM_WORDS } from './editables.js'
 
 // Simple line icons. Each has a label for screen readers and a tooltip on hover.
 const I = (d) => (
@@ -25,20 +27,26 @@ const ICONS = {
 // Opens the room on the hotel's own Seekda booking page. When the guest has picked
 // dates above, those dates and the number of guests go along too.
 const bookUrl = (code, sleeps, stay) => {
-  const base = `https://${seekda.propertyCode.toLowerCase()}.officialbookings.com/room/${code}?skd-currency-code=GBP&skd-language-code=en`
+  const base = `https://${seekda.propertyCode.toLowerCase()}.officialbookings.com/room/${encodeURIComponent(code)}?skd-currency-code=GBP&skd-language-code=en`
   if (!stay) return `${base}&adult_room1=${sleeps}`
   return `${base}&adult_room1=${Math.min(stay.guests, sleeps)}&skd-checkin=${stay.checkIn}&skd-checkout=${stay.checkOut}`
 }
 
 const nightsLabel = (n) => `${n} night${n === 1 ? '' : 's'}`
 
-function RoomCard({ room, live, stay }) {
+function RoomCard({ room, live, stay, w }) {
   const [flipped, setFlipped] = useState(false)
+  const { editor } = useSite()
+  const editing = !!(editor && editor.editing)
+  const photoKey = `home.room.${room.id}`
+  const builtIn = room.image ? [{ src: room.image, alt: room.name }] : []
+  const photos = usePhotos(photoKey, builtIn)
+  const img = photos[0]
   const off = live && live.state === 'off'
   const free = live && live.state === 'free'
   const offText = off && live.reason === 'size'
-    ? `Sleeps ${room.sleeps}, too small for ${stay.guests} guests`
-    : 'Not available for these dates'
+    ? `${w['room.sleeps']} ${room.sleeps}, too small for ${stay.guests} guests`
+    : w['room.notfree']
   const priceText = free && live.total ? `${money(live.total)} for ${nightsLabel(stay.nights)}` : null
   const flip = () => setFlipped((f) => !f)
   const onKey = (e) => {
@@ -46,26 +54,27 @@ function RoomCard({ room, live, stay }) {
   }
   return (
     <div className={`flip-card reveal${off ? ' is-off' : ''}${free ? ' is-free' : ''}`}>
+      {editing && <PhotoEditButton k={photoKey} fallback={builtIn} label={img ? 'Edit photo' : 'Add photo'} />}
       <div className={`flip-inner${flipped ? ' flipped' : ''}`}>
         <div className="flip-face flip-front" role="button" tabIndex={flipped ? -1 : 0} aria-label={`${room.name}${off ? `, ${offText}` : priceText ? `, ${priceText}` : ''}, show details`} onClick={flip} onKeyDown={onKey} aria-hidden={flipped}>
-          {room.image
-            ? <img src={room.image} alt={room.name} loading="lazy" />
-            : <div className="flip-noimg"><span>Photo coming soon</span></div>}
+          {img
+            ? <img src={img.src} alt={img.alt || room.name} loading="lazy" />
+            : <div className="flip-noimg"><span>{w['room.nophoto']}</span></div>}
           {off && <span className="flip-badge off">{offText}</span>}
-          {free && <span className="flip-badge free">{priceText || 'Available'}</span>}
+          {free && <span className="flip-badge free">{priceText || w['room.available']}</span>}
           <div className="flip-name">
             <h3>{titleCase(room.name)}</h3>
-            <span className="flip-hint">Tap for details</span>
+            <span className="flip-hint">{w['room.tap']}</span>
           </div>
         </div>
         <div className="flip-face flip-back" aria-hidden={!flipped} onClick={flip}>
           <div className="flip-back-top">
             <h3>{titleCase(room.name)}</h3>
-            <p className="flip-sleeps">Sleeps {room.sleeps}</p>
+            <p className="flip-sleeps">{w['room.sleeps']} {room.sleeps}</p>
           </div>
           <div className="flip-body">
             <p className="flip-text">{room.text}</p>
-            {room.history && <p className="flip-history"><span>A bit of history</span>{room.history}</p>}
+            {room.history && <p className="flip-history"><span>{w['room.history']}</span>{room.history}</p>}
           </div>
           <ul className="flip-icons">
             {room.icons.filter((k) => ICONS[k]).map((k) => (
@@ -76,9 +85,9 @@ function RoomCard({ room, live, stay }) {
           {free && <p className="flip-status free">{priceText ? <>Available: <strong>{priceText}</strong></> : `Available for ${nightsLabel(stay.nights)}`}</p>}
           <div className="flip-actions">
             {off
-              ? <a className="pill ghost-dark" href="#book" tabIndex={flipped ? 0 : -1} onClick={(e) => e.stopPropagation()}>Change dates</a>
-              : <a className="pill dark" href={bookUrl(room.code, room.sleeps, free ? stay : null)} target="_blank" rel="noreferrer" tabIndex={flipped ? 0 : -1} onClick={(e) => e.stopPropagation()}>Book Room</a>}
-            <button className="flip-back-btn" tabIndex={flipped ? 0 : -1} onClick={(e) => { e.stopPropagation(); flip() }}>Back</button>
+              ? <a className="pill ghost-dark" href="#book" tabIndex={flipped ? 0 : -1} onClick={(e) => e.stopPropagation()}>{w['room.change']}</a>
+              : <a className="pill dark" href={bookUrl(room.code, room.sleeps, free ? stay : null)} target="_blank" rel="noreferrer" tabIndex={flipped ? 0 : -1} onClick={(e) => e.stopPropagation()}>{w['room.book']}</a>}
+            <button className="flip-back-btn" tabIndex={flipped ? 0 : -1} onClick={(e) => { e.stopPropagation(); flip() }}>{w['room.back']}</button>
           </div>
         </div>
       </div>
@@ -86,11 +95,12 @@ function RoomCard({ room, live, stay }) {
   )
 }
 
-export default function RoomCards({ avail }) {
+export default function RoomCards({ avail, list }) {
   const ok = avail && avail.status === 'ok'
+  const w = Object.fromEntries(ROOM_WORDS.map((x) => [x.k, useTextValue(x.k, x.fallback)])) // eslint-disable-line react-hooks/rules-of-hooks
   return (
     <div className="flip-grid">
-      {rooms.list.map((r) => <RoomCard key={r.code} room={r} live={ok ? avail.byCode[r.code] : null} stay={ok ? avail.stay : null} />)}
+      {list.map((r, i) => <RoomCard key={r.id || i} room={r} w={w} live={ok ? avail.byCode[r.code] : null} stay={ok ? avail.stay : null} />)}
     </div>
   )
 }

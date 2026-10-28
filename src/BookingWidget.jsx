@@ -1,11 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { seekda, contact } from './content.js'
+import { seekda } from './content.js'
+import { useContact } from './editables.js'
+import { useTextValue } from './site.jsx'
 
 // Loads the same Seekda booking engine the current site uses (property S006498).
 // If it can't load (blocked, offline, or the domain isn't allowed by Seekda),
 // guests still get a phone number and a fallback link.
 export default function BookingWidget() {
   const bar = useRef(null)
+  const contact = useContact()
+  const t = {
+    wait: useTextValue('book.wait', 'Loading live availability…'),
+    fail: useTextValue('book.fail', 'Live availability didn’t load. Call us and we’ll book you in.'),
+    call: useTextValue('book.call', 'Call'),
+    email: useTextValue('book.email', 'Email us'),
+  }
   const [state, setState] = useState('loading')
 
   useEffect(() => {
@@ -38,13 +47,13 @@ export default function BookingWidget() {
   return (
     <div className={`booking booking-${state}`}>
       <div className="kbe-bar" ref={bar} data-kbe-searchbar={seekda.widgetId} />
-      {state === 'loading' && <p className="muted booking-wait">Loading live availability…</p>}
+      {state === 'loading' && <p className="muted booking-wait">{t.wait}</p>}
       {state === 'fallback' && (
         <div className="booking-fallback">
-          <p>Live availability didn’t load. Call us and we’ll book you in.</p>
+          <p>{t.fail}</p>
           <div className="btn-row">
-            <a className="pill dark" href={contact.phoneHref}>Call {contact.phone}</a>
-            <a className="pill ghost-dark" href={`mailto:${contact.email}?subject=Room%20booking`}>Email us</a>
+            <a className="pill dark" href={contact.phoneHref}>{t.call} {contact.phone}</a>
+            <a className="pill ghost-dark" href={`mailto:${contact.email}?subject=Room%20booking`}>{t.email}</a>
           </div>
         </div>
       )}
