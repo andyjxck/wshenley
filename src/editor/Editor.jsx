@@ -23,6 +23,15 @@ import { useSite, cleanContent, HOME_SECTIONS, SECTION_NAMES, safeLinkHref, pars
 import { safeHref } from '../richText.js'
 import './editor.css'
 
+// The Nearby box has a map. It (and the map code) only downloads when someone opens it.
+const NearbyDialog = React.lazy(() => import('./NearbyDialog.jsx'))
+// If the map box can't load (no connection when it's opened), the plain list box is used instead.
+class NearbyFallback extends React.Component {
+  constructor(props) { super(props); this.state = { failed: false } }
+  static getDerivedStateFromError() { return { failed: true } }
+  render() { return this.state.failed ? this.props.fallback : this.props.children }
+}
+
 const auth = getAuth(app)
 const storage = getStorage(app)
 if (EMULATORS) {
@@ -323,7 +332,14 @@ export default function Editor({ onClose }) {
       {dialog && dialog.type === 'link' && (
         <LinkDialog spec={dialog} text={draft.text} setText={setText} onClose={closeDialog} />
       )}
-      {dialog && dialog.type === 'list' && (
+      {dialog && dialog.type === 'list' && dialog.spec.kind === 'nearby' && (
+        <NearbyFallback fallback={<ListDialog spec={dialog.spec} text={draft.text} setText={setText} onClose={closeDialog} />}>
+          <React.Suspense fallback={<div className="ed-modal" role="status"><div className="ed-card"><p>Opening the map…</p></div></div>}>
+            <NearbyDialog spec={dialog.spec} text={draft.text} setText={setText} onClose={closeDialog} />
+          </React.Suspense>
+        </NearbyFallback>
+      )}
+      {dialog && dialog.type === 'list' && dialog.spec.kind !== 'nearby' && (
         <ListDialog spec={dialog.spec} text={draft.text} setText={setText} onClose={closeDialog} />
       )}
       {dialog && dialog.type === 'sections' && (
@@ -490,7 +506,7 @@ function ResetField({ field, draft, onReset }) {
 // and focus goes back to whatever opened it.
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
-const Icon = {
+export const Icon = {
   close: <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" /></svg>,
   up: <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15V5M5 9.5L10 4.5l5 5" /></svg>,
   down: <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 5v10M5 10.5l5 5 5-5" /></svg>,
@@ -499,7 +515,7 @@ const Icon = {
   arrow: <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4" /></svg>,
 }
 
-function Dialog({ name, kicker, title, intro, wide, onClose, closeDisabled, footer, initialFocus, children }) {
+export function Dialog({ name, kicker, title, intro, wide, onClose, closeDisabled, footer, initialFocus, children }) {
   const cardRef = useRef(null)
   const latest = useRef({ onClose, closeDisabled })
   latest.current = { onClose, closeDisabled }
@@ -786,7 +802,7 @@ const ICON_NAMES = {
   kettle: 'Tea and coffee', heating: 'Heating', hairdryer: 'Hairdryer', towels: 'Towels', bedding: 'Extra bedding', historic: 'Historic room',
 }
 
-function FieldInput({ f, value, onChange }) {
+export function FieldInput({ f, value, onChange }) {
   const bad = f.type === 'url' && value.trim() !== '' && !safeLinkHref(value)
   let input
   if (f.type === 'rich') {

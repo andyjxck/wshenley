@@ -138,9 +138,14 @@ export const NEARBY_FIELDS = [
   { name: 'place', label: 'Where', max: 100 },
   { name: 'distance', label: 'How far', max: 60 },
   url('href', 'Website'),
+  // where the place's pin sits on the editor's map (not shown on the page). Lists saved before the map
+  // existed have no pins; the map box finds the built-in places by name and asks about the rest.
+  { name: 'lat', label: 'Latitude', max: 20, hidden: true },
+  { name: 'lng', label: 'Longitude', max: 20, hidden: true },
 ]
 export const NEARBY_FALLBACK = nearby.map((n) => ({ ...n }))
-export const NEARBY_SPEC = { key: 'list:home.nearby', fields: NEARBY_FIELDS, fallback: NEARBY_FALLBACK, title: 'Nearby', itemName: 'place', max: 30 }
+// kind: 'nearby' opens the map box (src/editor/NearbyDialog.jsx) instead of the plain list box.
+export const NEARBY_SPEC = { key: 'list:home.nearby', kind: 'nearby', fields: NEARBY_FIELDS, fallback: NEARBY_FALLBACK, title: 'Nearby places', itemName: 'place', max: 30 }
 
 // ---------------------------------------------------------------- enquiry form
 export const OCCASIONS_FALLBACK = ['Birthday', 'Wedding or engagement', 'Christening', 'Wake', 'Work do', 'Christmas party', 'Other'].map((text) => ({ text }))
