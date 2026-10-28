@@ -368,7 +368,7 @@ function EraJump({ e }) {
 }
 
 const slug = (t) => String(t).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60)
-const kindSlug = (k) => k.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '')
+const kindSlug = (k) => String(k || '').toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '')
 
 // Stable key for an entry's editable parts: era + its original title (the built-in one, so it
 // doesn't change when an editor renames the entry).
@@ -390,11 +390,13 @@ function Entry({ e, index }) {
   const photos = usePhotos(k, builtIn)
   const [slide, setSlide] = useState(0)
   const grade = { filter: gradeFor(age) }
+  // The tag's colour follows the edited wording (Documented, Reported...), not the built-in one.
+  const kind = useTextValue(`${k}.kind`, e.kind || '')
   return (
     <article className={`entry reveal${photos.length ? ' has-img' : ''}${e.quote ? ' has-quote' : ''}`} data-year={e.year} data-era={e.era} data-age={age.toFixed(4)} style={ageStyle(age)} id={`y-${index}`}>
       <div className="entry-year"><Edit k={`${k}.year`} as="span" plain>{String(e.year)}</Edit></div>
       <div className="entry-main">
-        {e.kind && <Edit k={`${k}.kind`} className={`kind kind-${kindSlug(e.kind)}`} plain>{e.kind}</Edit>}
+        {e.kind && <Edit k={`${k}.kind`} className={`kind kind-${kindSlug(kind)}`} plain>{e.kind}</Edit>}
         <Edit k={`${k}.title`} as="h3" heading>{e.title}</Edit>
         {e.quote && <Edit k={`${k}.quote`} as="blockquote" plain>{e.quote}</Edit>}
         <Edit k={`${k}.text`} className="entry-text" rich>{e.text}</Edit>
