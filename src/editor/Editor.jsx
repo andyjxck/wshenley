@@ -682,7 +682,8 @@ function ListDialog({ spec, text, setText, onClose }) {
     if (f && f.split && /[\r\n]/.test(v)) {
       // a line break in a one-line list item starts a new line (a new bullet)
       const room = Math.max(1, max - items.length + 1)
-      let parts = splitLines(v)
+      // tidy the spaces either side of the break: 'Free | parking' -> 'Free', 'parking'
+      let parts = splitLines(v).map((p, j, a) => { let t = p; if (j > 0) t = t.replace(/^[ \t]+/, ''); if (j < a.length - 1) t = t.replace(/[ \t]+$/, ''); return t })
       if (parts.length > room) parts = [...parts.slice(0, room - 1), parts.slice(room - 1).join(' ')]
       const next = [...items.slice(0, i), ...parts.map((p) => ({ ...items[i], [name]: p })), ...items.slice(i + 1)]
       if (parts.length > 1) focusAfterSplit.current = { row: i + parts.length - 1 }
