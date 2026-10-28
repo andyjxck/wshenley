@@ -92,9 +92,10 @@ function websiteOf(tags) {
 // A Nominatim result as a Nearby place: { name, place, href, lat, lng, label }
 export function placeFromResult(r) {
   const a = r.address || {}
-  const town = firstOf(a, ['town', 'city', 'village', 'hamlet', 'suburb', 'municipality', 'county'])
+  // smallest named place first ("Wilmcote", not the district "Stratford-on-Avon"); " CP" = civil parish
+  const town = firstOf(a, ['village', 'town', 'hamlet', 'suburb', 'city', 'municipality', 'county']).replace(/ CP$/, '')
   const road = firstOf(a, ['road', 'pedestrian', 'square', 'neighbourhood'])
-  const parts0 = String(r.display_name || '').split(',').map((s) => s.trim()).filter(Boolean)
+  const parts0 = String(r.display_name || '').split(',').map((s) => s.trim().replace(/ CP$/, '')).filter(Boolean)
   const name = (r.name || firstOf(a, ['tourism', 'amenity', 'historic', 'leisure', 'shop', 'building']) || parts0[0] || 'New place').slice(0, 100)
   const where = [road && norm(road) !== norm(name) ? road : '', town && norm(town) !== norm(name) ? town : ''].filter(Boolean).join(', ')
   return {
@@ -218,6 +219,7 @@ function NearbyMap({ items, selected, candidate, onPick, onSelect, onMovePin, fo
   return (
     <div className="ed-nb-mapwrap">
       <div className="ed-nb-map" ref={elRef} role="region" aria-label="Map of nearby places. Click or tap the map to add the place there. Arrow keys move the map, plus and minus zoom." />
+      <button type="button" className="ed-nb-all" onClick={() => focusRef.current && focusRef.current.fitAll(items.map(pinOf).filter(Boolean))}>Show all places</button>
       {tiles === 'failed' && (
         <p className="ed-nb-mapfail" role="status">The map pictures couldn’t load just now. Search and the list below still work.</p>
       )}
