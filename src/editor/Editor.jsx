@@ -400,7 +400,7 @@ function SignIn({ status, user, note, onClose }) {
         )}
         {status === 'signin' && (
           <form onSubmit={submit}>
-            <p>Sign in with your Staff Hub account to edit the site.</p>
+            <p>Sign in to edit this website.</p>
             {!resolver ? (
               <>
                 <label>Email<input type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required /></label>

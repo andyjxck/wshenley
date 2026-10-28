@@ -62,7 +62,7 @@ export default function WeekCalendar() {
           </li>
         ))}
       </ol>
-      {editor && editor.editing && <p className="ed-week-note">The events come from the Staff Hub calendar (events set to show on the website), so change them there.</p>}
+      {editor && editor.editing && <p className="ed-week-note">These events come from the pub's events calendar (events set to show on the website), so change them there rather than here.</p>}
     </div>
   )
 }
