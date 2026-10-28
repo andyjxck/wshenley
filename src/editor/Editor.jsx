@@ -411,8 +411,8 @@ function SignIn({ status, user, note, onClose }) {
             )}
             {(err || note) && <p className="ed-error" role="alert">{err || note}</p>}
             <div className="ed-row">
-              <button type="submit" className="primary" disabled={busy}>{busy ? 'Signing in…' : resolver ? 'Verify' : 'Sign in'}</button>
               <button type="button" onClick={onClose}>Close</button>
+              <button type="submit" className="primary" disabled={busy}>{busy ? 'Signing in…' : resolver ? 'Verify' : 'Sign in'}</button>
             </div>
           </form>
         )}
@@ -919,8 +919,8 @@ function Confirm({ title, body, yes, onYes, onNo }) {
         <h2 id="ed-confirm-title">{title}</h2>
         <p>{body}</p>
         <div className="ed-row">
-          <button type="button" className="primary" onClick={onYes}>{yes}</button>
           <button type="button" onClick={onNo} autoFocus>Cancel</button>
+          <button type="button" className="primary" onClick={onYes}>{yes}</button>
         </div>
       </div>
     </div>
