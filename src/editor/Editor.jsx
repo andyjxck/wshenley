@@ -501,6 +501,32 @@ const Icon = {
 
 function Dialog({ name, kicker, title, intro, wide, onClose, closeDisabled, footer, initialFocus, children }) {
   const cardRef = useRef(null)
+  const latest = useRef({ onClose, closeDisabled })
+  latest.current = { onClose, closeDisabled }
+  // Escape and Tab are watched on the whole page, so they still work when the button that had focus has just
+  // gone away (for example “Back to original” hides itself once pressed).
+  useEffect(() => {
+    const onKey = (e) => {
+      const card = cardRef.current
+      if (!card) return
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        if (!latest.current.closeDisabled) latest.current.onClose()
+        return
+      }
+      if (e.key !== 'Tab') return
+      const all = Array.from(card.querySelectorAll(FOCUSABLE)).filter((el) => el.offsetParent !== null || el.type === 'file')
+      if (!all.length) { e.preventDefault(); card.focus(); return }
+      const first = all[0]
+      const last = all[all.length - 1]
+      const at = document.activeElement
+      if (!card.contains(at)) { e.preventDefault(); (e.shiftKey ? last : first).focus() }
+      else if (e.shiftKey && (at === first || at === card)) { e.preventDefault(); last.focus() }
+      else if (!e.shiftKey && at === last) { e.preventDefault(); first.focus() }
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [])
   useEffect(() => {
     const opener = document.activeElement
     const card = cardRef.current
@@ -515,18 +541,8 @@ function Dialog({ name, kicker, title, intro, wide, onClose, closeDisabled, foot
       if (opener && opener.isConnected && opener.focus && !(opener.closest && opener.closest('.ed-field'))) opener.focus({ preventScroll: true })
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  const onKeyDown = (e) => {
-    if (e.key === 'Escape') { e.stopPropagation(); if (!closeDisabled) onClose() }
-    if (e.key !== 'Tab') return
-    const all = Array.from(cardRef.current.querySelectorAll(FOCUSABLE)).filter((el) => el.offsetParent !== null || el.type === 'file')
-    if (!all.length) return
-    const first = all[0]
-    const last = all[all.length - 1]
-    if (e.shiftKey && (document.activeElement === first || document.activeElement === cardRef.current)) { e.preventDefault(); last.focus() }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
-  }
   return (
-    <div className="ed-modal" role="dialog" aria-modal="true" aria-labelledby={`ed-${name}-title`} aria-describedby={intro ? `ed-${name}-intro` : undefined} onKeyDown={onKeyDown}>
+    <div className="ed-modal" role="dialog" aria-modal="true" aria-labelledby={`ed-${name}-title`} aria-describedby={intro ? `ed-${name}-intro` : undefined}>
       <div className={`ed-card ed-dialog ed-dialog-${name}${wide ? ' wide' : ''}`} ref={cardRef} tabIndex={-1}>
         <header className="ed-dhead">
           <div className="ed-dhead-text">
