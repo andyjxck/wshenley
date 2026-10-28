@@ -171,6 +171,16 @@ export default function Editor({ onClose }) {
   // Closing a box that changed words shown on the page refreshes the editable boxes from the draft.
   const closeDialog = useCallback(() => { setDialog(null); setRevision((r) => r + 1) }, [])
 
+  // Keep the page's own content clear of the editor bar (it is taller on phones, where it wraps).
+  useEffect(() => {
+    if (status !== 'ready') return undefined
+    const bar = document.querySelector('.ed-bar')
+    if (!bar || typeof ResizeObserver === 'undefined') return undefined
+    const ro = new ResizeObserver(() => document.documentElement.style.setProperty('--ed-bar-h', `${bar.offsetHeight}px`))
+    ro.observe(bar)
+    return () => { ro.disconnect(); document.documentElement.style.removeProperty('--ed-bar-h') }
+  }, [status])
+
   // While editing, links and buttons on the page don't go anywhere and forms don't send, so clicking
   // into words inside a link or a form just edits them.
   useEffect(() => {

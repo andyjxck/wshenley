@@ -90,3 +90,7 @@ body.ws-editing .flip-card .ed-photo-btn { position: absolute; left: 10px; top: 
 .enquiry .enq-lbl { display: flex; flex-direction: column; gap: 6px; font: 600 0.84rem/1.3 var(--sans, system-ui); margin-bottom: 14px; }
 .ed-week-note { margin: 8px 0 0; font: 400 .8rem/1.3 system-ui, sans-serif; opacity: .75; }
 body.ws-editing .flip-card { position: relative; }
+/* Keep the hero's buttons and the footer above the editor bar */
+body.ws-editor-on { padding-bottom: calc(var(--ed-bar-h, 76px) + 8px); }
+body.ws-editing .hero-copy { padding-bottom: calc(clamp(110px, 16vh, 160px) + var(--ed-bar-h, 76px)); }
+body.ws-editing .hero-hint { bottom: calc(70px + var(--ed-bar-h, 76px)); }
