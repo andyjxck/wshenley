@@ -41,7 +41,9 @@ const randomName = () => {
   return `${Array.from(a, (b) => b.toString(16).padStart(2, '0')).join('')}.jpg`
 }
 const empty = () => ({ text: {}, photos: {}, order: null })
-const forStore = (c) => ({ text: c.text || {}, photos: c.photos || {}, order: c.order || HOME_SECTIONS })
+// Firestore refuses undefined values ("Unsupported field value: undefined"). After a publish, photo entries read back
+// through cleanContent() can carry url/src/path = undefined, which used to stop Save draft working. Drop them here.
+const forStore = (c) => JSON.parse(JSON.stringify({ text: c.text || {}, photos: c.photos || {}, order: c.order || HOME_SECTIONS }))
 const same = (a, b) => JSON.stringify(forStore(a)) === JSON.stringify(forStore(b))
 
 // Photos are made a sensible size in the browser before upload (longest side 2400px, JPEG).
