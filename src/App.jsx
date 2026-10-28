@@ -279,24 +279,33 @@ function WhatsOn() {
   )
 }
 
-// Private hire and Find us share one section: on wide screens the hire intro and the
-// On the High Street details sit in the left column beside the enquiry form, and Nearby
-// runs full width underneath. On smaller screens it all stacks in that order.
-function HireAndVisit() {
-  const contact = useContact()
-  const near = useList('home.nearby', NEARBY_SPEC.fallback, NEARBY_SPEC.fields)
+// Private hire and Find us are two separate homepage sections, so editors can move each one on its own.
+// Private hire: on wide screens the intro sits on the left beside the enquiry form; smaller screens stack.
+function PrivateHire() {
   return (
-    <section className="section hire-visit" id="hire">
-      <div className="wrap hv-layout">
+    <section className="section hire" id="hire">
+      <div className="wrap hire-layout">
         <div className="hire-intro">
           <Edit k="home.hire.eyebrow" className="eyebrow reveal" plain>Private hire</Edit>
           <Edit k="home.hire.heading" as="h2" className="reveal" heading>{privateHire.headline}</Edit>
           <Edit k="home.hire.intro" className="lead reveal" rich>{privateHire.intro}</Edit>
         </div>
-        <div className="hv-form">
+        <div className="hire-form">
           <EnquiryForm />
         </div>
-        <div className="findus" id="visit">
+      </div>
+    </section>
+  )
+}
+
+// Find us: On the High Street (address, opening times, contact), then Nearby underneath.
+function FindUs() {
+  const contact = useContact()
+  const near = useList('home.nearby', NEARBY_SPEC.fallback, NEARBY_SPEC.fields)
+  return (
+    <section className="section visit" id="visit">
+      <div className="wrap">
+        <div className="findus">
           <Edit k="home.visit.eyebrow" className="eyebrow reveal" plain>Find us</Edit>
           <Edit k="home.visit.heading" as="h2" className="reveal" heading>On the High Street</Edit>
           <ListEditButton spec={CONTACT_SPEC} label="Edit address, opening times and contact details" />
@@ -523,11 +532,11 @@ function MobileBar() {
   )
 }
 
-const SECTIONS = { stay: Stay, eat: Eat, whatson: WhatsOn, hire: HireAndVisit }
+const SECTIONS = { stay: Stay, eat: Eat, whatson: WhatsOn, hire: PrivateHire, visit: FindUs }
 
 function HomeSections() {
   const order = useOrder()
-  return order.map((id) => { const S = SECTIONS[id]; return <S key={id} /> })
+  return order.map((id) => { const S = SECTIONS[id]; return S ? <S key={id} /> : null })
 }
 
 export default function App() {

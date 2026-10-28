@@ -9,15 +9,27 @@
 // Published content shape (also checked by the security rules):
 //   text:   { [key]: string }   rich text keys hold a small, cleaned subset of HTML; headings are plain text
 //   photos: { [key]: [{ url | src, alt, credit?, creditHref? }] }
-//   order:  ['stay', 'eat', 'whatson', 'hire']   homepage section order
+//   order:  ['stay', 'eat', 'whatson', 'hire', 'visit']   homepage section order
+//           (before 28 Oct 2026 'hire' was Private hire and Find us together; an order saved then
+//           has no 'visit', so Find us is put straight after Private hire, where it used to be)
 import React, { createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { loadPublishedContent } from './firebase.js'
 import { sanitizeHtml, escapeHtml, hasBlocks, safeHref } from './richText.js'
 import { titleCase } from './titleCase.js'
 
 const CACHE_KEY = 'ws-site-published-v1'
-export const HOME_SECTIONS = ['stay', 'eat', 'whatson', 'hire']
-export const SECTION_NAMES = { stay: 'Stay (rooms and booking)', eat: 'Eat & drink', whatson: 'What’s on', hire: 'Private hire and Find us' }
+export const HOME_SECTIONS = ['stay', 'eat', 'whatson', 'hire', 'visit']
+export const SECTION_NAMES = { stay: 'Stay (rooms and booking)', eat: 'Eat & drink', whatson: 'What’s on', hire: 'Private hire (enquiry form)', visit: 'Find us (address, opening times, nearby)' }
+
+// Turns any stored order into a full, valid one: unknown names dropped, repeats removed, an old
+// order (no 'visit') gets Find us right after Private hire, and anything still missing goes at the end.
+export function normalizeOrder(list) {
+  if (!Array.isArray(list)) return null
+  const seen = [...new Set(list.filter((s) => HOME_SECTIONS.includes(s)))]
+  if (!seen.length) return null
+  if (!seen.includes('visit') && seen.includes('hire')) seen.splice(seen.indexOf('hire') + 1, 0, 'visit')
+  return [...new Set([...seen, ...HOME_SECTIONS])]
+}
 
 // Only photos from the site itself, Firebase Storage (where editors upload) and the hotel's booking
 // system's image host are shown. Anything else in a document is ignored.
@@ -52,11 +64,7 @@ function clean(raw) {
       }))
     }
   }
-  if (Array.isArray(raw.order)) {
-    const seen = raw.order.filter((s) => HOME_SECTIONS.includes(s))
-    const full = [...new Set([...seen, ...HOME_SECTIONS])]
-    if (seen.length) out.order = full
-  }
+  out.order = normalizeOrder(raw.order)
   return out
 }
 export const cleanContent = clean

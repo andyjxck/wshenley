@@ -26,7 +26,7 @@ const who = {
   staff: env.authenticatedContext('staff1', { role: 'staff' }),
   stranger: env.authenticatedContext('rando', {}),
 }
-const body = (uid, extra = {}) => ({ text: { 'home.eat.heading': 'Food' }, photos: {}, order: ['stay', 'eat', 'whatson', 'hire'], updatedAt: serverTimestamp(), updatedBy: uid, ...extra })
+const body = (uid, extra = {}) => ({ text: { 'home.eat.heading': 'Food' }, photos: {}, order: ['stay', 'eat', 'whatson', 'hire', 'visit'], updatedAt: serverTimestamp(), updatedBy: uid, ...extra })
 
 await env.clearFirestore()
 await env.clearStorage()
