@@ -37,7 +37,7 @@ body.ws-editing .hero-title .ht > span { animation: none !important; transform: 
    Warm paper card in the site's own type: Cormorant Garamond headings, Inter for the working parts.
    Heading band, scrolling body, footer always in reach. */
 .ed-modal {
-  --ed-ink: #231c15; --ed-soft: #5d5040; --ed-faint: #8a7b66; --ed-line: #e2d5bf; --ed-line-2: #d3c2a5;
+  --ed-ink: #231c15; --ed-soft: #5d5040; --ed-faint: #726552; --ed-line: #e2d5bf; --ed-line-2: #d3c2a5;
   --ed-paper: #fbf6ec; --ed-band: #f3eadb; --ed-tile: #fffcf6; --ed-accent: #8a5a2b; --ed-accent-2: #6f4520;
   --ed-danger: #9e2a1e; --ed-ring: 0 0 0 3px rgba(138, 90, 43, .28);
   position: fixed; z-index: 1002; inset: 0; display: grid; place-items: center; padding: 20px;
@@ -67,7 +67,7 @@ html.ed-modal-open, html.ed-modal-open body { overflow: hidden; }
   box-shadow: 0 1px 2px rgba(60, 40, 20, .06) inset; transition: border-color .15s, box-shadow .15s;
 }
 .ed-card textarea { line-height: 1.45; resize: vertical; }
-.ed-card input::placeholder, .ed-card textarea::placeholder { color: #a39580; opacity: 1; }
+.ed-card input::placeholder, .ed-card textarea::placeholder { color: #8f806a; opacity: 1; }
 .ed-card input:hover, .ed-card textarea:hover { border-color: #bfa983; }
 .ed-card input:focus, .ed-card textarea:focus, .ed-card select:focus { outline: none; border-color: var(--ed-accent); box-shadow: var(--ed-ring); }
 .ed-card input[aria-invalid="true"] { border-color: var(--ed-danger); box-shadow: 0 0 0 3px rgba(158, 42, 30, .18); }
@@ -198,6 +198,10 @@ html.ed-modal-open, html.ed-modal-open body { overflow: hidden; }
   .ed-photo-fig img { aspect-ratio: 16 / 10; }
   .ed-fl-pair { grid-template-columns: 1fr; }
   .ed-tool span { display: none; }
+  .ed-card .ed-tool { min-width: 42px; min-height: 42px; height: 42px; }
+  .ed-card button, .ed-card .ed-file { min-height: 44px; }
+  .ed-card .ed-chip { min-height: 38px; }
+  .ed-card .ed-x { width: 42px; height: 42px; min-height: 42px; }
 }
 
 
@@ -216,13 +220,13 @@ html.ed-modal-open, html.ed-modal-open body { overflow: hidden; }
 .ed-fieldrow { margin-bottom: 12px; }
 .ed-fieldrow:last-child { margin-bottom: 0; }
 .ed-fieldrow .ed-help, .ed-fieldrow .ed-error { display: block; font-size: 12.5px; margin-top: 5px; }
-.ed-fieldrow .ed-help { color: var(--ed-faint, #8a7b66); }
+.ed-fieldrow .ed-help { color: var(--ed-faint, #726552); }
 .ed-card .ed-flabel { display: block; margin: 0 0 4px; font-weight: 600; font-size: 13px; color: #3b3027; }
 .ed-icons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
 .ed-check { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 999px; background: #f6eddf; box-shadow: 0 0 0 1px var(--ed-line, #e2d5bf) inset; }
 .ed-card .ed-check input { display: inline-block; width: 16px; height: 16px; margin: 0; padding: 0; box-shadow: none; accent-color: var(--ed-accent, #8a5a2b); }
 .ed-card .ed-check label { display: inline; margin: 0; font-weight: 500; font-size: 13px; cursor: pointer; }
-.ed-rich-note { display: block; margin-top: 4px; color: var(--ed-faint, #8a7b66); font-weight: 400; font-style: italic; }
+.ed-rich-note { display: block; margin-top: 4px; color: var(--ed-faint, #726552); font-weight: 400; font-style: italic; }
 .ed-extras { margin-top: 20px; padding-top: 2px; border-top: 1px solid var(--ed-line, #e2d5bf); }
 .ed-extras .ed-flabel { margin-bottom: 12px; }
 .ed-items .ed-none { padding: 22px; text-align: center; color: var(--ed-soft, #5d5040); }
