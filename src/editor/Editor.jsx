@@ -484,12 +484,75 @@ function ResetField({ field, draft, onReset }) {
   )
 }
 
+// ------------------------------------------------------------------ dialog shell
+// Every editor box shares this frame: a heading band, a body that scrolls on its own, and a footer that
+// always stays in reach. Focus moves into the box when it opens, Tab stays inside it, Escape closes it,
+// and focus goes back to whatever opened it.
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
+const Icon = {
+  close: <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" /></svg>,
+  up: <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15V5M5 9.5L10 4.5l5 5" /></svg>,
+  down: <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 5v10M5 10.5l5 5 5-5" /></svg>,
+  remove: <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.8 9.5h6.4L14 6" /></svg>,
+  add: <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5" /><circle cx="9" cy="10" r="1.6" /><path d="M21 15.5l-5-4.5-7.5 7" /><path d="M18 2v5M15.5 4.5h5" /></svg>,
+  arrow: <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4" /></svg>,
+}
+
+function Dialog({ name, kicker, title, intro, wide, onClose, closeDisabled, footer, initialFocus, children }) {
+  const cardRef = useRef(null)
+  useEffect(() => {
+    const opener = document.activeElement
+    const card = cardRef.current
+    // On a computer the first box gets the cursor straight away; on a phone that would throw the keyboard
+    // over the box, so the box itself takes focus instead.
+    const fine = typeof matchMedia !== 'undefined' && matchMedia('(pointer: fine)').matches
+    const target = (initialFocus && fine && card.querySelector(initialFocus)) || card
+    target.focus({ preventScroll: true })
+    document.documentElement.classList.add('ed-modal-open')
+    return () => {
+      document.documentElement.classList.remove('ed-modal-open')
+      if (opener && opener.isConnected && opener.focus && !(opener.closest && opener.closest('.ed-field'))) opener.focus({ preventScroll: true })
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const onKeyDown = (e) => {
+    if (e.key === 'Escape') { e.stopPropagation(); if (!closeDisabled) onClose() }
+    if (e.key !== 'Tab') return
+    const all = Array.from(cardRef.current.querySelectorAll(FOCUSABLE)).filter((el) => el.offsetParent !== null || el.type === 'file')
+    if (!all.length) return
+    const first = all[0]
+    const last = all[all.length - 1]
+    if (e.shiftKey && (document.activeElement === first || document.activeElement === cardRef.current)) { e.preventDefault(); last.focus() }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
+  }
+  return (
+    <div className="ed-modal" role="dialog" aria-modal="true" aria-labelledby={`ed-${name}-title`} aria-describedby={intro ? `ed-${name}-intro` : undefined} onKeyDown={onKeyDown}>
+      <div className={`ed-card ed-dialog ed-dialog-${name}${wide ? ' wide' : ''}`} ref={cardRef} tabIndex={-1}>
+        <header className="ed-dhead">
+          <div className="ed-dhead-text">
+            {kicker && <span className="ed-kicker">{kicker}</span>}
+            <h2 id={`ed-${name}-title`}>{title}</h2>
+            {intro && <p className="ed-intro" id={`ed-${name}-intro`}>{intro}</p>}
+          </div>
+          <button type="button" className="ed-x" onClick={onClose} disabled={closeDisabled} aria-label="Close" title={closeDisabled ? 'Fix the link first' : 'Close'}>{Icon.close}</button>
+        </header>
+        <div className="ed-dbody">{children}</div>
+        <footer className="ed-dfoot">{footer}</footer>
+      </div>
+    </div>
+  )
+}
+
 // ------------------------------------------------------------------ photos
+const PHOTO_MAX = 12
+const photoKind = (p) => (p.path ? 'New upload' : p.url ? 'Uploaded' : 'Original')
+
 function PhotoDialog({ k, fallback, credits, list, photoUrl, onChange, onClose, addBlob }) {
   const custom = Array.isArray(list) && list.length > 0
   const items = custom ? list : fallback.map((p) => ({ src: p.src, alt: p.alt || '', credit: '', creditHref: '' }))
   const [err, setErr] = useState('')
   const [up, setUp] = useState(0)
+  const [over, setOver] = useState(false)
   const fileRef = useRef(null)
   const set = (next) => onChange(next.length ? next : null)
   const edit = (i, patch) => set(items.map((p, j) => (j === i ? { ...p, ...patch } : p)))
@@ -515,45 +578,82 @@ function PhotoDialog({ k, fallback, credits, list, photoUrl, onChange, onClose, 
   }
 
   const srcOf = (p) => (p.path ? photoUrl(p.path) : p.url || p.src)
+  const full = items.length >= PHOTO_MAX
+  const n = items.length
+  const kicker = n > 1 ? `Slideshow · ${n} photos` : n === 1 ? 'Single photo' : 'No photos yet'
+  const drop = {
+    onDragOver: (e) => { if (!up && !full) { e.preventDefault(); setOver(true) } },
+    onDragLeave: () => setOver(false),
+    onDrop: (e) => { e.preventDefault(); setOver(false); if (!up && !full) add(e.dataTransfer.files) },
+  }
   return (
-    <div className="ed-modal" role="dialog" aria-modal="true" aria-labelledby="ed-photos-title" onKeyDown={(e) => { if (e.key === 'Escape') onClose() }}>
-      <div className="ed-card wide">
-        <h2 id="ed-photos-title">Photos</h2>
-        <p className="ed-help">One photo shows on its own. Two or more become a slideshow that changes every 10 seconds. Describe each photo for people using screen readers.</p>
-        <ul className="ed-photos">
-          {items.map((p, i) => (
-            <li key={`${p.path || p.url || p.src}-${i}`}>
+    <Dialog
+      name="photos"
+      wide
+      kicker={kicker}
+      title="Photos"
+      intro="One photo shows on its own. Two or more become a slideshow that changes every 10 seconds, in the order below."
+      onClose={onClose}
+      footer={(
+        <>
+          {custom && <button type="button" className="ed-btn ghost" onClick={() => onChange(null)}>Use the original photo{fallback.length === 1 ? '' : 's'}</button>}
+          <button type="button" className="ed-btn primary" onClick={onClose}>Done</button>
+        </>
+      )}
+    >
+      <ol className="ed-photos">
+        {items.map((p, i) => (
+          <li className="ed-photo" key={`${p.path || p.url || p.src}-${i}`}>
+            <figure className="ed-photo-fig">
               <img src={srcOf(p)} alt="" />
-              <div className="ed-photo-fields">
-                <label>Description<input value={p.alt || ''} maxLength={300} onChange={(e) => edit(i, { alt: e.target.value })} placeholder="What the photo shows" /></label>
-                {credits && (
-                  <>
-                    <label>Credit<input value={p.credit || ''} maxLength={300} onChange={(e) => edit(i, { credit: e.target.value })} placeholder="Photographer, source, licence" /></label>
-                    <label>Credit link<input value={p.creditHref || ''} maxLength={500} onChange={(e) => edit(i, { creditHref: e.target.value })} placeholder="https://… (optional)" /></label>
-                  </>
-                )}
+              <span className="ed-photo-num" aria-hidden="true">{i + 1}</span>
+            </figure>
+            <div className="ed-photo-main">
+              <div className="ed-photo-head">
+                <span className="ed-photo-name">
+                  <b>Photo {i + 1}</b>
+                  <span className={`ed-tag${p.path ? ' new' : ''}`}>{i === 0 && n > 1 ? 'Shown first · ' : ''}{photoKind(p)}</span>
+                </span>
+                <span className="ed-tools" role="group" aria-label={`Photo ${i + 1}`}>
+                  <button type="button" className="ed-tool" onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move earlier" title="Move earlier">{Icon.up}</button>
+                  <button type="button" className="ed-tool" onClick={() => move(i, 1)} disabled={i === n - 1} aria-label="Move later" title="Move later">{Icon.down}</button>
+                  <button type="button" className="ed-tool danger" onClick={() => remove(i)} aria-label="Remove photo" title="Remove photo">{Icon.remove}<span>Remove</span></button>
+                </span>
               </div>
-              <div className="ed-photo-move">
-                <button type="button" onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move earlier">↑</button>
-                <button type="button" onClick={() => move(i, 1)} disabled={i === items.length - 1} aria-label="Move later">↓</button>
-                <button type="button" onClick={() => remove(i)} aria-label="Remove photo">Remove</button>
-              </div>
-            </li>
-          ))}
-          {!items.length && <li className="ed-none">No photos here. Add one, or use the original.</li>}
-        </ul>
-        {credits && custom && <p className="ed-help">Only use photos you have permission to use, and give the credit the licence asks for.</p>}
+              <label className="ed-fl">
+                <span className="ed-fl-name">Description <em>read out by screen readers</em></span>
+                <input value={p.alt || ''} maxLength={300} onChange={(e) => edit(i, { alt: e.target.value })} placeholder="What the photo shows, e.g. The front of the inn on the High Street" />
+              </label>
+              {credits && (
+                <div className="ed-fl-pair">
+                  <label className="ed-fl">
+                    <span className="ed-fl-name">Credit</span>
+                    <input value={p.credit || ''} maxLength={300} onChange={(e) => edit(i, { credit: e.target.value })} placeholder="Photographer, source, licence" />
+                  </label>
+                  <label className="ed-fl">
+                    <span className="ed-fl-name">Credit link <em>optional</em></span>
+                    <input value={p.creditHref || ''} maxLength={500} onChange={(e) => edit(i, { creditHref: e.target.value })} placeholder="https://…" inputMode="url" autoCapitalize="off" spellCheck="false" />
+                  </label>
+                </div>
+              )}
+            </div>
+          </li>
+        ))}
+        {!n && <li className="ed-none">No photos here. Add one below, or use the original.</li>}
+      </ol>
+      <label className={`ed-drop${over ? ' over' : ''}${up || full ? ' off' : ''}`} {...drop}>
+        <span className="ed-drop-icon">{up ? <span className="ed-spin" aria-hidden="true" /> : Icon.add}</span>
+        <span className="ed-drop-text">
+          <b>{up ? 'Uploading…' : full ? `${PHOTO_MAX} photos is the most for one spot` : n ? 'Add more photos' : 'Add photos'}</b>
+          <span>{full ? 'Remove one to add another.' : 'Choose from your device or drag them here. JPEG, PNG or WebP.'}</span>
+        </span>
+        <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={(e) => add(e.target.files)} disabled={!!up || full} aria-label="Add photos" />
+      </label>
+      <div aria-live="polite" className="ed-live">
         {err && <p className="ed-error" role="alert">{err}</p>}
-        <div className="ed-row">
-          <label className="ed-file">
-            {up ? 'Uploading…' : 'Add photos'}
-            <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={(e) => add(e.target.files)} disabled={!!up} />
-          </label>
-          {custom && <button type="button" onClick={() => onChange(null)}>Use the original photo{fallback.length === 1 ? '' : 's'}</button>}
-          <button type="button" className="primary" onClick={onClose}>Done</button>
-        </div>
       </div>
-    </div>
+      {credits && custom && <p className="ed-note">Only use photos you have permission to use, and give the credit the licence asks for.</p>}
+    </Dialog>
   )
 }
 
@@ -561,30 +661,55 @@ function PhotoDialog({ k, fallback, credits, list, photoUrl, onChange, onClose, 
 function SectionsDialog({ order, onChange, onClose }) {
   const move = (i, d) => { const n = [...order]; const [x] = n.splice(i, 1); n.splice(i + d, 0, x); onChange(n) }
   return (
-    <div className="ed-modal" role="dialog" aria-modal="true" aria-labelledby="ed-sections-title" onKeyDown={(e) => { if (e.key === 'Escape') onClose() }}>
-      <div className="ed-card">
-        <h2 id="ed-sections-title">Homepage sections</h2>
-        <p className="ed-help">The welcome photo and This week always come first. Change the order of the rest.</p>
-        <ol className="ed-sections">
-          {order.map((id, i) => (
-            <li key={id}>
-              <span>{SECTION_NAMES[id]}</span>
-              <button type="button" onClick={() => move(i, -1)} disabled={i === 0} aria-label={`Move ${SECTION_NAMES[id]} up`}>↑</button>
-              <button type="button" onClick={() => move(i, 1)} disabled={i === order.length - 1} aria-label={`Move ${SECTION_NAMES[id]} down`}>↓</button>
-            </li>
-          ))}
-        </ol>
-        <div className="ed-row">
-          <button type="button" onClick={() => onChange(HOME_SECTIONS)}>Original order</button>
-          <button type="button" className="primary" onClick={onClose}>Done</button>
-        </div>
-      </div>
-    </div>
+    <Dialog
+      name="sections"
+      kicker="Homepage"
+      title="Section order"
+      intro="The welcome photo and This week always come first. Change the order of the rest."
+      onClose={onClose}
+      footer={(
+        <>
+          <button type="button" className="ed-btn ghost" onClick={() => onChange(HOME_SECTIONS)}>Original order</button>
+          <button type="button" className="ed-btn primary" onClick={onClose}>Done</button>
+        </>
+      )}
+    >
+      <ol className="ed-sections">
+        {order.map((id, i) => (
+          <li key={id}>
+            <span className="ed-sec-num" aria-hidden="true">{i + 1}</span>
+            <span className="ed-sec-name">{SECTION_NAMES[id]}</span>
+            <span className="ed-tools">
+              <button type="button" className="ed-tool" onClick={() => move(i, -1)} disabled={i === 0} aria-label={`Move ${SECTION_NAMES[id]} up`} title="Move up">{Icon.up}</button>
+              <button type="button" className="ed-tool" onClick={() => move(i, 1)} disabled={i === order.length - 1} aria-label={`Move ${SECTION_NAMES[id]} down`} title="Move down">{Icon.down}</button>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </Dialog>
   )
 }
 
 // ------------------------------------------------------------------ links and buttons
-const LINK_HELP = 'A web address (https://…), an email (mailto:name@example.com), a phone number (tel:+441564660303), or a part of this page (#book, #eat, #stay, #whats-on, #hire, #visit, #nearby).'
+const PAGE_PARTS = [
+  ['#book', 'Book a room'], ['#stay', 'Stay'], ['#eat', 'Eat & drink'], ['#whats-on', 'What’s on'],
+  ['#hire', 'Private hire'], ['#visit', 'Find us'], ['#nearby', 'Nearby'],
+]
+
+// Where a link goes, in words.
+function describeHref(h) {
+  const v = String(h || '').trim()
+  if (!v) return ''
+  const part = PAGE_PARTS.find(([id]) => v === id || v === `../${id}`)
+  if (part) return `Jumps to ${part[1]} on the homepage`
+  if (v.startsWith('#')) return `Jumps to ${v} on this page`
+  if (/^mailto:/i.test(v)) return `Starts an email to ${v.slice(7).split('?')[0] || '…'}`
+  if (/^tel:/i.test(v)) return `Rings ${v.slice(4) || '…'}`
+  if (/^https?:\/\//i.test(v)) {
+    try { return `Opens ${new URL(v).hostname.replace(/^www\./, '')} in a new tab` } catch { return 'Opens another website' }
+  }
+  return 'Opens another page of this website'
+}
 
 function LinkDialog({ spec, text, setText, onClose }) {
   const { k, label, href } = spec
@@ -593,20 +718,49 @@ function LinkDialog({ spec, text, setText, onClose }) {
   const bad = curHref.trim() !== '' && !safeLinkHref(curHref)
   const changed = text[k] != null || text[`${k}.href`] != null
   const close = () => { if (!bad) onClose() }
+  const showLabel = curLabel.trim() || label || 'Button'
+  const dest = curHref.trim() || href
   return (
-    <div className="ed-modal" role="dialog" aria-modal="true" aria-labelledby="ed-link-title" onKeyDown={(e) => { if (e.key === 'Escape') close() }}>
-      <div className="ed-card">
-        <h2 id="ed-link-title">Button or link</h2>
-        <label>Words on it<input value={curLabel} maxLength={200} placeholder={label} onChange={(e) => setText(k, e.target.value)} autoFocus /></label>
-        <label>Where it goes<input value={curHref} maxLength={600} placeholder={href} onChange={(e) => setText(`${k}.href`, e.target.value)} inputMode="url" autoCapitalize="off" spellCheck="false" /></label>
-        <p className="ed-help">{LINK_HELP} Leave a box empty to keep the original shown in grey.</p>
-        {bad && <p className="ed-error" role="alert">That address isn’t allowed. Start it with https://, mailto: or tel:, or use a part of the page like #book.</p>}
-        <div className="ed-row">
-          {changed && <button type="button" onClick={() => { setText(k, ''); setText(`${k}.href`, '') }}>Back to original</button>}
-          <button type="button" className="primary" onClick={close} disabled={bad}>Done</button>
-        </div>
+    <Dialog
+      name="link"
+      kicker="Button or link"
+      title="Words and destination"
+      onClose={close}
+      closeDisabled={bad}
+      initialFocus="#ed-link-words"
+      footer={(
+        <>
+          {changed && <button type="button" className="ed-btn ghost" onClick={() => { setText(k, ''); setText(`${k}.href`, '') }}>Back to original</button>}
+          <button type="button" className="ed-btn primary" onClick={close} disabled={bad}>Done</button>
+        </>
+      )}
+    >
+      <div className="ed-linkprev" aria-hidden="true">
+        <span className="ed-linkprev-label">On the page</span>
+        <span className="ed-linkprev-row">
+          <span className="ed-linkprev-pill">{showLabel}</span>
+          <span className="ed-linkprev-arrow">{Icon.arrow}</span>
+          <span className={`ed-linkprev-dest${bad ? ' bad' : ''}`}>{bad ? 'Not a usable address yet' : describeHref(dest) || 'Goes nowhere yet'}</span>
+        </span>
       </div>
-    </div>
+      <label className="ed-fl">
+        <span className="ed-fl-name">Words on it</span>
+        <input id="ed-link-words" value={curLabel} maxLength={200} placeholder={label} onChange={(e) => setText(k, e.target.value)} />
+        {label && <span className="ed-fl-hint">Original: “{label}”. Leave the box empty to keep it.</span>}
+      </label>
+      <label className="ed-fl">
+        <span className="ed-fl-name">Where it goes</span>
+        <input value={curHref} maxLength={600} placeholder={href} onChange={(e) => setText(`${k}.href`, e.target.value)} inputMode="url" autoCapitalize="off" spellCheck="false" aria-invalid={bad || undefined} aria-describedby="ed-link-help" />
+        <span className="ed-fl-hint" id="ed-link-help">A web address (https://…), an email (mailto:name@example.com), a phone number (tel:+441564660303), or a part of the homepage below. Leave it empty to keep the original.</span>
+      </label>
+      {bad && <p className="ed-error" role="alert">That address isn’t allowed. Start it with https://, mailto: or tel:, or pick a part of the page below.</p>}
+      <div className="ed-chips" role="group" aria-label="Parts of the homepage">
+        <span className="ed-chips-label">Parts of the homepage</span>
+        {PAGE_PARTS.map(([id, name]) => (
+          <button type="button" key={id} className={`ed-chip${curHref.trim() === id ? ' on' : ''}`} aria-pressed={curHref.trim() === id} onClick={() => setText(`${k}.href`, id)}>{name}</button>
+        ))}
+      </div>
+    </Dialog>
   )
 }
 
@@ -704,10 +858,21 @@ function ListDialog({ spec, text, setText, onClose }) {
   const close = () => { if (!anyBad) onClose() }
   const extraVal = (x) => (text[x.k] != null ? text[x.k] : '')
   return (
-    <div className="ed-modal" role="dialog" aria-modal="true" aria-labelledby="ed-list-title" onKeyDown={(e) => { if (e.key === 'Escape') close() }}>
-      <div className="ed-card wide">
-        <h2 id="ed-list-title">{title}</h2>
-        {help && <p className="ed-help">{help}</p>}
+    <Dialog
+      name="list"
+      wide
+      kicker={record ? 'Details' : `List \u00b7 ${items.length} ${itemName}${items.length === 1 ? '' : 's'}`}
+      title={title}
+      intro={help}
+      onClose={close}
+      closeDisabled={anyBad}
+      footer={(
+        <>
+          {changed && <button type="button" className="ed-btn ghost" onClick={() => setText(key, '')}>Back to original {record ? 'details' : 'list'}</button>}
+          <button type="button" className="ed-btn primary" onClick={close} disabled={anyBad}>Done</button>
+        </>
+      )}
+    >
         {record ? (
           <div className="ed-item">
             {visible.map((f) => <FieldInput key={f.name} f={{ ...f, _row: 0 }} value={items[f.name] || ''} onChange={(v) => setField(0, f.name, v)} />)}
@@ -718,10 +883,10 @@ function ListDialog({ spec, text, setText, onClose }) {
               <li className="ed-item" key={i}>
                 <div className="ed-item-head">
                   <b>{(it[visible[0].name] || '').replace(/<[^>]*>/g, '').slice(0, 60) || `New ${itemName}`}</b>
-                  <span className="ed-item-move">
-                    <button type="button" onClick={() => move(i, -1)} disabled={i === 0} aria-label={`Move ${itemName} ${i + 1} up`}>↑</button>
-                    <button type="button" onClick={() => move(i, 1)} disabled={i === items.length - 1} aria-label={`Move ${itemName} ${i + 1} down`}>↓</button>
-                    <button type="button" onClick={() => remove(i)} disabled={items.length <= min} aria-label={`Remove ${itemName} ${i + 1}`}>Remove</button>
+                  <span className="ed-tools">
+                    <button type="button" className="ed-tool" onClick={() => move(i, -1)} disabled={i === 0} aria-label={`Move ${itemName} ${i + 1} up`} title="Move up">{Icon.up}</button>
+                    <button type="button" className="ed-tool" onClick={() => move(i, 1)} disabled={i === items.length - 1} aria-label={`Move ${itemName} ${i + 1} down`} title="Move down">{Icon.down}</button>
+                    <button type="button" className="ed-tool danger" onClick={() => remove(i)} disabled={items.length <= min} aria-label={`Remove ${itemName} ${i + 1}`} title="Remove">{Icon.remove}<span>Remove</span></button>
                   </span>
                 </div>
                 {visible.map((f) => <FieldInput key={f.name} f={{ ...f, _row: i }} value={it[f.name] || ''} onChange={(v) => setField(i, f.name, v)} />)}
@@ -730,7 +895,7 @@ function ListDialog({ spec, text, setText, onClose }) {
             {!items.length && <li className="ed-none">Nothing here yet.</li>}
           </ol>
         )}
-        {!record && items.length < max && <div className="ed-row"><button type="button" onClick={add}>Add {itemName}</button></div>}
+        {!record && items.length < max && <button type="button" className="ed-addrow" onClick={add}><span aria-hidden="true">+</span> Add {itemName}</button>}
         {extras.length > 0 && (
           <div className="ed-extras">
             <h3>{spec.extrasTitle || 'Other words'}</h3>
@@ -743,12 +908,7 @@ function ListDialog({ spec, text, setText, onClose }) {
           </div>
         )}
         {anyBad && <p className="ed-error" role="alert">One of the links isn’t allowed. Fix it before closing.</p>}
-        <div className="ed-row">
-          {changed && <button type="button" onClick={() => setText(key, '')}>Back to original {record ? 'details' : 'list'}</button>}
-          <button type="button" className="primary" onClick={close} disabled={anyBad}>Done</button>
-        </div>
-      </div>
-    </div>
+    </Dialog>
   )
 }
 
