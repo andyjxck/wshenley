@@ -94,3 +94,7 @@ body.ws-editing .flip-card { position: relative; }
 body.ws-editor-on { padding-bottom: calc(var(--ed-bar-h, 76px) + 8px); }
 body.ws-editing .hero-copy { padding-bottom: calc(clamp(110px, 16vh, 160px) + var(--ed-bar-h, 76px)); }
 body.ws-editing .hero-hint { bottom: calc(70px + var(--ed-bar-h, 76px)); }
+/* Long boxes (rooms, credits): Done stays in reach at the bottom */
+.ed-card.wide > .ed-row:last-child { position: sticky; bottom: -22px; margin: 14px -22px -22px; padding: 12px 22px; background: #fbf7f0; border-top: 1px solid #e4d9c7; }
+/* iPhones zoom into boxes with text under 16px */
+@media (max-width: 700px) { .ed-card input, .ed-card textarea, .ed-card select { font-size: 16px; } }
