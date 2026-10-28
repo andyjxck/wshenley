@@ -251,7 +251,31 @@ export function parseList(raw, fields, strict = true) {
   let a
   try { a = JSON.parse(raw) } catch { return null }
   if (!Array.isArray(a)) return null
-  return a.slice(0, 80).filter((x) => x && typeof x === 'object').map((x) => cleanItem(x, fields, strict))
+  const items = a.slice(0, 80).filter((x) => x && typeof x === 'object').map((x) => cleanItem(x, fields, strict))
+  return splitListItems(items, fields).slice(0, 80)
+}
+
+// One-line lists ("In every room", "Good to know") show each item as its own bullet, so a
+// line break typed inside an item means "start a new line". The page can't show a break
+// inside a bullet, so split it into separate items instead of silently losing it.
+export function splitLines(v) {
+  const parts = String(v).split(/\r\n|\r|\n/)
+  // keep the first and last part even when empty (Enter at the start or end of a line
+  // opens an empty line there), drop empty parts in between (blank lines in a paste)
+  return parts.filter((p, i) => i === 0 || i === parts.length - 1 || p.trim() !== '')
+}
+export function splitListItems(items, fields) {
+  const f = fields.find((x) => x.split)
+  if (!f) return items
+  const out = []
+  for (const it of items) {
+    const v = typeof it[f.name] === 'string' ? it[f.name] : ''
+    if (!/[\r\n]/.test(v)) { out.push(it); continue }
+    const parts = splitLines(v).map((p) => p.trim()).filter(Boolean)
+    if (!parts.length) out.push({ ...it, [f.name]: '' })
+    for (const p of parts) out.push({ ...it, [f.name]: p })
+  }
+  return out
 }
 export function parseRecord(raw, fields, fallback, strict = true) {
   if (typeof raw !== 'string' || !raw) return null

@@ -108,11 +108,13 @@ export const ROOMS_SPEC = {
 }
 
 // ---------------------------------------------------------------- simple lists of lines
-export const LINE_FIELDS = [{ name: 'text', label: 'Line', type: 'textarea', max: 400 }]
+// split: pressing Enter (or pasting several lines) makes separate lines, one bullet each
+export const LINE_FIELDS = [{ name: 'text', label: 'Line', type: 'textarea', max: 400, split: true }]
+const LINE_HELP = 'Each line is its own bullet on the page. Press Enter in a line to start a new one below it.'
 export const AMENITIES_FALLBACK = rooms.amenities.map((text) => ({ text }))
-export const AMENITIES_SPEC = { key: 'list:home.amenities', fields: LINE_FIELDS, fallback: AMENITIES_FALLBACK, title: 'In every room', itemName: 'line', max: 30 }
+export const AMENITIES_SPEC = { key: 'list:home.amenities', fields: LINE_FIELDS, fallback: AMENITIES_FALLBACK, title: 'In every room', help: LINE_HELP, itemName: 'line', max: 30 }
 export const TERMS_FALLBACK = rooms.terms.map((text) => ({ text }))
-export const TERMS_SPEC = { key: 'list:home.terms', fields: LINE_FIELDS, fallback: TERMS_FALLBACK, title: 'Good to know', itemName: 'line', max: 30 }
+export const TERMS_SPEC = { key: 'list:home.terms', fields: LINE_FIELDS, fallback: TERMS_FALLBACK, title: 'Good to know', help: LINE_HELP, itemName: 'line', max: 30 }
 
 // ---------------------------------------------------------------- food and drink
 export const MENU_FIELDS = [

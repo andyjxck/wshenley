@@ -19,7 +19,7 @@ import {
 import { getStorage, connectStorageEmulator, ref as sref, uploadBytes, getBlob, getMetadata } from 'firebase/storage'
 import { doc, getDoc, writeBatch, collection, serverTimestamp } from 'firebase/firestore/lite'
 import { app, db, EMULATORS, EMU, BUCKET } from '../firebase.js'
-import { useSite, cleanContent, HOME_SECTIONS, SECTION_NAMES, safeLinkHref, parseList, parseRecord } from '../site.jsx'
+import { useSite, cleanContent, HOME_SECTIONS, SECTION_NAMES, safeLinkHref, parseList, parseRecord, splitLines } from '../site.jsx'
 import { safeHref } from '../richText.js'
 import './editor.css'
 
@@ -666,9 +666,30 @@ function ListDialog({ spec, text, setText, onClose }) {
     ? (parseRecord(raw, fields, fallback, false) || fallback)
     : (parseList(raw, fields, false) || fallback)
   const write = (next) => setText(key, JSON.stringify(next))
+  // after Enter splits a line, put the cursor at the start of the new line below
+  const focusAfterSplit = useRef(null)
+  useEffect(() => {
+    const at = focusAfterSplit.current
+    if (!at) return
+    focusAfterSplit.current = null
+    const row = document.querySelectorAll('.ed-modal .ed-items > li')[at.row]
+    const el = row && row.querySelector('textarea')
+    if (el) { el.focus(); try { el.setSelectionRange(0, 0) } catch { /* not a text box */ } }
+  })
   const setField = (i, name, v) => {
-    if (record) write({ ...items, [name]: v })
-    else write(items.map((x, j) => (j === i ? { ...x, [name]: v } : x)))
+    if (record) { write({ ...items, [name]: v }); return }
+    const f = fields.find((x) => x.name === name)
+    if (f && f.split && /[\r\n]/.test(v)) {
+      // a line break in a one-line list item starts a new line (a new bullet)
+      const room = Math.max(1, max - items.length + 1)
+      let parts = splitLines(v)
+      if (parts.length > room) parts = [...parts.slice(0, room - 1), parts.slice(room - 1).join(' ')]
+      const next = [...items.slice(0, i), ...parts.map((p) => ({ ...items[i], [name]: p })), ...items.slice(i + 1)]
+      if (parts.length > 1) focusAfterSplit.current = { row: i + parts.length - 1 }
+      write(next)
+      return
+    }
+    write(items.map((x, j) => (j === i ? { ...x, [name]: v } : x)))
   }
   const move = (i, d) => { const n = [...items]; const [x] = n.splice(i, 1); n.splice(i + d, 0, x); write(n) }
   const remove = (i) => write(items.filter((_, j) => j !== i))
