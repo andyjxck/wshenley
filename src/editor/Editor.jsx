@@ -407,7 +407,7 @@ function SignIn({ status, user, note, onClose }) {
         {status === 'checking' && <p>Checking your access…</p>}
         {status === 'denied' && (
           <>
-            <p>{user && user.email ? `${user.email} isn’t` : 'This account isn’t'} approved to edit the website. Ask the owner to add it.</p>
+            <p>{user && user.email ? `${user.email} isn’t` : 'This account isn’t'} approved to edit the website. Owners and managers can edit; ask the owner to add other accounts.</p>
             <div className="ed-row">
               <button type="button" onClick={() => signOut(auth)}>Use another account</button>
               <button type="button" onClick={onClose}>Close</button>

@@ -8,7 +8,7 @@ as it is built.
 
 ## What the rules allow
 
-| | Visitors | Staff Hub accounts | Approved editors (owners, plus `webEditors/{uid}`) |
+| | Visitors | Staff Hub accounts | Approved editors (owners and managers, plus `webEditors/{uid}`) |
 |---|---|---|---|
 | `siteContent/published` | read | read | read, write |
 | `siteContent/draft` | no | no | read, write |
@@ -20,7 +20,9 @@ as it is built.
 Writes must have exactly the expected fields, the editor's own uid and the server's time. Photos must be
 JPEGs of 8 MB or less with a random 24-character name.
 
-To approve someone who isn't an owner: in the Firebase console, create a document `webEditors/<their uid>`
+Owners and managers can edit without being added. Only owners add or remove other editors.
+
+To approve someone else (staff or payroll): in the Firebase console, create a document `webEditors/<their uid>`
 (for example `{ name: 'Sam' }`). Delete it to remove them.
 
 ## Deploying (needs approval first: this changes the live Staff Hub rules)
@@ -33,7 +35,7 @@ To approve someone who isn't an owner: in the Firebase console, create a documen
 
 ## Testing
 
-`rules.test.mjs` runs 41 checks against the Firebase emulators with the merged rules files:
+`rules.test.mjs` runs 44 checks against the Firebase emulators with the merged rules files:
 
 ```
 mkdir /tmp/rt && cd /tmp/rt

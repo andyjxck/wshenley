@@ -8,7 +8,7 @@ last era goes dark.
 
 ## Editing on the page (website editor)
 Open the site with `#admin` on the end of the address (for example `.../wshenley/#admin`) and sign in with
-a Staff Hub account that's approved to edit (owners, plus anyone an owner adds; see `firebase/README.md`).
+a Staff Hub account that's approved to edit (owners and managers, plus anyone an owner adds; see `firebase/README.md`).
 
 - Click any outlined heading or paragraph and type. Paragraphs have a toolbar for bold, italic, links
   and lists. Headings are put in Title Case automatically. "Back to original" undoes a change.
