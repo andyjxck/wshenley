@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { seekda } from './content.js'
 import { money } from './liveAvailability.js'
 import { titleCase } from './titleCase.js'
-import { useTextValue, usePhotos, PhotoEditButton, useSite } from './site.jsx'
+import { useTextValue, usePhotos, PhotoEditButton, useSite, Slideshow } from './site.jsx'
 import { ROOM_WORDS } from './editables.js'
 
 // Simple line icons. Each has a label for screen readers and a tooltip on hover.
@@ -48,17 +48,18 @@ function RoomCard({ room, live, stay, w }) {
     ? `${w['room.sleeps']} ${room.sleeps}, too small for ${stay.guests} guests`
     : w['room.notfree']
   const priceText = free && live.total ? `${money(live.total)} for ${nightsLabel(stay.nights)}` : null
-  const flip = () => setFlipped((f) => !f)
+const flip = () => setFlipped((f) => !f)
+const onFront = (e) => { if (e.target.closest('.slide-ctl')) return; flip() }
   const onKey = (e) => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip() }
+if (e.target !== e.currentTarget) return
+if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip() }
   }
   return (
     <div className={`flip-card reveal${off ? ' is-off' : ''}${free ? ' is-free' : ''}`}>
       {editing && <PhotoEditButton k={photoKey} fallback={builtIn} label={img ? 'Edit photo' : 'Add photo'} />}
       <div className={`flip-inner${flipped ? ' flipped' : ''}`}>
-        <div className="flip-face flip-front" role="button" tabIndex={flipped ? -1 : 0} aria-label={`${room.name}${off ? `, ${offText}` : priceText ? `, ${priceText}` : ''}, show details`} onClick={flip} onKeyDown={onKey} aria-hidden={flipped}>
-          {img
-            ? <img src={img.src} alt={img.alt || room.name} loading="lazy" />
+        <div className="flip-face flip-front" role="button" tabIndex={flipped ? -1 : 0} aria-label={`${room.name}${off ? `, ${offText}` : priceText ? `, ${priceText}` : ''}, show details`} onClick={onFront} onKeyDown={onKey} aria-hidden={flipped}>
+          {img? <Slideshow photos={photos.map((p) => ({ ...p, alt: p.alt || room.name }))} wrapClass="stack" imgProps={{ loading: 'lazy' }} label={`Photos of ${titleCase(room.name)}`} />
             : <div className="flip-noimg"><span>{w['room.nophoto']}</span></div>}
           {off && <span className="flip-badge off">{offText}</span>}
           {free && <span className="flip-badge free">{priceText || w['room.available']}</span>}
