@@ -397,7 +397,29 @@ function Entry({ e, index }) {
       <div className="entry-year"><Edit k={`${k}.year`} as="span" plain>{String(e.year)}</Edit></div>
       <div className="entry-main">
         {e.kind && <Edit k={`${k}.kind`} className={`kind kind-${kindSlug(kind)}`} plain>{e.kind}</Edit>}
-        <Edit k={`${k}.title`} as="h3" heading>{e.title}</Edit>
+        <div className="entry-heading-row">
+  <Edit k={`${k}.title`} as="h3" heading>{e.title}</Edit>
+  {e.flickr && (
+    <a
+      className="entry-share"
+      href={e.flickr.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${e.flickr.label || 'View on Flickr'} (opens in a new tab)`}
+      title="View on Flickr"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="18" cy="5" r="3" />
+        <circle cx="6" cy="12" r="3" />
+        <circle cx="18" cy="19" r="3" />
+        <path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4" />
+      </svg>
+    </a>
+  )}
+</div>
+{e.flickr && e.flickr.note && (
+  <Edit k={`${k}.flickr.note`} className="flickr-note" plain>{e.flickr.note}</Edit>
+)}
         {e.quote && <Edit k={`${k}.quote`} as="blockquote" plain>{e.quote}</Edit>}
         <Edit k={`${k}.text`} className="entry-text" rich>{e.text}</Edit>
         {(e.body || editing || content.text[`${k}.body`]) && <Edit k={`${k}.body`} as="div" className="entry-body" paras>{e.body || ''}</Edit>}
@@ -439,16 +461,6 @@ function Entry({ e, index }) {
               {e.compare.credit && <Edit k={`${k}.compare.credit`} as="span" className="rights" plain>{e.compare.credit}</Edit>}
             </figcaption>
           </figure>
-        )}
-        {e.flickr && (
-          <div className="entry-flickr">
-            <a className="flickr-btn" href={e.flickr.href} target="_blank" rel="noopener noreferrer" aria-label={`${e.flickr.label}: ${e.flickr.note} (opens in a new tab)`}>
-              <span className="flickr-dots" aria-hidden="true"><i /><i /></span>
-              <Edit k={`${k}.flickr.label`} as="span" plain>{e.flickr.label}</Edit>
-              <svg className="flickr-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </a>
-            {e.flickr.note && <Edit k={`${k}.flickr.note`} className="flickr-note" plain>{e.flickr.note}</Edit>}
-          </div>
         )}
         {e.source && <p className="entry-source"><Edit k="story.sourceword" as="span" plain>Source:</Edit> <Edit k={`${k}.source`} as="span" plain>{e.source}</Edit></p>}
       </div>
