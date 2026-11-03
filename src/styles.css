@@ -195,7 +195,7 @@ p { margin: 0 0 1em; }
 .whats-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(12,10,8,.85), rgba(12,10,8,.35)); }
 .whats-copy { position: relative; }
 .whats-on .eyebrow { color: #f1d9b5; }
-.whats-on h2 { max-width: none; }
+.whats-on h2 { max-width: none; white-space: pre-line; }
 .whats-on .lead { color: rgba(255,255,255,.85); }
 .week { margin: 34px 0 30px; max-width: 980px; border-radius: 18px; background: rgba(20,16,12,.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 0 0 1px rgba(241,217,181,.18); overflow: hidden; }
 .week-head { display: flex; justify-content: space-between; gap: 12px; padding: 14px 20px; border-bottom: 1px solid rgba(241,217,181,.16); font: 600 .66rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: #f1d9b5; }
