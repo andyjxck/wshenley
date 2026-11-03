@@ -830,3 +830,12 @@ html[data-page="history"] .site-footer a { color: inherit; }
   color: color-mix(in srgb, var(--ink) 88%, transparent);
   font-style: italic;
 }
+
+/* Room cards: two or more photos become a slideshow */
+.flip-front .slides.stack { position: absolute; inset: 0; }
+.flip-front .slides > .slide { transition: opacity 1.4s ease-in-out, transform 1.2s var(--ease), filter .5s; }
+.flip-card.is-off .flip-front .slides > .slide:not(.on) { opacity: 0; }
+.flip-front .flip-badge, .flip-front .flip-name { z-index: 2; }
+.flip-front .slide-ctl { top: 12px; right: 12px; bottom: auto; }
+.flip-front .slides ~ .flip-badge { max-width: calc(100% - 74px); }
+
