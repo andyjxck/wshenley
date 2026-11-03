@@ -294,32 +294,98 @@ p { margin: 0 0 1em; }
 .photo-set .shape-wide { grid-column: 1 / -1; width: 100%; }
 .photo-set .frame img { display: block; width: auto; max-width: 100%; height: auto; max-height: none; object-fit: contain; }
 .photo-set .shape-wide img { width: 100%; }
-@media (max-width: 560px) { .photo-set { grid-template-columns: minmax(0, 1fr); } }
-/* Link out to a photo we can't reproduce (no image shown).
-   A small outlined pill, no fill of its own: the ageing page shows through it, and its
-   text and border take the page's current ink (--ink, set on scroll by useTimeTravel.js),
-   so it is never a bright white block on sepia or old paper. */
-.entry-flickr { margin-top: 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-.flickr-btn {
-  display: inline-flex; align-items: center; gap: 8px; width: auto; max-width: 100%;
-  min-height: 32px; padding: 6px 12px 6px 10px; border-radius: 999px; box-sizing: border-box;
-  border: 1px solid color-mix(in srgb, var(--ink) 42%, transparent);
-  background: transparent; box-shadow: none;
-  color: var(--ink); text-decoration: none;
-  font: 600 .64rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase;
-  transition: background-color .3s var(--ease), border-color .3s var(--ease);
+@media (max-width: 560px) { 
+.photo-set { grid-template-columns: minmax(0, 1fr); } 
 }
-.flickr-btn:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); border-color: color-mix(in srgb, var(--ink) 70%, transparent); }
-.flickr-btn:active { background: color-mix(in srgb, var(--ink) 14%, transparent); }
-.flickr-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; background: color-mix(in srgb, var(--ink) 8%, transparent); }
-.flickr-dots { display: inline-flex; gap: 2px; }
-.flickr-dots i { width: 6px; height: 6px; border-radius: 50%; background: #0063dc; display: block; opacity: .85; }
-.flickr-dots i + i { background: #ff0084; }
-.flickr-arrow { width: 11px; height: 11px; opacity: .75; transition: transform .3s var(--ease); }
-.flickr-btn:hover .flickr-arrow, .flickr-btn:focus-visible .flickr-arrow { transform: translate(1px, -1px); opacity: 1; }
-.flickr-note { margin: 0; padding-left: 2px; font-size: .84rem; color: color-mix(in srgb, var(--ink) 88%, transparent); font-style: italic; }
-@media (prefers-reduced-motion: reduce) { .flickr-btn, .flickr-arrow { transition: none; } .flickr-btn:hover .flickr-arrow, .flickr-btn:focus-visible .flickr-arrow { transform: none; } }
 
+/* Compact share-icon link. Its colour follows the ageing page's ink. */ 
+.entry-flickr { 
+margin-top: 16px; 
+display: flex; 
+flex-direction: column; 
+align-items: flex-start; 
+gap: 6px; 
+}
+
+.flickr-btn { 
+position: relative; 
+display: inline-flex; 
+align-items: center; 
+justify-content: center; 
+flex: 0 0 auto; 
+width: 32px; 
+height: 32px; 
+min-height: 32px; 
+max-width: 100%; 
+padding: 0; 
+gap: 0; 
+border-radius: 6px; 
+box-sizing: border-box; 
+border: 1px solid color-mix(in srgb, var(--ink) 42%, transparent); 
+background: transparent; 
+box-shadow: none; 
+color: var(--ink); 
+text-decoration: none; 
+/* Hide the existing label visually, without changing the link text. */ 
+font-size: 0; 
+line-height: 0; 
+letter-spacing: 0; 
+text-transform: none; 
+transition: background-color .3s var(--ease), border-color .3s var(--ease); 
+}
+
+/* Visually hide existing child content; retain it for accessibility. */ 
+.flickr-btn > * { 
+position: absolute !important; 
+width: 1px !important; 
+height: 1px !important; 
+padding: 0 !important; 
+margin: -1px !important; 
+overflow: hidden !important; 
+clip: rect(0, 0, 0, 0) !important; 
+clip-path: inset(50%) !important; 
+white-space: nowrap !important; 
+border: 0 !important; 
+}
+
+/* SVG share icon, coloured by the current page ink. */ 
+.flickr-btn::before { 
+content: ""; 
+display: block; 
+width: 18px; 
+height: 18px; 
+flex: 0 0 18px; 
+background-color: currentColor; 
+-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='18' cy='5' r='3'/%3E%3Ccircle cx='6' cy='12' r='3'/%3E%3Ccircle cx='18' cy='19' r='3'/%3E%3Cpath d='m8.6 10.5 6.8-4M8.6 13.5l6.8 4'/%3E%3C/svg%3E") center / contain no-repeat; 
+mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='18' cy='5' r='3'/%3E%3Ccircle cx='6' cy='12' r='3'/%3E%3Ccircle cx='18' cy='19' r='3'/%3E%3Cpath d='m8.6 10.5 6.8-4M8.6 13.5l6.8 4'/%3E%3C/svg%3E") center / contain no-repeat; 
+}
+
+.flickr-btn:hover { 
+background: color-mix(in srgb, var(--ink) 8%, transparent); 
+border-color: color-mix(in srgb, var(--ink) 70%, transparent); 
+}
+
+.flickr-btn:active { 
+background: color-mix(in srgb, var(--ink) 14%, transparent); 
+}
+
+.flickr-btn:focus-visible { 
+outline: 2px solid var(--ink); 
+outline-offset: 3px; 
+background: color-mix(in srgb, var(--ink) 8%, transparent); 
+}
+
+.flickr-note { 
+margin: 0; 
+padding-left: 2px; 
+font-size: .84rem; 
+color: color-mix(in srgb, var(--ink) 88%, transparent); 
+font-style: italic; 
+}
+
+@media (prefers-reduced-motion: reduce) { 
+.flickr-btn { transition: none; } 
+}
 .rights { background: #b3261e; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: .7rem; font-weight: 600; }
 
 /* art direction by era */
