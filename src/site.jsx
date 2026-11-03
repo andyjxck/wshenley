@@ -118,7 +118,7 @@ export function useTextValue(k, fallback) {
 // <Edit k="..." rich paras>{bodyWithBlankLines}</Edit>                       several paragraphs (blank line between)
 // <Edit k="home.hero.since" as="b" plain>1352</Edit>                         a single line of plain text, shown exactly as typed
 const asIs = (v) => v
-export function Edit({ k, as = 'p', className = '', heading = false, plain = false, rich = false, paras = false, caseFn = titleCase, children, ...rest }) {
+export function Edit({ k, as = 'p', className = '', heading = false, plain = false, rich = false, paras = false, lines = false, caseFn = titleCase, children, ...rest }) {
   if (plain) { heading = true; caseFn = asIs } // eslint-disable-line no-param-reassign
   const { content, editor } = useSite()
   const fallback = typeof children === 'string' ? children : ''
@@ -140,13 +140,26 @@ export function Edit({ k, as = 'p', className = '', heading = false, plain = fal
   const Tag = (!heading && (paras || (rich && hasBlocks(html))) && /^(p|span)$/.test(as)) ? 'div' : as
   const cls = `${className}${paras ? ' rt-paras' : ''}${Tag !== as ? ' rt-block' : ''}`.trim()
 
-  if (editing) return <EditingField key={editor.revision} k={k} Tag={Tag} className={cls} html={html} heading={heading} rich={rich || paras} paras={paras} editor={editor} caseFn={caseFn} fallback={fallback} defaultHtml={defaultHtml} {...rest} />
+  if (editing) return <EditingField key={editor.revision} k={k} Tag={Tag} className={cls} html={html} heading={heading} rich={rich || paras} paras={paras} lines={lines} editor={editor} caseFn={caseFn} fallback={fallback} defaultHtml={defaultHtml} {...rest} />
   return <Tag className={cls || undefined} {...rest} dangerouslySetInnerHTML={{ __html: html }} />
 }
 
+function readLines(el) {
+  let s = ''
+  const walk = (node) => node.childNodes.forEach((n) => {
+    if (n.nodeType === 3) s += n.nodeValue
+    else if (n.nodeName === 'BR') s += '\n'
+    else if (n.nodeType === 1) {
+      if ((n.nodeName === 'DIV' || n.nodeName === 'P') && s && !s.endsWith('\n')) s += '\n'
+      walk(n)
+    }
+  })
+  walk(el)
+  return s.split(/\r\n|\r|\n/).map((l) => l.replace(/\s+/g, ' ').trim()).filter(Boolean).join('\n')
+}
 // While editing, the browser owns the words inside the box (so the cursor never jumps); React only
 // fills it when the box first opens or the draft is reset.
-function EditingField({ k, Tag, className, html, heading, rich, paras, editor, caseFn, fallback, defaultHtml, onValue, ...rest }) {
+function EditingField({ k, Tag, className, html, heading, rich, paras, lines, editor, caseFn, fallback, defaultHtml, onValue, ...rest }) {
   const ref = useRef(null)
   const rev = editor.revision
   // Keep the same element while typing (adding a list mustn't swap the box and lose the cursor).
@@ -156,7 +169,7 @@ function EditingField({ k, Tag, className, html, heading, rich, paras, editor, c
     const el = ref.current
     if (!el) return
     if (heading) {
-      const t = el.textContent.replace(/\s+/g, ' ').trim()
+     const t = lines ? readLines(el) : el.textContent.replace(/\s+/g, ' ').trim()
       // Unchanged from the built-in heading: store nothing, so it keeps following the default.
       if (onValue) onValue(t)
       else editor.setText(k, (t === fallback || caseFn(t) === caseFn(fallback)) ? '' : t)
