@@ -181,7 +181,7 @@ function EditingField({ k, Tag, className, html, heading, rich, paras, editor, c
       onInput={() => commit(false)}
       onBlur={() => { commit(true); editor.onBlurField && editor.onBlurField() }}
       onFocus={(e) => editor.onFocusField && editor.onFocusField(e.currentTarget, { rich, paras, heading })}
-      onKeyDown={(e) => { if (heading && e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
+onKeyDown={(e) => { if (heading && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); e.currentTarget.blur() } }}
       {...rest}
     />
   )
