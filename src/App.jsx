@@ -408,12 +408,11 @@ function Entry({ e, index }) {
       aria-label={`${e.flickr.label || 'View on Flickr'} (opens in a new tab)`}
       title="View on Flickr"
     >
-      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="18" cy="5" r="3" />
-        <circle cx="6" cy="12" r="3" />
-        <circle cx="18" cy="19" r="3" />
-        <path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4" />
-      </svg>
+     <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+  <path d="M14 3h7v7" />
+  <path d="M10 14 21 3" />
+  <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5" />
+</svg>
     </a>
   )}
 </div>
