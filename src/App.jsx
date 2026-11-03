@@ -269,7 +269,7 @@ function WhatsOn() {
       <div className="wrap whats-copy">
         <PhotoEditButton k="home.whatson" fallback={WHATS_PHOTOS} label="Edit background photos" />
         <Edit k="home.whatson.eyebrow" className="eyebrow reveal" plain>What’s on</Edit>
-        <Edit k="home.whatson.heading" as="h2" className="reveal" heading>{whatsOn.headline}</Edit>
+        <Edit k="home.whatson.heading" as="h2" className="reveal" heading lines>{whatsOn.headline}</Edit>
         <Edit k="home.whatson.text" className="lead reveal" rich>{whatsOn.text}</Edit>
         <div className="reveal whats-cta">
           <EditLink k="home.whatson.cta" className="pill light" href={safeLinkHref(contact.instagram) || '#whats-on'}>See this week on Instagram</EditLink>
