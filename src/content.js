@@ -207,7 +207,7 @@ export const eras = [
       // belong to the hotel. The Flickr page names no photographer, only the account name
       // "Henley White Swan", which does not establish who took or owns it, so the page claims
       // no ownership or authorship.
-      { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', label: 'View on Flickr' }, image: pint1963, credit: 'Photo: “White-Swan-1963”, on Flickr', creditHref: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', rights: 'All rights reserved' },
+      { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', label: 'View on Flickr' }, image: pint1963, credit: 'Photo: “White-Swan-1963”, on Flickr', creditHref: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/'},
       // HOTEL: "For a short time in the 1950s Cygnets Bar at The White Swan was a
       // Children's Bar." Context: the Children Act 1908 barred children from the bars of
       // pubs (Wikipedia, Children Act 1908).
@@ -239,7 +239,6 @@ export const eras = [
         beforeAlt: 'The timber-framed building behind the Market Cross on High Street, Henley-in-Arden, before 1920',
         afterAlt: 'The same view of the Market Cross and the timber-framed building on High Street today',
         caption: 'Drag the handle to compare the third photograph with the same spot on High Street today.',
-        credit: 'Today: Google Street View, a stand-in until we take our own photo from the same spot.',
       } },
       { year: 'Undated', kind: 'Documented', title: 'A real photo postcard', text: 'The White Swan Hotel on an early photographic postcard.', body: '', image: postcardUndated, credit: 'Real photo postcard' },
       { year: 'Pre-1914', kind: 'Documented', title: 'Wish you were here', text: 'The Swan on a postcard from before the First World War.', body: '', image: postcard1914, credit: 'Real photo postcard, before 1914' },
