@@ -55,8 +55,7 @@ function Header() {
           <Edit k="site.brand" as="b" plain>The White Swan</Edit>
           <Edit k="site.brand.sub" as="span" plain>Henley-in-Arden · 1352</Edit>
         </a>
-        <div className="bar-contact"><a href={contact.phoneHref}>{contact.phone}</a><a href={'mailto:' + contact.email}>{contact.email}</a></div><div className="bar-r">
-          <EditLink k={ON_HISTORY ? 'nav.home' : 'nav.story'} className="page-switch" href={SWITCH[1]} newTab={false}>{SWITCH[0]}</EditLink>
+<div className="bar-contact"><a href={contact.phoneHref}>{contact.phone}</a><span className="bar-sep" aria-hidden="true">|</span><a href={'mailto:' + contact.email}>{contact.email}</a></div><div className="bar-r">          <EditLink k={ON_HISTORY ? 'nav.home' : 'nav.story'} className="page-switch" href={SWITCH[1]} newTab={false}>{SWITCH[0]}</EditLink>
           <EditLink k="nav.book" className="pill dark" href={home('#book')} mapHref={home}>Book a room</EditLink>
         </div>
       </div>
