@@ -50,7 +50,6 @@ export default function WeekCalendar() {
   <button type="button" className={offset === 1 ? 'on' : ''} aria-pressed={offset === 1} onClick={() => setOffset(1)}>Next week <span aria-hidden="true">→</span></button>
 </span>
 <span>{range}</span>
-    <span>{range}</span><span className="week-nav">{offset > 0 && <button type="button" onClick={() => setOffset(0)}>Back to this week</button>}<button type="button" onClick={() => setOffset((o) => o + 1)}>Next week →</button></span>
       </div>
       <ol className="week-days">
         {days.map(({ d, key, list, today }) => (
