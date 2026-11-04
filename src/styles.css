@@ -839,4 +839,9 @@ html[data-page="history"] .site-footer a { color: inherit; }
 .flip-front .slide-ctl { top: 12px; right: 12px; bottom: auto; }
 .flip-front .slides ~ .flip-badge { max-width: calc(100% - 74px); }
 
+.week-head { align-items: center; flex-wrap: wrap; }
+.week-nav { display: flex; gap: 8px; }
+.week-nav button { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 1px solid rgba(241,217,181,.35); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+.week-nav button:hover, 
+.week-nav button:focus-visible { background: rgba(241,217,181,.12); }
 
