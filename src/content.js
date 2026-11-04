@@ -19,6 +19,7 @@ import whatsonLive from './assets/week-bg.jpg' // Flickr 2012 "The Henley White 
 // flickr.com/photos/ell-r-brown/27425128576, CC BY-SA 2.0 (licence checked on the Flickr
 // page, 20 Oct 2026). Flickr's 1600 x 1200 size, re-saved as JPEG; not cropped or retouched.
 import garden from './assets/secret-garden-elliott-brown-2016.jpg'
+import pint1963 from '.assets/7752523264_8a0e5580b9_b 3.jpg'
 import coach2010 from './assets/coach-entrance-2010.jpg'
 import postcardUndated from './assets/postcard-undated.jpg'
 import postcard1914 from './assets/postcard-pre1914.jpg'
@@ -206,7 +207,7 @@ export const eras = [
       // belong to the hotel. The Flickr page names no photographer, only the account name
       // "Henley White Swan", which does not establish who took or owns it, so the page claims
       // no ownership or authorship.
-      { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', label: 'View on Flickr', note: 'A photograph from 1963, on Flickr' } },
+      { year: '1963', kind: 'Documented', title: 'A pint in 1963', text: 'Enjoying a pint at the Swan, more than sixty years ago.', body: '', flickr: { href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', label: 'View on Flickr' }, image: pint1963, credit: 'Photo: “White-Swan-1963”, on Flickr', creditHref: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/', rights: 'All rights reserved' },
       // HOTEL: "For a short time in the 1950s Cygnets Bar at The White Swan was a
       // Children's Bar." Context: the Children Act 1908 barred children from the bars of
       // pubs (Wikipedia, Children Act 1908).
@@ -344,7 +345,7 @@ export const credits = [
   'Present-day photos: as used on the White Swan’s previous website.',
   ['Homepage photo of the White Swan, March 2010: ', { label: 'photo by Elliott Brown on Flickr', href: 'https://www.flickr.com/photos/ell-r-brown/4435838679/' }, ', licensed under ', { label: 'CC BY 2.0', href: 'https://creativecommons.org/licenses/by/2.0/' }, '. Resized, trimmed to fit the screen and darkened behind the text.'],
   ['Secret Garden sign, June 2016: ', { label: 'photo by Elliott Brown on Flickr', href: 'https://www.flickr.com/photos/ell-r-brown/27425128576/' }, ', licensed under ', { label: 'CC BY-SA 2.0', href: 'https://creativecommons.org/licenses/by-sa/2.0/' }, '. Resized, and on the page it may be trimmed to fit and lightly toned; the adapted photo is shared under the same licence.'],
-  'The 1963 photo is linked on Flickr, not reproduced here.',
+   ['1963 photo: ', { label: '“White-Swan-1963” on Flickr', href: 'https://www.flickr.com/photos/henleywhiteswan/7752523264/' }, ', all rights reserved.'],
   'Coach entrance, 2010: Elliott Brown, CC BY 2.0, via Wikimedia Commons.',
   'Three early photographs on Our story, before 1920: public domain.',
   'Trailer: I Bought a Vampire Motorcycle, from the film’s YouTube channel.',
