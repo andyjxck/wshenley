@@ -47,7 +47,8 @@ export default function WeekCalendar() {
   {editor && editor.editing
     ? <Edit k="week.title" as="span" plain>This week</Edit>
     : <button type="button" className={offset === 0 ? 'on' : ''} aria-pressed={offset === 0} onClick={() => setOffset(0)}>{titleWord}</button>}
-  <button type="button" className={offset === 1 ? 'on' : ''} aria-pressed={offset === 1} onClick={() => setOffset(1)}>Next week <span aria-hidden="true">→</span></button>
+<span className="week-arrow" aria-hidden="true">{offset === 0 ? '→' : '←'}</span>
+<button type="button" className={offset === 1 ? 'on' : ''} aria-pressed={offset === 1} onClick={() => setOffset(1)}>Next week</button>
 </span>
 <span>{range}</span>
       </div>
