@@ -32,6 +32,7 @@ export default function WeekCalendar() {
   const { editor } = useSite()
   const todayWord = useTextValue('week.today', 'Today')
   const noneWord = useTextValue('week.none', 'Nothing on')
+  const titleWord = useTextValue('week.title', 'This week')
   const [offset, setOffset] = React.useState(0) 
   const days = thisWeek(feed, new Date(), offset)
   const first = days[0].d, last = days[6].d
@@ -40,10 +41,16 @@ export default function WeekCalendar() {
     : `${fmt(first, { day: 'numeric', month: 'short' })} to ${fmt(last, { day: 'numeric', month: 'short' })}`
 
   return (
-    <div className="week reveal" aria-label={`What's on this week, ${range}`}>
-      <div className="week-head">
-        {offset === 0 ? <Edit k="week.title" as="span" plain>This week</Edit> : <span>{offset === 1 ? 'Next week' : 'In ' + offset + ' weeks'}</span>}
-        <span>{range}</span><span className="week-nav">{offset > 0 && <button type="button" onClick={() => setOffset(0)}>Back to this week</button>}<button type="button" onClick={() => setOffset((o) => o + 1)}>Next week →</button></span>
+<div className="week reveal" aria-label={`What's on ${offset ? 'next week' : 'this week'}, ${range}`}>
+  <div className="week-head">
+        <span className="week-tabs">
+  {editor && editor.editing
+    ? <Edit k="week.title" as="span" plain>This week</Edit>
+    : <button type="button" className={offset === 0 ? 'on' : ''} aria-pressed={offset === 0} onClick={() => setOffset(0)}>{titleWord}</button>}
+  <button type="button" className={offset === 1 ? 'on' : ''} aria-pressed={offset === 1} onClick={() => setOffset(1)}>Next week <span aria-hidden="true">→</span></button>
+</span>
+<span>{range}</span>
+    <span>{range}</span><span className="week-nav">{offset > 0 && <button type="button" onClick={() => setOffset(0)}>Back to this week</button>}<button type="button" onClick={() => setOffset((o) => o + 1)}>Next week →</button></span>
       </div>
       <ol className="week-days">
         {days.map(({ d, key, list, today }) => (
