@@ -19,7 +19,7 @@ import whatsonLive from './assets/week-bg.jpg' // Flickr 2012 "The Henley White 
 // flickr.com/photos/ell-r-brown/27425128576, CC BY-SA 2.0 (licence checked on the Flickr
 // page, 20 Oct 2026). Flickr's 1600 x 1200 size, re-saved as JPEG; not cropped or retouched.
 import garden from './assets/secret-garden-elliott-brown-2016.jpg'
-import pint1963 from '.assets/7752523264_8a0e5580b9_b 3.jpg'
+import pint1963 from './assets/7752523264_8a0e5580b9_b 3.jpg'
 import coach2010 from './assets/coach-entrance-2010.jpg'
 import postcardUndated from './assets/postcard-undated.jpg'
 import postcard1914 from './assets/postcard-pre1914.jpg'
