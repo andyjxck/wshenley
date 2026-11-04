@@ -211,7 +211,7 @@ export const eras = [
       // HOTEL: "For a short time in the 1950s Cygnets Bar at The White Swan was a
       // Children's Bar." Context: the Children Act 1908 barred children from the bars of
       // pubs (Wikipedia, Children Act 1908).
-      { year: '1950s', kind: 'Hotel history', title: 'A bar just for children', text: 'Cygnets is the bar attached to the hotel, and it’s still part of the Swan today. For a short time in the 1950s it was set aside as a children’s bar.', body: 'Children had been kept out of pub bars by law since the Children Act of 1908. So while the grown-ups had a drink in the main bar, children could sit in Cygnets with a soft drink. The name fits: cygnets are young swans.' },
+      { year: '1950s', kind: 'Hotel history', title: 'A bar just for children', text: 'Cygnets is the bar attached to the hotel, and it’s still part of the Swan today. For a short time in the 1950s it was set aside as a children’s bar.', body: 'Children had been kept out of pub bars by law since the Children Act of 1908. So while the grown-ups had a drink in the main bar, children could sit in Cygnets with a soft drink. The name fits: cygnets are young swans.', video: '7x-yuNJVoE0' },
     ],
   },
   {
