@@ -8,9 +8,10 @@ import { Edit, useTextValue, useSite } from './site.jsx'
 const KEYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 
-function thisWeek(feed, today = new Date()) {
+function thisWeek(feed, today = new Date(), offset = 0) {
   const start = new Date(today.getFullYear(), today.getMonth(), today.getDate())
   start.setDate(start.getDate() - ((start.getDay() + 6) % 7)) // back to Monday
+  start.setDate(start.getDate() + offset * 7)
   return KEYS.map((key, i) => {
     const d = new Date(start)
     d.setDate(start.getDate() + i)
@@ -31,7 +32,8 @@ export default function WeekCalendar() {
   const { editor } = useSite()
   const todayWord = useTextValue('week.today', 'Today')
   const noneWord = useTextValue('week.none', 'Nothing on')
-  const days = thisWeek(feed)
+  const [offset, setOffset] = React.useState(0) 
+  const days = thisWeek(feed, new Date(), offset)
   const first = days[0].d, last = days[6].d
   const range = first.getMonth() === last.getMonth()
     ? `${first.getDate()} to ${fmt(last, { day: 'numeric', month: 'long' })}`
@@ -40,8 +42,8 @@ export default function WeekCalendar() {
   return (
     <div className="week reveal" aria-label={`What's on this week, ${range}`}>
       <div className="week-head">
-        <Edit k="week.title" as="span" plain>This week</Edit>
-        <span>{range}</span>
+        {offset === 0 ? <Edit k="week.title" as="span" plain>This week</Edit> : <span>{offset === 1 ? 'Next week' : 'In ' + offset + ' weeks'}</span>}
+        <span>{range}</span><span className="week-nav">{offset > 0 && <button type="button" onClick={() => setOffset(0)}>Back to this week</button>}<button type="button" onClick={() => setOffset((o) => o + 1)}>Next week →</button></span>
       </div>
       <ol className="week-days">
         {days.map(({ d, key, list, today }) => (
