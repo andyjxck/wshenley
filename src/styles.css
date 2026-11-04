@@ -855,9 +855,9 @@ html[data-page="history"] .site-footer a { color: inherit; }
 .week-tabs { display: flex; align-items: center; gap: 16px; }
 .week-tabs button { font: inherit; letter-spacing: inherit; text-transform: inherit; background: none; border: 0; padding: 10px 0; cursor: pointer; color: rgba(255,255,255,.38); transition: color .2s; }
 .week-tabs button.on { color: #fff; }
-.week-tabs button:not(.on):hover { color: rgba(255,255,255,
-  
-  .@media (max-width: 480px) {
+.week-tabs button:not(.on):hover { color: rgba(255,255,255,.7); }
+.week-tabs .week-arrow { color: rgba(255,255,255,.38); }
+  @media (max-width: 480px) {
   .week-head { flex-wrap: nowrap; gap: 0.5em; }
   .week-tabs { white-space: nowrap; }
   .week-tabs .week-arrow { margin: 0 0.25em; }
