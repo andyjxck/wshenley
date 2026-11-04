@@ -41,6 +41,7 @@ const ageStyle = (a) => ({ '--age': a.toFixed(4) })
 
 function Header() {
   const [solid, setSolid] = useState(ON_HISTORY)
+  const contact = useContact()
   useEffect(() => {
     const on = () => setSolid(ON_HISTORY || window.scrollY > 40)
     on()
@@ -54,7 +55,7 @@ function Header() {
           <Edit k="site.brand" as="b" plain>The White Swan</Edit>
           <Edit k="site.brand.sub" as="span" plain>Henley-in-Arden · 1352</Edit>
         </a>
-        <div className="bar-r">
+        <div className="bar-contact"><a href={contact.phoneHref}>{contact.phone}</a><a href={'mailto:' + contact.email}>{contact.email}</a></div><div className="bar-r">
           <EditLink k={ON_HISTORY ? 'nav.home' : 'nav.story'} className="page-switch" href={SWITCH[1]} newTab={false}>{SWITCH[0]}</EditLink>
           <EditLink k="nav.book" className="pill dark" href={home('#book')} mapHref={home}>Book a room</EditLink>
         </div>
