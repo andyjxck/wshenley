@@ -34,6 +34,8 @@ export default function WeekCalendar() {
   const noneWord = useTextValue('week.none', 'Nothing on')
   const titleWord = useTextValue('week.title', 'This week')
   const [offset, setOffset] = React.useState(0) 
+  // Not in the build-time copy of the page (scripts/prerender.mjs): its dates would go stale.
+  if (typeof window === 'undefined') return null
   const days = thisWeek(feed, new Date(), offset)
   const first = days[0].d, last = days[6].d
   const range = first.getMonth() === last.getMonth()

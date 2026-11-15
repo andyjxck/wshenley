@@ -20,11 +20,15 @@ const versionFile = {
   },
 }
 
-export default defineConfig(({ mode }) => ({
+// The prerender step (scripts/prerender.mjs, part of `npm run build`) also builds src/entry-server.jsx
+// for Node into dist-ssr/, then writes each page's words into the built HTML.
+export default defineConfig(({ mode, isSsrBuild }) => ({
   base: './',
   define: { __BUILD_ID__: JSON.stringify(mode === 'single' ? 'dev' : BUILD_ID) },
-  plugins: mode === 'single' ? [react(), viteSingleFile()] : [react(), versionFile],
-  build: mode === 'single'
+  plugins: mode === 'single' ? [react(), viteSingleFile()] : isSsrBuild ? [react()] : [react(), versionFile],
+  build: isSsrBuild
+    ? { outDir: 'dist-ssr', emptyOutDir: true, copyPublicDir: false }
+    : mode === 'single'
     ? { outDir: 'dist-single', assetsInlineLimit: 100000000 }
     : {
         outDir: 'dist',
