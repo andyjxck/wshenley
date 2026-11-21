@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { analyticsEnabled, openCookieSettings } from './analytics.js'
 import { hero, food, whatsOn, privateHire, nearbyNote, eras } from './content.js'
 import BookingWidget from './BookingWidget.jsx'
 import RoomCards from './RoomCards.jsx'
@@ -521,6 +522,7 @@ function Footer() {
             <p>{contact.address.join(', ')}<br /><a href={contact.phoneHref}>{contact.phone}</a> · <a href={`mailto:${contact.email}`}>{contact.email}</a></p>
           )}
           <p>{shownSocial.map((x, i) => <React.Fragment key={i}>{i > 0 && ' · '}<a {...linkProps(x.href)}>{x.label}</a></React.Fragment>)}</p>
+          {analyticsEnabled && !editing && <p><button type="button" className="cookie-link" onClick={openCookieSettings}>Cookie settings</button></p>}
           <ListEditButton spec={CONTACT_SPEC} label="Edit address and contact details" />
           <ListEditButton spec={socialSpec} label="Edit footer links" />
         </div>
